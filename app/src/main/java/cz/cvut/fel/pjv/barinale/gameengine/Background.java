@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-public class Background {
+public class Background{
     private Bitmap image;
     private Point coordinate;
 
@@ -36,10 +36,15 @@ public class Background {
         canvas.drawBitmap(image, coordinate.x, coordinate.y, null);
     }
 
-    public Point getMapPosition(Player player){
-        return new Point(player.getPlayer_point().x - coordinate.x, player.getPlayer_point().y - coordinate.y);
+    public Point getMapPosition(OldPlayer oldPlayer){
+        return new Point(oldPlayer.getPlayer_point().x - coordinate.x, oldPlayer.getPlayer_point().y - coordinate.y);
     }
 
     public Point getMapPosition(Protagonist protagonist){
-        return new Point(protagonist.getProtagonist_point().x - coordinate.x, protagonist.getProtagonist_point().y - coordinate.y);
-    }}
+        return new Point(protagonist.getMapPoint().x - coordinate.x, protagonist.getMapPoint().y - coordinate.y);
+    }
+
+    public Point getUserPointCoordinates(Point userPoint){
+        return new Point(userPoint.x - coordinate.x, userPoint.y - coordinate.y);
+    }
+}

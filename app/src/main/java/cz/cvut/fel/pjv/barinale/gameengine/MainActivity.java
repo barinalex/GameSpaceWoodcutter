@@ -1,24 +1,28 @@
 package cz.cvut.fel.pjv.barinale.gameengine;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.io.IOException;
-
 public class MainActivity extends Activity {
+    GamePanel gamePanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        Constants.SCREEN_WIDTH = dm.widthPixels;
-        Constants.SCREEN_HEIGHT = dm.heightPixels;
-        setContentView(new GamePanel(this));
+        gamePanel = new GamePanel(this);
+        setContentView(gamePanel);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
+        Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
+        Constants.CONFIG_CHANGED = true;
     }
 }

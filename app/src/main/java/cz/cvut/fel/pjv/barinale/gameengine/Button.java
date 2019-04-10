@@ -44,6 +44,15 @@ public class Button {
         }
     }
 
+    public void update(Point user_point){
+        if (button.contains(user_point.x, user_point.y)){
+            activated = true;
+        }
+        else{
+            activated = false;
+        }
+    }
+
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(color);

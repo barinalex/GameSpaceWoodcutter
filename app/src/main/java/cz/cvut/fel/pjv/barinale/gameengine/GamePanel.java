@@ -17,11 +17,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background background;
     private Rect r = new Rect();
+    private OldPlayer oldPlayer;
     private Player player;
     private Point user_point, background_point;
     private Button pause;
-    private ArrayList<MapObject> map_objects;
+    private Button use;
+    private ArrayList<StaticObject> map_objects;
     private ArrayList<Protagonist> protagonists;
+    private ArrayList<GameObject> gameObjects;
 
     private boolean moving_player = false;
     private boolean screen_moving = false;
@@ -29,38 +32,40 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private int press_button_counter = 0;
     private boolean game_over = false;
     private boolean won = false;
+    private long game_start_time;
     private long game_over_time;
     private long double_click_time = 0;
-    private int click_counter = 0;
     private boolean click = false;
     private boolean act = false;
+    private long action_down_time;
 
     public GamePanel(Context context){
         super(context);
+        Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
+        Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         Constants.resources = getResources();
         ImageArchive.read_images();
         pause = new Button(new Rect(200, Constants.SCREEN_HEIGHT - 200,
-                400, Constants.SCREEN_HEIGHT - 100), Color.BLACK);
+                300, Constants.SCREEN_HEIGHT - 100), Color.BLACK);
+        use = new Button(new Rect(400, Constants.SCREEN_HEIGHT - 200,
+                500, Constants.SCREEN_HEIGHT - 100), Color.BLUE);
         reset();
         setFocusable(true);
     }
 
     public void reset(){
         user_point = new Point(Constants.SCREEN_WIDTH / 2,Constants.SCREEN_HEIGHT / 2);
-        background = new Background(ImageArchive.images.get(ImageArchive.MAP));
-        MapObjectsManager.place_on_map();
-        //MapObjectsManager.random_map(1,3);
-        EnemyManager.place_on_map();
-        map_objects = (ArrayList<MapObject>)(MapObjectsManager.mapObjects).clone();
-        //EnemyManager.random_spawn(3,map_objects);
-        protagonists = (ArrayList<Protagonist>) (EnemyManager.enemies).clone();
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.redhead),
-                BitmapFactory.decodeResource(getResources(), R.drawable.redhead_1));
+        background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
+        player = GameObjectManager.addPlayer();
+        GameObjectManager.addObjects(1,2,1,1);
+        gameObjects = (ArrayList<GameObject>) (GameObjectManager.gameObjects).clone();
+        CollisionDetecter.gameObjects = gameObjects;
         moving_player = false;
         thread.setLevel(2);
         thread.setTotal_time(0);
+        game_start_time = System.currentTimeMillis();
     }
 
     @Override
@@ -89,6 +94,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event){
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                action_down_time = System.currentTimeMillis();
                 if(!game_over && !won) {
                     press_button = true;
                     press_button_counter = (press_button_counter + 1) % 2;
@@ -108,6 +114,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (System.currentTimeMillis() - action_down_time > 180)
+                    act = false;
                 if (!game_over && !won && (moving_player || screen_moving))
                     user_point.set((int)event.getX(),(int) event.getY());
                 break;
@@ -122,37 +130,59 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         //return super.onTouchEvent(event);
     }
 
-    public void update(int level){
+    public void update(){
+        if (Constants.CONFIG_CHANGED){
+            background.update(user_point);
+            Constants.CONFIG_CHANGED = false;
+        }
+        if (!game_over && !won) {
+            if (!pause.isActivated()) {
+                if (!screen_moving)
+                    background_point = background.getCoordinate();
+                else
+                    background_point = background.update(user_point);
+                for (GameObject gameObject : gameObjects) {
+                    if (gameObject.getType() == 4){
+                        gameObject.update(player.getMapCoordinates(), background_point);
+                    }
+                    else {
+                        gameObject.update(background.getUserPointCoordinates(user_point), background_point);
+                    }
+                }
+            }
+        }
+        /*
         if (!game_over && !won) {
             if (map_objects.isEmpty()) {
                 won = true;
                 game_over_time = System.currentTimeMillis();
                 return;
             }
+            use.update(user_point);
             pause.update(user_point, press_button);
-            for (MapObject mapObject: map_objects){
-                if (act && click && mapObject.able_to_act(player)){
-                    mapObject.act(user_point);
+            for (StaticObject staticObject : map_objects){
+                if (act && click && staticObject.able_to_act(oldPlayer)){
+                    staticObject.update_strenght(user_point, oldPlayer);
                     act = false;
-                    if (mapObject.isDestroid()){
-                        map_objects.remove(mapObject);
+                    if (staticObject.isDestroid()){
+                        map_objects.remove(staticObject);
                     }
                 }
             }
             if (!pause.isActivated()) {
-                player.setMoving_player(moving_player);
-                Point player_map_pos = background.getMapPosition(player);
+                oldPlayer.setMoving_player(moving_player);
+                Point player_map_pos = background.getMapPosition(oldPlayer);
                 for (Protagonist protagonist: protagonists){
-                    protagonist.setGlobal_map_point(background.getMapPosition(protagonist));
+                    protagonist.setScreenPoint(background.getMapPosition(protagonist));
                 }
                 background_point = background.getCoordinate();
                 if (moving_player) {
-                    player.update(user_point, map_objects);
+                    oldPlayer.update(user_point, map_objects);
                 }
                 if (!screen_moving){
                     for (Protagonist protagonist: protagonists){
-                        protagonist.update(player, map_objects, protagonists);
-                        if (protagonist.player_cathced(player)){
+                        protagonist.update(oldPlayer, map_objects, protagonists);
+                        if (protagonist.player_catched(oldPlayer)){
                             game_over = true;
                             game_over_time = System.currentTimeMillis();
                             break;
@@ -161,32 +191,46 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 if (screen_moving) {
                     background_point = background.update(user_point);
-                    for (MapObject mapObject: map_objects){
-                        mapObject.update(background_point);
+                    for (StaticObject staticObject : map_objects){
+                        staticObject.update(background_point);
                     }
                     for (Protagonist protagonist: protagonists) {
                         protagonist.update(background_point);
                     }
-                    player.update(background_point, player_map_pos);
+                    oldPlayer.update(background_point, player_map_pos);
                 }
             }
+            else {
+                oldPlayer.setMoving_player(false);
+            }
         }
+        */
     }
 
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
         background.draw(canvas);
-        for (MapObject mapObject: map_objects){
-            mapObject.draw(canvas);
+        for (GameObject gameObject: gameObjects){
+            gameObject.draw(canvas);
+        }
+        /*
+        for (StaticObject staticObject : map_objects){
+            staticObject.draw(canvas);
+            if (System.currentTimeMillis() - staticObject.getAct_time() < 2000){
+                Paint paint = new Paint();
+                paint.setTextSize(100);
+                paint.setColor(Color.BLACK);
+                draw_text(canvas,paint,"strenght: " + staticObject.getStrength());
+            }
         }
         for (Protagonist protagonist: protagonists) {
             protagonist.draw(canvas);
         }
-        player.draw(canvas);
+        oldPlayer.draw(canvas);
         pause.draw(canvas);
+        use.draw(canvas);
         if (pause.isActivated()){
-            player.setMoving_player(false);
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.BLACK);
@@ -196,14 +240,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
-            draw_text(canvas,paint,"game over");
+            draw_text(canvas,paint,"game over!");
         }
         if (won){
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
-            draw_text(canvas,paint,"You won!");
+            draw_text(canvas,paint,"You won! Your time: " + (game_over_time - game_start_time) / 1000 + " s");
         }
+        */
     }
 
     private void draw_text(Canvas canvas, Paint paint, String text){

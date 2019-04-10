@@ -53,7 +53,7 @@ public class MainThread extends Thread{
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder){
-                    this.game_panel.update(level);
+                    this.game_panel.update();
                     this.game_panel.draw(canvas);
                 }
             }catch (Exception e){
