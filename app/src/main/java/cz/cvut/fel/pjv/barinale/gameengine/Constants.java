@@ -10,8 +10,10 @@ public class Constants {
     public static int PROTAGONIST_SPEED = 10;
     public static int BACKGROUND_SPEED = 25;
     public static int[] TYPE_HEALTH = {0,20,10,10,3,2,10};
-    public static int[] TYPE_SPEED = {0,0,0,0,10,0,15};
+    public static int[] TYPE_SPEED = {0,0,0,0,8,0,15};
     public static int[] TYPE_STRENGHT = {0,0,0,0,1,2,1};
+
+    public static final int REACTIONTIME = 180;
 
     public static final int HEALTH = 0;
     public static final int SPEED = 1;

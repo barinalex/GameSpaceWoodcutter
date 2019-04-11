@@ -2,20 +2,21 @@ package cz.cvut.fel.pjv.barinale.gameengine;
 
 import android.graphics.Rect;
 
-import java.util.ArrayList;
-
 public class CollisionDetecter {
-    public static ArrayList<GameObject> gameObjects;
 
-    public static boolean chech_collision(GameObject gameObject){
+    public static boolean chechCollision(GameObject gameObject){
         if (gameObject.getBody() != null) {
-            for (GameObject gameOb : gameObjects) {
+            for (GameObject gameOb : GameObjectManager.gameObjects) {
                 if (gameOb != gameObject && gameOb.getBody() != null && Rect.intersects(gameObject.getBody(), gameOb.getBody())) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public static boolean playerInActiveZone(Player player, GameObject gameObject){
+        return Rect.intersects(player.getBody(), gameObject.getActiveZone());
     }
 
 

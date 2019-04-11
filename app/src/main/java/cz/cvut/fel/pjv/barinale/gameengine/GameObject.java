@@ -18,7 +18,10 @@ public class GameObject implements ObjectInterface{
     private int type;
     private int imageWidth, imageHeight;
     private String name;
-    private boolean destroid = false;
+
+    public Point getScreenCoordinates() {
+        return screenCoordinates;
+    }
 
     public ArrayList<GameObject> getInventory() {
         return inventory;
@@ -50,6 +53,10 @@ public class GameObject implements ObjectInterface{
 
     public int getImageHeight() {
         return imageHeight;
+    }
+
+    public void setCharacteristics(int characteristicType, int decrement) {
+        characteristics[characteristicType] -= decrement;
     }
 
     public void setMapCoordinates(Point mapCoordinates) {
@@ -105,15 +112,18 @@ public class GameObject implements ObjectInterface{
 
     public void update(Point point, Point mapPosition) {
         if (characteristics[Constants.SPEED] != 0) {
-            Point direction = Vector.get_direction(point, mapCoordinates, characteristics[Constants.SPEED]);
+            Point direction = Utils.get_direction(point, mapCoordinates, characteristics[Constants.SPEED]);
             Point old_coordinates = new Point(mapCoordinates.x, mapCoordinates.y);
             mapCoordinates.x += direction.x;
             mapCoordinates.y += direction.y;
             set_body();
-            if (CollisionDetecter.chech_collision(this)) {
+            if (CollisionDetecter.chechCollision(this)) {
                 mapCoordinates.set(old_coordinates.x, old_coordinates.y);
                 set_body();
             }
+        }
+        else {
+            set_body();
         }
         screenCoordinates.set(mapCoordinates.x + mapPosition.x, mapCoordinates.y + mapPosition.y);
     }

@@ -10,20 +10,7 @@ public class MainThread extends Thread{
     private GamePanel game_panel;
     private boolean running;
     private static Canvas canvas;
-    private int level = 2;
-    private long total_time = 0;
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getLevel() {
-        return level - 1;
-    }
-
-    public void setTotal_time(long total_time) {
-        this.total_time = total_time;
-    }
+    private long total_time;
 
     public boolean isRunning() {
         return running;
@@ -47,9 +34,6 @@ public class MainThread extends Thread{
         while (running){
             start_time = System.nanoTime();
             canvas = null;
-            if (total_time > 5000 * level){
-                level++;
-            }
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder){
