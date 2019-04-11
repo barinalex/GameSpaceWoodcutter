@@ -17,4 +17,8 @@ public class Utils {
     public static boolean checkWinCondition(ArrayList<GameObject> gameObjects){
         return gameObjects.size() == 1;
     }
+
+    public static boolean checkGameOver(){
+        return (GameObjectManager.player.getCharacteristics()[Constants.HEALTH] < 1);
+    }
 }

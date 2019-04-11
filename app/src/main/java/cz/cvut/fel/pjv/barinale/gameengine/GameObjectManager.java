@@ -7,28 +7,46 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GameObjectManager {
-    public static ArrayList<GameObject> gameObjects = new ArrayList<>();;
+    public static Player player;
+    public static ArrayList<GameObject> gameObjects;
     private static Random random = new Random();
 
     public static void addObjects(int houseNumber, int treesNumber, int axesNumber, int enemiesNumber){
+        gameObjects = new ArrayList<>();
         int green_t = random.nextInt(treesNumber) + 1;
         int blue_t = treesNumber - green_t;
-        addObject(enemiesNumber, Constants.ENEMY);
+        addPlayer();
+        addEnemy(enemiesNumber);
         addObject(houseNumber, Constants.CABIN);
         addObject(blue_t, Constants.BLUETREE);
         addObject(green_t, Constants.GREENTREE);
         addObject(axesNumber, Constants.ITEM);
     }
 
-    public static Player addPlayer(){
+    public static void addPlayer(){
         int[] characteristics = {Constants.TYPE_HEALTH[Constants.PLAYER],
                                 Constants.TYPE_SPEED[Constants.PLAYER],
                                 Constants.TYPE_STRENGHT[Constants.PLAYER]};
-        Player player = new Player(ImageArchive.images.get(Constants.PLAYER), new ArrayList<GameObject>(),
+        player = new Player(ImageArchive.images.get(Constants.PLAYER), new ArrayList<GameObject>(),
                 new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2),
                 characteristics, "" + Constants.PLAYER, Constants.PLAYER);
         gameObjects.add(player);
-        return player;
+    }
+
+    private static void addEnemy(int number){
+        Enemy enemy;
+        for (int i = 0; i < number; i++){
+            int[] characteristics = {Constants.TYPE_HEALTH[Constants.ENEMY], Constants.TYPE_SPEED[Constants.ENEMY], Constants.TYPE_STRENGHT[Constants.ENEMY]};
+            enemy = new Enemy(ImageArchive.images.get(Constants.ENEMY), new ArrayList<GameObject>(),
+                    new Point(random.nextInt(ImageArchive.map_size.x - ImageArchive.images.get(Constants.ENEMY).get(Constants.MAINIMAGE).getWidth()),
+                            random.nextInt(ImageArchive.map_size.y - ImageArchive.images.get(Constants.ENEMY).get(Constants.MAINIMAGE).getHeight())),
+                    characteristics, "" + Constants.ENEMY, Constants.ENEMY);
+            if (isIntersected(enemy)){
+                i--;
+                continue;
+            }
+            gameObjects.add(enemy);
+        }
     }
 
     private static void addObject(int number, int type){

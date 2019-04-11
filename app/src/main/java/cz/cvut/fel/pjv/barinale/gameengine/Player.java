@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class Player extends GameObject{
 
-    public Player(ArrayList<Bitmap> images, ArrayList<GameObject> inventory, Point mapCoordinates, int[] characteristics, String name, int type) {
+    public Player(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
+                  Point mapCoordinates, int[] characteristics, String name, int type) {
         super(images, inventory, mapCoordinates, characteristics, name, type);
     }
 
@@ -16,9 +17,11 @@ public class Player extends GameObject{
         GameObject gameObject;
         for (int i = 0; i < map_objects.size(); i++) {
             gameObject = map_objects.get(i);
-            if (gameObject.getType() == Constants.ITEM && Rect.intersects(getBody(), gameObject.getActiveZone())) {
+            if (gameObject.getType() == Constants.ITEM &&
+                    Rect.intersects(getBody(), gameObject.getActiveZone())) {
                 getInventory().add(gameObject);
-                getCharacteristics()[Constants.STRENGHT] += gameObject.getCharacteristics()[Constants.STRENGHT];
+                getCharacteristics()[Constants.STRENGHT] +=
+                        gameObject.getCharacteristics()[Constants.STRENGHT];
                 map_objects.remove(map_objects.remove(i--));
             }
         }

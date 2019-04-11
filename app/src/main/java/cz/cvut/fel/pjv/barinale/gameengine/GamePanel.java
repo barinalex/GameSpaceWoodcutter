@@ -10,8 +10,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.ArrayList;
-
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background background;
@@ -50,8 +48,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void reset(){
         userPoint = new Point(Constants.SCREEN_WIDTH / 2,Constants.SCREEN_HEIGHT / 2);
         background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-        player = GameObjectManager.addPlayer();
-        GameObjectManager.addObjects(2,10,2,2);
+        GameObjectManager.addObjects(2,10,2,1);
+        player = GameObjectManager.player;
         game_start_time = System.currentTimeMillis();
     }
 
@@ -123,6 +121,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             game_over_time = System.currentTimeMillis();
             won = true;
         }
+        if (!game_over && Utils.checkGameOver()){
+            game_over_time = System.currentTimeMillis();
+            game_over = true;
+        }
         if (!game_over && !won) {
             if (!pause.isActivated()) {
                 background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
@@ -130,12 +132,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 for (GameObject gameObject : GameObjectManager.gameObjects) {
                     if (gameObject.getType() == Constants.ENEMY){
                         gameObject.update(player.getMapCoordinates(), background_point);
+                        FightManager.attackPlayer((Enemy) gameObject);
                     }
                     else {
                         gameObject.update(background.getUserPointCoordinates(userPoint), background_point);
                     }
                     if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject)){
-                        FightManager.updateHealth(gameObject, player, background.getUserPointCoordinates(userPoint));
+                        FightManager.decreaseHealth(gameObject, player, background.getUserPointCoordinates(userPoint));
                         click = false;
                     }
                 }
@@ -147,6 +150,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         background.draw(canvas);
+        Paint paint_ = new Paint();
+        paint_.setTextSize(100);
+        paint_.setColor(Color.RED);
+        draw_text(canvas, paint_, "health: " + player.getCharacteristics()[Constants.HEALTH]);
         for (GameObject gameObject: GameObjectManager.gameObjects){
             gameObject.draw(canvas);
         }

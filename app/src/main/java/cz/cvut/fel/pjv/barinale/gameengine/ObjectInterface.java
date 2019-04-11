@@ -5,5 +5,5 @@ import android.graphics.Point;
 
 public interface ObjectInterface {
     public void draw(Canvas canvas);
-    public void update(Point point);
+    public void update(Point point, Point mapPosition);
 }

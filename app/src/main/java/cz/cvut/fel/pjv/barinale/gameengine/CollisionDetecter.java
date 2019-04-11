@@ -18,8 +18,9 @@ public class CollisionDetecter {
     public static boolean playerInActiveZone(Player player, GameObject gameObject){
         return Rect.intersects(player.getBody(), gameObject.getActiveZone());
     }
-
-
+    public static boolean readyToAttackPlayer(Player player, Enemy enemy){
+        return Rect.intersects(player.getActiveZone(), enemy.getBody());
+    }
 /*
     private boolean chech_collision_bitmap(Point new_point, ArrayList<StaticObject> map_objects){
         Rect rect = new Rect(new_point.x - main_image.getWidth() / 4, new_point.y - main_image.getHeight() / 4,

@@ -19,32 +19,56 @@ public class GameObject implements ObjectInterface{
     private int imageWidth, imageHeight;
     private String name;
 
-    public Point getScreenCoordinates() {
-        return screenCoordinates;
-    }
-
-    public ArrayList<GameObject> getInventory() {
-        return inventory;
-    }
-
-    public int getType() {
-        return type;
+    public Rect getBody() {
+        return body;
     }
 
     public Rect getActiveZone() {
         return activeZone;
     }
 
-    public int[] getCharacteristics() {
-        return characteristics;
+    public ArrayList<GameObject> getInventory() {
+        return inventory;
     }
 
-    public Rect getBody() {
-        return body;
+    public void setInventory(ArrayList<GameObject> inventory) {
+        this.inventory = inventory;
+    }
+
+    public ArrayList<Bitmap> getImages() {
+        return images;
     }
 
     public Point getMapCoordinates() {
         return mapCoordinates;
+    }
+
+    public void setMapCoordinates(Point mapCoordinates) {
+        this.mapCoordinates = mapCoordinates;
+    }
+
+    public Point getScreenCoordinates() {
+        return screenCoordinates;
+    }
+
+    public void setScreenCoordinates(Point screenCoordinates) {
+        this.screenCoordinates = screenCoordinates;
+    }
+
+    public int[] getCharacteristics() {
+        return characteristics;
+    }
+
+    public void setCharacteristics(int[] characteristics) {
+        this.characteristics = characteristics;
+    }
+
+    public void decreaseHealth(int decrement) {
+        characteristics[Constants.HEALTH] -= decrement;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public int getImageWidth() {
@@ -55,22 +79,16 @@ public class GameObject implements ObjectInterface{
         return imageHeight;
     }
 
-    public void setCharacteristics(int characteristicType, int decrement) {
-        characteristics[characteristicType] -= decrement;
+    public String getName() {
+        return name;
     }
 
-    public void setMapCoordinates(Point mapCoordinates) {
-        this.mapCoordinates = mapCoordinates;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setScreenCoordinates(Point screenCoordinates) {
-        this.screenCoordinates = screenCoordinates;
-    }
-
-
-
-    public GameObject(ArrayList<Bitmap> images, ArrayList<GameObject> inventory, Point mapCoordinates,
-                      int[]characteristics , String name, int type) {
+    public GameObject(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
+                      Point mapCoordinates, int[]characteristics , String name, int type){
         this.images = images;
         this.inventory = inventory;
         this.mapCoordinates = mapCoordinates;
@@ -83,10 +101,10 @@ public class GameObject implements ObjectInterface{
         screenCoordinates = new Point(mapCoordinates.x, mapCoordinates.y);
         imageWidth = images.get(Constants.MAINIMAGE).getWidth();
         imageHeight = images.get(Constants.MAINIMAGE).getHeight();
-        set_body();
+        setZones();
     }
 
-    private void set_body(){
+    public void setZones(){
         if(body != null) {
             body.set(mapCoordinates.x - imageWidth / 4,
                     mapCoordinates.y - imageHeight / 4,
@@ -106,25 +124,23 @@ public class GameObject implements ObjectInterface{
     }
 
     @Override
-    public void update(Point userPoint) {
-
-    }
-
     public void update(Point point, Point mapPosition) {
         if (characteristics[Constants.SPEED] != 0) {
-            Point direction = Utils.get_direction(point, mapCoordinates, characteristics[Constants.SPEED]);
+            Point direction = Utils.get_direction(point, mapCoordinates,
+                    characteristics[Constants.SPEED]);
             Point old_coordinates = new Point(mapCoordinates.x, mapCoordinates.y);
             mapCoordinates.x += direction.x;
             mapCoordinates.y += direction.y;
-            set_body();
+            setZones();
             if (CollisionDetecter.chechCollision(this)) {
                 mapCoordinates.set(old_coordinates.x, old_coordinates.y);
-                set_body();
+                setZones();
             }
         }
         else {
-            set_body();
+            setZones();
         }
-        screenCoordinates.set(mapCoordinates.x + mapPosition.x, mapCoordinates.y + mapPosition.y);
+        screenCoordinates.set(mapCoordinates.x + mapPosition.x,
+                mapCoordinates.y + mapPosition.y);
     }
 }
