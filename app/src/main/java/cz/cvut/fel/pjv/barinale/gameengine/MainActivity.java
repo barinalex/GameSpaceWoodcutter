@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
+
 public class MainActivity extends Activity {
     GamePanel gamePanel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -16,6 +18,22 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gamePanel = new GamePanel(this);
         setContentView(gamePanel);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setContentView(gamePanel);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

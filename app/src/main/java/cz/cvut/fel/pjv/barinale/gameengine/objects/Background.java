@@ -1,8 +1,10 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
+
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
 public class Background{
     private Bitmap image;

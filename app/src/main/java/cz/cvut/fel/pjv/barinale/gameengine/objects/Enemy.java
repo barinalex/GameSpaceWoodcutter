@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -6,11 +6,16 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
+
 public class Enemy extends GameObject{
     private Rect searchingZone;
     private int attackDelay;
     private long timeSinceLastAttack;
-    private int serchingZoneSize = 4;
+    private int serchingZoneSize = 10;
 
     public Rect getSearchingZone() {
         return searchingZone;
@@ -27,7 +32,7 @@ public class Enemy extends GameObject{
     public Enemy(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
                  Point mapCoordinates, int[] characteristics, String name, int type) {
         super(images, inventory, mapCoordinates, characteristics, name, type);
-        attackDelay = 1000;
+        attackDelay = 750;
         timeSinceLastAttack = 0;
     }
 

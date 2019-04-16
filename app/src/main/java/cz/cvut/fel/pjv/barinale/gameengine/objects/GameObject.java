@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,7 +7,11 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-public class GameObject implements ObjectInterface{
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
+
+public class GameObject implements ObjectInterface {
     private Rect body;
     private Rect activeZone;
     private ArrayList<GameObject> inventory;

@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.utils;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

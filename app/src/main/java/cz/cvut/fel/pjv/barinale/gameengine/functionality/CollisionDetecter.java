@@ -1,6 +1,10 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.functionality;
 
 import android.graphics.Rect;
+
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
 
 public class CollisionDetecter {
 

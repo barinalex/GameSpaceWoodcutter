@@ -1,10 +1,16 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.functionality;
 
 import android.graphics.Point;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
 
 public class GameObjectManager {
     public static Player player;

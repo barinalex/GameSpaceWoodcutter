@@ -1,10 +1,12 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
+
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
 public class Player extends GameObject{
 

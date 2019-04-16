@@ -1,8 +1,11 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.utils;
 
 import android.graphics.Point;
 
 import java.util.ArrayList;
+
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
 
 public class Utils {
     public static Point get_direction(Point new_point, Point old_point, double rate){

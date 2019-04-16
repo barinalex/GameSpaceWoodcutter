@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,16 +10,24 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.FightManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
+import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background background;
     private Rect r = new Rect();
     private Player player;
     private Point userPoint, background_point;
-    private Button pause;
-    private Button use;
-
-    private boolean moving_player = false;
     private boolean screen_moving = false;
     private boolean game_over = false;
     private boolean won = false;
@@ -37,10 +45,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
         Constants.resources = getResources();
         ImageArchive.read_images();
-        pause = new Button(new Rect(200, Constants.SCREEN_HEIGHT - 200,
-                300, Constants.SCREEN_HEIGHT - 100), Color.BLACK);
-        use = new Button(new Rect(400, Constants.SCREEN_HEIGHT - 200,
-                500, Constants.SCREEN_HEIGHT - 100), Color.BLUE);
         reset();
         setFocusable(true);
     }
@@ -59,19 +63,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder){
         thread = new MainThread(getHolder(), this);
-        thread.setRunning(true);
-        thread.start();
+        if (!thread.isAlive()) {
+            thread.setRunning(true);
+            thread.start();
+        }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
-        while (true){
+        boolean retry = true;
+        while (retry){
             try {
                 thread.setRunning(false);
                 thread.join();
             }catch (Exception e){
                 e.printStackTrace();
+                continue;
             }
+            retry = false;
         }
     }
 
@@ -83,7 +92,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                     userPoint.set((int) event.getX(), (int) event.getY());
                     startClickTime = System.currentTimeMillis();
                     screen_moving = (click && System.currentTimeMillis() - double_click_time < Constants.REACTIONTIME);
-                    moving_player = !screen_moving;
                 }
                 if ((game_over || won) && System.currentTimeMillis() - game_over_time >= 1000){
                     reset();
@@ -92,7 +100,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!game_over && !won && (moving_player || screen_moving)){
+                if (!game_over && !won){
                     userPoint.set((int)event.getX(),(int) event.getY());
                 }
                 break;
@@ -104,7 +112,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 else {
                     click = false;
                 }
-                moving_player = false;
                 screen_moving = false;
                 break;
         }
@@ -126,7 +133,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             game_over = true;
         }
         if (!game_over && !won) {
-            if (!pause.isActivated()) {
+            //if (!pause.isActivated()) {
                 background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
                 player.pick_up_to_inventory(GameObjectManager.gameObjects);
                 for (GameObject gameObject : GameObjectManager.gameObjects) {
@@ -137,12 +144,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                     else {
                         gameObject.update(background.getUserPointCoordinates(userPoint), background_point);
                     }
-                    if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject)){
-                        FightManager.decreaseHealth(gameObject, player, background.getUserPointCoordinates(userPoint));
-                        click = false;
+                    if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject) &&
+                            FightManager.attackIsSuccess(gameObject, player, background.getUserPointCoordinates(userPoint))){
+                            click = false;
                     }
                 }
-            }
+            //}
         }
     }
 
@@ -150,42 +157,34 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         background.draw(canvas);
-        Paint paint_ = new Paint();
-        paint_.setTextSize(100);
-        paint_.setColor(Color.RED);
-        draw_text(canvas, paint_, "health: " + player.getCharacteristics()[Constants.HEALTH]);
+        Paint paint = new Paint();
+        paint.setTextSize(100);
+        paint.setColor(Color.RED);
+        draw_text(canvas, paint, "health: " + player.getCharacteristics()[Constants.HEALTH]);
         for (GameObject gameObject: GameObjectManager.gameObjects){
             gameObject.draw(canvas);
         }
-        for (GameObject gameObject : GameObjectManager.gameObjects) {
-            if (gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject)) {
-                gameObject.draw(canvas);
-                Paint paint = new Paint();
-                paint.setTextSize(50);
-                paint.setColor(Color.BLACK);
-                draw_text(canvas, paint, "health: " + gameObject.getCharacteristics()[Constants.HEALTH]);
-            }
-        }
-
-        if (pause.isActivated()){
-            Paint paint = new Paint();
-            paint.setTextSize(100);
-            paint.setColor(Color.BLACK);
-            draw_text(canvas,paint,"PAUSE");
-        }
         if (game_over){
-            Paint paint = new Paint();
+            paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
             draw_text(canvas,paint,"game over!");
         }
         if (won){
-            Paint paint = new Paint();
+            paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
             draw_text(canvas,paint,"You won! Your time: " + (game_over_time - game_start_time) / 1000 + " s");
         }
-
+        for (GameObject gameObject : GameObjectManager.gameObjects) {
+            if (gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject)) {
+                gameObject.draw(canvas);
+                paint = new Paint();
+                paint.setTextSize(50);
+                paint.setColor(Color.BLACK);
+                draw_text(canvas, paint, "health: " + gameObject.getCharacteristics()[Constants.HEALTH]);
+            }
+        }
     }
 
     private void draw_text(Canvas canvas, Paint paint, String text){

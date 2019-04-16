@@ -3,6 +3,8 @@ package cz.cvut.fel.pjv.barinale.gameengine;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
+
 public class MainThread extends Thread{
     public static final int MAX_FPS = 30;
     //public double averageFPS;

@@ -1,10 +1,12 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
 import java.util.ArrayList;
+
+import cz.cvut.fel.pjv.barinale.gameengine.R;
 
 public class ImageArchive {
     public static ArrayList<ArrayList<Bitmap>> images;
