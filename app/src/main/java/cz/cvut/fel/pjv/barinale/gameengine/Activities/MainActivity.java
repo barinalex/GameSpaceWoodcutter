@@ -1,28 +1,24 @@
-package cz.cvut.fel.pjv.barinale.gameengine;
+package cz.cvut.fel.pjv.barinale.gameengine.Activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
 
+import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     FrameLayout game;
-    @SuppressLint("ResourceType")
+    View inventoryLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -30,12 +26,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         GamePanel gamePanel = new GamePanel(this);
         View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null, false);
+        //inventoryLayout = getLayoutInflater().inflate(R.layout.inventory, null, false);
+        //inventoryLayout.setVisibility(View.INVISIBLE);
         game = new FrameLayout(this);
         game.addView(gamePanel);
         game.addView(gameButtons);
+        //game.addView(inventoryLayout);
         setContentView(game);
         Button menu = findViewById(R.id.menu);
-        Button inventory = findViewById(R.id.inventory);
+        Button inventory = findViewById(R.id.inventoryButton);
         TextView textView = findViewById(R.id.textView);
         //textView.setText("sadbfjshbcvbdf");
         textView.setVisibility(View.INVISIBLE);
@@ -45,13 +44,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()){
             case R.id.menu:
-                Intent intent = new Intent(this, Menu.class);
+                intent = new Intent(this, Menu.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 break;
-            case R.id.inventory:
+            case R.id.inventoryButton:
+                intent = new Intent(this, Inventory.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
                 break;
         }
     }
