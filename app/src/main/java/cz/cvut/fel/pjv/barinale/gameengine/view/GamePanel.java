@@ -52,7 +52,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void reset(){
         userPoint = new Point(Constants.SCREEN_WIDTH / 2,Constants.SCREEN_HEIGHT / 2);
         background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-        GameObjectManager.addObjects(2,10,2,1);
+        GameObjectManager.addObjects(2,15,1,3);
         player = GameObjectManager.player;
         game_start_time = System.currentTimeMillis();
     }

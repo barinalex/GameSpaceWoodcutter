@@ -9,4 +9,8 @@ public class Neutral extends GameObject{
     public Neutral(ArrayList<Bitmap> images, ArrayList<GameObject> inventory, Point mapCoordinates, int[] characteristics, String name, int type) {
         super(images, inventory, mapCoordinates, characteristics, name, type);
     }
+
+    @Override
+    public void update(Point point, Point mapPosition) {
+    }
 }

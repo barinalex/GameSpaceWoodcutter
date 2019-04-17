@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-public class Button {
+public class SimpleButton {
     private Rect button;
     private int color;
     private boolean pressed = false;
@@ -27,7 +27,7 @@ public class Button {
         this.pressed = pressed;
     }
 
-    public Button(Rect button, int color){
+    public SimpleButton(Rect button, int color){
         this.button = button;
         this.color = color;
     }
