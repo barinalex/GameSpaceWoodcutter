@@ -12,8 +12,8 @@ public class Menu extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
-        Button button_resume = (Button) findViewById(R.id.button_resume);
-        Button button_start = (Button) findViewById(R.id.button_start);
+        Button button_resume = findViewById(R.id.button_resume);
+        Button button_start = findViewById(R.id.button_start);
         button_resume.setOnClickListener(this);
         button_start.setOnClickListener(this);
     }

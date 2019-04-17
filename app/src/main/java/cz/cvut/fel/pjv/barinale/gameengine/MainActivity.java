@@ -5,12 +5,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.zip.Inflater;
 
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
@@ -24,37 +29,37 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         GamePanel gamePanel = new GamePanel(this);
+        View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null, false);
         game = new FrameLayout(this);
-        RelativeLayout gameButtons = new RelativeLayout(this);
-        Button button = new Button(this);
-        button.setText("menu");
-        button.setId(243654);
-
-        RelativeLayout.LayoutParams button_layout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-        gameButtons.setLayoutParams(params);
-        gameButtons.addView(button);
-        button_layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        button_layout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        button.setLayoutParams(button_layout);
         game.addView(gamePanel);
         game.addView(gameButtons);
         setContentView(game);
-        //setContentView(gamePanel);
-        button.setOnClickListener(this);
+        Button menu = findViewById(R.id.menu);
+        Button inventory = findViewById(R.id.inventory);
+        TextView textView = findViewById(R.id.textView);
+        //textView.setText("sadbfjshbcvbdf");
+        textView.setVisibility(View.INVISIBLE);
+        menu.setOnClickListener(this);
+        inventory.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, Menu.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        switch (v.getId()){
+            case R.id.menu:
+                Intent intent = new Intent(this, Menu.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                break;
+            case R.id.inventory:
+                break;
+        }
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        setContentView(game);
+        //setContentView(game);
     }
 
     @Override

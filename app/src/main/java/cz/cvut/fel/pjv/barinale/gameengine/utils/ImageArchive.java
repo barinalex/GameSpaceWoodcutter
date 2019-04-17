@@ -22,7 +22,7 @@ public class ImageArchive {
         images.get(Constants.BLUETREE).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.blue_tree_l));
         images.get(Constants.GREENTREE).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.green_tree_r));
         images.get(Constants.ENEMY).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.protagonist));
-        images.get(Constants.ITEM).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.battleaxe_1));
+        images.get(Constants.ITEM).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.axe));
         images.get(Constants.PLAYER).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead));
         images.get(Constants.PLAYER).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_1));
     }
