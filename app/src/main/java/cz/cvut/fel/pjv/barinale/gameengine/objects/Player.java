@@ -22,10 +22,16 @@ public class Player extends GameObject{
             if (gameObject.getType() == Constants.ITEM &&
                     Rect.intersects(getBody(), gameObject.getActiveZone())) {
                 getInventory().add(gameObject);
-                getCharacteristics()[Constants.STRENGHT] +=
-                        gameObject.getCharacteristics()[Constants.STRENGHT];
                 map_objects.remove(map_objects.remove(i--));
             }
         }
+    }
+
+    public int getAttack(){
+        int attack = getCharacteristics()[Constants.STRENGHT];
+        for (GameObject item: getInventory()){
+            attack += item.getCharacteristics()[Constants.STRENGHT];
+        }
+        return attack;
     }
 }

@@ -10,7 +10,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
 public class FightManager {
     public static boolean attackIsSuccess(GameObject gameObject, Player player, Point userPoint){
         if (gameObject.getBody() != null && gameObject.getBody().contains(userPoint.x, userPoint.y)){
-            gameObject.decreaseHealth(player.getCharacteristics()[Constants.STRENGHT]);
+            gameObject.decreaseHealth(player.getAttack());
             if (gameObject.getCharacteristics()[Constants.HEALTH] < 1){
                 GameObjectManager.gameObjects.remove(gameObject);
             }

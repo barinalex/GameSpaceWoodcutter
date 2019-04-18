@@ -9,12 +9,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
+
 import cz.cvut.fel.pjv.barinale.gameengine.R;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -26,6 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static Button menuButton;
     private static Button closeInventory;
     private static Button inventoryButton;
+    private static ArrayList<Button> items;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -83,13 +90,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 game.removeView(inventoryView);
                 break;
         }
+        int i = 0;
+        for (Button item: items){
+            if (item.getId() == v.getId()){
+                inventoryContainer.removeView(item);
+                items.remove(item);
+                GameObjectManager.player.getInventory().remove(i--);
+            }
+            i++;
+        }
     }
 
     private void openInventory(){
-        for (int i = 0; i < 10; i++) {
+        ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
+        items = new ArrayList<>();
+        for (GameObject item: inventory) {
             Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            button.setBackgroundResource(R.drawable.axe);
+            button.setBackgroundResource(ImageArchive.imagesId[item.getType()]);
+            button.setOnClickListener(this);
+            items.add(button);
             inventoryContainer.addView(button);
         }
     }
