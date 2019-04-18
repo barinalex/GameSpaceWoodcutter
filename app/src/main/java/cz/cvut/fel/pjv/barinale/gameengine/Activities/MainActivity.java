@@ -3,6 +3,7 @@ package cz.cvut.fel.pjv.barinale.gameengine.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -90,25 +91,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 game.removeView(inventoryView);
                 break;
         }
-        int i = 0;
-        for (Button item: items){
+        for (int i = 0; i < items.size(); i++) {
+            Button item = items.get(i);
             if (item.getId() == v.getId()){
                 inventoryContainer.removeView(item);
                 items.remove(item);
+                GameObject gameObject = GameObjectManager.player.getInventory().get(i);
+                Point playerPoint = GameObjectManager.player.getMapCoordinates();
+                gameObject.setMapCoordinates(new Point(playerPoint.x + 30, playerPoint.y + 30));
+                GameObjectManager.gameObjects.add(gameObject);
                 GameObjectManager.player.getInventory().remove(i--);
             }
-            i++;
         }
     }
 
     private void openInventory(){
         ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
         items = new ArrayList<>();
+        int id = 100;
         for (GameObject item: inventory) {
             Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             button.setBackgroundResource(ImageArchive.imagesId[item.getType()]);
             button.setOnClickListener(this);
+            button.setId(id++);
             items.add(button);
             inventoryContainer.addView(button);
         }

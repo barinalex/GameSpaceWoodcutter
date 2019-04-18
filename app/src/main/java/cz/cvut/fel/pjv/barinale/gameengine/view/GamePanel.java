@@ -135,7 +135,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (!game_over && !won) {
             if (!pause) {
                 background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
-                player.pick_up_to_inventory(GameObjectManager.gameObjects);
+                if (click) {
+                    click = !player.pick_up_to_inventory(GameObjectManager.gameObjects, background.getUserPointCoordinates(userPoint));
+                }
                 for (GameObject gameObject : GameObjectManager.gameObjects) {
                     if (gameObject.getType() == Constants.ENEMY){
                         gameObject.update(player.getMapCoordinates(), background_point);

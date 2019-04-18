@@ -15,16 +15,19 @@ public class Player extends GameObject{
         super(images, inventory, mapCoordinates, characteristics, name, type);
     }
 
-    public void pick_up_to_inventory(ArrayList<GameObject> map_objects){
+    public boolean pick_up_to_inventory(ArrayList<GameObject> map_objects, Point userPoint){
         GameObject gameObject;
         for (int i = 0; i < map_objects.size(); i++) {
             gameObject = map_objects.get(i);
             if (gameObject.getType() == Constants.ITEM &&
-                    Rect.intersects(getBody(), gameObject.getActiveZone())) {
+                Rect.intersects(getBody(), gameObject.getActiveZone())
+                && gameObject.getActiveZone().contains(userPoint.x, userPoint.y)) {
                 getInventory().add(gameObject);
                 map_objects.remove(map_objects.remove(i--));
+                return true;
             }
         }
+        return false;
     }
 
     public int getAttack(){
