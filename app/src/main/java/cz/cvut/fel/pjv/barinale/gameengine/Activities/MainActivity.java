@@ -4,11 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -32,11 +40,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gamePanel = new GamePanel(this);
         View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null);
         inventoryLayout = getLayoutInflater().inflate(R.layout.inventory, null);
-        //inventoryLayout.setVisibility(View.INVISIBLE);
+        LinearLayout linearLayout = inventoryLayout.findViewById(R.id.inventory_linaer_layout);
+
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button(this);
+            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            button.setBackgroundResource(R.drawable.axe);
+            linearLayout.addView(button);
+        }
+        /*
+        HorizontalScrollView scrollView = new HorizontalScrollView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        scrollView.setLayoutParams(params);
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setLayoutParams(params);
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button(this);
+            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            button.setBackgroundResource(R.drawable.axe);
+            linearLayout.addView(button);
+        }
+        scrollView.addView(linearLayout);
+        */
         game = new FrameLayout(this);
         game.addView(inventoryLayout);
         game.addView(gamePanel);
         game.addView(gameButtons);
+        //game.addView(scrollView);
         setContentView(game);
 
         menuButton = findViewById(R.id.menu);
