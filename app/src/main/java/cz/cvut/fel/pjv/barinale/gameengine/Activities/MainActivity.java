@@ -17,29 +17,48 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    FrameLayout game;
-    View inventoryLayout;
+    private static FrameLayout game;
+    private static GamePanel gamePanel;
+    private static View inventoryLayout;
+
+    private static Button menuButton;
+    private static Button closeInventory;
+    private static Button inventoryButton;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        GamePanel gamePanel = new GamePanel(this);
-        View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null, false);
-        //inventoryLayout = getLayoutInflater().inflate(R.layout.inventory, null, false);
+        gamePanel = new GamePanel(this);
+        View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null);
+        inventoryLayout = getLayoutInflater().inflate(R.layout.inventory, null);
         //inventoryLayout.setVisibility(View.INVISIBLE);
         game = new FrameLayout(this);
+        game.addView(inventoryLayout);
         game.addView(gamePanel);
         game.addView(gameButtons);
-        //game.addView(inventoryLayout);
         setContentView(game);
-        Button menu = findViewById(R.id.menu);
-        Button inventory = findViewById(R.id.inventoryButton);
+
+        menuButton = findViewById(R.id.menu);
+        closeInventory = findViewById(R.id.closeInventory);
+        inventoryButton = findViewById(R.id.inventoryButton);
+        menuButton.setOnClickListener(this);
+        inventoryButton.setOnClickListener(this);
+        closeInventory.setOnClickListener(this);
+        game.removeView(inventoryLayout);
+
         TextView textView = findViewById(R.id.textView);
         //textView.setText("sadbfjshbcvbdf");
         textView.setVisibility(View.INVISIBLE);
-        menu.setOnClickListener(this);
-        inventory.setOnClickListener(this);
+
+        /*LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setGravity(Gravity.BOTTOM);
+        Button button = new Button(this);
+        button.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        button.setBackgroundResource(R.drawable.axe);
+        linearLayout.addView(button);
+        game.addView(linearLayout);
+        */
     }
 
     @Override
@@ -52,9 +71,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.inventoryButton:
-                intent = new Intent(this, Inventory.class);
+                /*intent = new Intent(this, Inventory.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                startActivity(intent);*/
+                gamePanel.setPause(true);
+                menuButton.setVisibility(View.INVISIBLE);
+                inventoryButton.setVisibility(View.INVISIBLE);
+                game.addView(inventoryLayout);
+                break;
+            case R.id.closeInventory:
+                gamePanel.setPause(false);
+                menuButton.setVisibility(View.VISIBLE);
+                inventoryButton.setVisibility(View.VISIBLE);
+                game.removeView(inventoryLayout);
                 break;
         }
     }

@@ -31,11 +31,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean screen_moving = false;
     private boolean game_over = false;
     private boolean won = false;
+    private boolean pause = false;
     private long game_start_time;
     private long game_over_time;
     private long startClickTime;
     private long double_click_time = 0;
     private boolean click = false;
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
 
     public GamePanel(Context context){
         super(context);
@@ -88,7 +93,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event){
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                if(!game_over && !won) {
+                if(!pause && !game_over && !won) {
                     userPoint.set((int) event.getX(), (int) event.getY());
                     startClickTime = System.currentTimeMillis();
                     screen_moving = (click && System.currentTimeMillis() - double_click_time < Constants.REACTIONTIME);
@@ -100,18 +105,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!game_over && !won){
+                if (!pause && !game_over && !won){
                     userPoint.set((int)event.getX(),(int) event.getY());
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (System.currentTimeMillis() - startClickTime < Constants.REACTIONTIME){
-                    click = true;
-                    double_click_time = System.currentTimeMillis();
-                }
-                else {
-                    click = false;
-                }
+                click = (System.currentTimeMillis() - startClickTime < Constants.REACTIONTIME);
+                if (click) double_click_time = System.currentTimeMillis();
                 screen_moving = false;
                 break;
         }
@@ -133,7 +133,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             game_over = true;
         }
         if (!game_over && !won) {
-            //if (!pause.isActivated()) {
+            if (!pause) {
                 background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
                 player.pick_up_to_inventory(GameObjectManager.gameObjects);
                 for (GameObject gameObject : GameObjectManager.gameObjects) {
@@ -149,7 +149,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                             click = false;
                     }
                 }
-            //}
+            }
         }
     }
 
