@@ -4,19 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -27,7 +20,8 @@ import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 public class MainActivity extends Activity implements View.OnClickListener {
     private static FrameLayout game;
     private static GamePanel gamePanel;
-    private static View inventoryLayout;
+    private static View inventoryView;
+    private static LinearLayout inventoryContainer;
 
     private static Button menuButton;
     private static Button closeInventory;
@@ -39,32 +33,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gamePanel = new GamePanel(this);
         View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null);
-        inventoryLayout = getLayoutInflater().inflate(R.layout.inventory, null);
-        LinearLayout linearLayout = inventoryLayout.findViewById(R.id.inventory_linaer_layout);
+        inventoryView = getLayoutInflater().inflate(R.layout.inventory, null);
+        inventoryContainer = inventoryView.findViewById(R.id.inventory_linaer_layout);
 
-        for (int i = 0; i < 10; i++) {
-            Button button = new Button(this);
-            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            button.setBackgroundResource(R.drawable.axe);
-            linearLayout.addView(button);
-        }
-        /*
-        HorizontalScrollView scrollView = new HorizontalScrollView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        scrollView.setLayoutParams(params);
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setLayoutParams(params);
-        for (int i = 0; i < 10; i++) {
-            Button button = new Button(this);
-            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            button.setBackgroundResource(R.drawable.axe);
-            linearLayout.addView(button);
-        }
-        scrollView.addView(linearLayout);
-        */
         game = new FrameLayout(this);
-        game.addView(inventoryLayout);
+        game.addView(inventoryView);
         game.addView(gamePanel);
         game.addView(gameButtons);
         //game.addView(scrollView);
@@ -76,20 +49,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         menuButton.setOnClickListener(this);
         inventoryButton.setOnClickListener(this);
         closeInventory.setOnClickListener(this);
-        game.removeView(inventoryLayout);
+        game.removeView(inventoryView);
 
         TextView textView = findViewById(R.id.textView);
         //textView.setText("sadbfjshbcvbdf");
         textView.setVisibility(View.INVISIBLE);
-
-        /*LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setGravity(Gravity.BOTTOM);
-        Button button = new Button(this);
-        button.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        button.setBackgroundResource(R.drawable.axe);
-        linearLayout.addView(button);
-        game.addView(linearLayout);
-        */
     }
 
     @Override
@@ -108,31 +72,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 gamePanel.setPause(true);
                 menuButton.setVisibility(View.INVISIBLE);
                 inventoryButton.setVisibility(View.INVISIBLE);
-                game.addView(inventoryLayout);
+                openInventory();
+                game.addView(inventoryView);
                 break;
             case R.id.closeInventory:
                 gamePanel.setPause(false);
                 menuButton.setVisibility(View.VISIBLE);
                 inventoryButton.setVisibility(View.VISIBLE);
-                game.removeView(inventoryLayout);
+                closeInventory();
+                game.removeView(inventoryView);
                 break;
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //setContentView(game);
+    private void openInventory(){
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button(this);
+            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            button.setBackgroundResource(R.drawable.axe);
+            inventoryContainer.addView(button);
+        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void closeInventory(){
+        inventoryContainer.removeAllViews();
     }
 
     @Override
