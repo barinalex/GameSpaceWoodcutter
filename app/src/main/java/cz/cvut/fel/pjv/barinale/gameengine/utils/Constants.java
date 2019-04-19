@@ -6,8 +6,6 @@ public class Constants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static Resources resources;
-    public static int PLAYER_SPEED = 15;
-    public static int PROTAGONIST_SPEED = 10;
     public static int BACKGROUND_SPEED = 25;
     public static int[] TYPE_HEALTH = {0,20,10,10,5,2,15};
     public static int[] TYPE_SPEED = {0,0,0,0,8,0,15};

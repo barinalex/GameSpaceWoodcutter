@@ -41,7 +41,6 @@ public class Utils {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
                     (context.getFilesDir() + File.separator + Constants.fileName)));
-            //bufferedWriter.write("25");
             bufferedWriter.write("6 5");
             bufferedWriter.close();
         }

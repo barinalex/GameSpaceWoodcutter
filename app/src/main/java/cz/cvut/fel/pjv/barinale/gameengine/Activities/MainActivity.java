@@ -25,6 +25,8 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
+    public static Activity gameActivity;
+
     private static FrameLayout game;
     private static GamePanel gamePanel;
     private static View inventoryView;
@@ -37,6 +39,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        gameActivity = this;
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gamePanel = new GamePanel(this);
@@ -64,7 +67,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //textView.setText("sadbfjshbcvbdf");
         textView.setVisibility(View.INVISIBLE);
 
-
         items = new ArrayList<>();
     }
 
@@ -78,9 +80,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.inventoryButton:
-                /*intent = new Intent(this, Inventory.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);*/
                 openInventory();
                 game.addView(inventoryView);
                 break;
@@ -107,6 +106,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         gamePanel.setPause(true);
         menuButton.setVisibility(View.INVISIBLE);
         inventoryButton.setVisibility(View.INVISIBLE);
+        items = new ArrayList<>();
         ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
         int id = 100;
         for (GameObject item: inventory) {
