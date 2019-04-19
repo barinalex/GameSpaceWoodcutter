@@ -31,4 +31,6 @@ public class Constants {
 
     public static final int MAINIMAGE = 0;
     public static final int SECONDARYIMAGE = 1;
+
+    public static String fileName = "save.txt";
 }

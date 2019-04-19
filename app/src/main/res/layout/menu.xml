@@ -13,11 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/button_start"
         android:background="@android:drawable/btn_default"
-        android:onClick="onClick"
-        android:text="Resume"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="341dp" />
+        android:text="Resume"/>
 
     <Button
         android:id="@+id/button_start"
@@ -28,5 +24,21 @@
         android:background="@android:drawable/btn_default"
         android:gravity="center"
         android:text="Start" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_below="@+id/button_start"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load"
+        android:layout_below="@+id/save"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

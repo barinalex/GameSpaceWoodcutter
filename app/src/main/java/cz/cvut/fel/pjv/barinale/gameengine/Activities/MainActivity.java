@@ -44,11 +44,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         inventoryView = getLayoutInflater().inflate(R.layout.inventory, null);
         inventoryContainer = inventoryView.findViewById(R.id.inventory_linaer_layout);
 
+
         game = new FrameLayout(this);
-        game.addView(inventoryView);
         game.addView(gamePanel);
         game.addView(gameButtons);
-        //game.addView(scrollView);
+        game.addView(inventoryView);
         setContentView(game);
 
         menuButton = findViewById(R.id.menu);
@@ -57,11 +57,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         menuButton.setOnClickListener(this);
         inventoryButton.setOnClickListener(this);
         closeInventory.setOnClickListener(this);
+
         game.removeView(inventoryView);
 
         TextView textView = findViewById(R.id.textView);
         //textView.setText("sadbfjshbcvbdf");
         textView.setVisibility(View.INVISIBLE);
+
+
+        items = new ArrayList<>();
     }
 
     @Override
@@ -77,23 +81,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 /*intent = new Intent(this, Inventory.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);*/
-                gamePanel.setPause(true);
-                menuButton.setVisibility(View.INVISIBLE);
-                inventoryButton.setVisibility(View.INVISIBLE);
                 openInventory();
                 game.addView(inventoryView);
                 break;
             case R.id.closeInventory:
-                gamePanel.setPause(false);
-                menuButton.setVisibility(View.VISIBLE);
-                inventoryButton.setVisibility(View.VISIBLE);
                 closeInventory();
                 game.removeView(inventoryView);
                 break;
         }
         for (int i = 0; i < items.size(); i++) {
             Button item = items.get(i);
-            if (item.getId() == v.getId()){
+            if (item.getId() == v.getId()) {
                 inventoryContainer.removeView(item);
                 items.remove(item);
                 GameObject gameObject = GameObjectManager.player.getInventory().get(i);
@@ -106,8 +104,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void openInventory(){
+        gamePanel.setPause(true);
+        menuButton.setVisibility(View.INVISIBLE);
+        inventoryButton.setVisibility(View.INVISIBLE);
         ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
-        items = new ArrayList<>();
         int id = 100;
         for (GameObject item: inventory) {
             Button button = new Button(this);
@@ -121,6 +121,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void closeInventory(){
+        gamePanel.setPause(false);
+        menuButton.setVisibility(View.VISIBLE);
+        inventoryButton.setVisibility(View.VISIBLE);
         inventoryContainer.removeAllViews();
     }
 

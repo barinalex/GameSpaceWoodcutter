@@ -17,6 +17,18 @@ public class GameObjectManager {
     public static ArrayList<GameObject> gameObjects;
     private static Random random = new Random();
 
+    public static void initializeObjectsArray(){
+        gameObjects = new ArrayList<>();
+        addPlayer();
+    }
+
+    public static void addObjectFromFile(String input){
+        String[] data = input.split(" ");
+        int type = Integer.parseInt(data[0]);
+        int objectsNumber = Integer.parseInt(data[1]);
+        addObject(objectsNumber, type);
+    }
+
     public static void addObjects(int houseNumber, int treesNumber, int axesNumber, int enemiesNumber){
         gameObjects = new ArrayList<>();
         int green_t = random.nextInt(treesNumber) + 1;

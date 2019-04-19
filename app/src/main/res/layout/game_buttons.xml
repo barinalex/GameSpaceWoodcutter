@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="Menu"
-        tools:ignore="MissingConstraints"/>
+        android:text="Menu"/>
 
     <Button
         android:id="@+id/inventoryButton"
