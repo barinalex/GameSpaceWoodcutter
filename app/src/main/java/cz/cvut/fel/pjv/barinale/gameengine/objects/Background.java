@@ -14,6 +14,10 @@ public class Background{
         return coordinate;
     }
 
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
+    }
+
     public Background(Bitmap res){
         image = res;
         coordinate = new Point();

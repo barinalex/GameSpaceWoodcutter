@@ -92,14 +92,13 @@ public class GameObject implements ObjectInterface {
     }
 
     public GameObject(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
-                      Point mapCoordinates, int[]characteristics , String name, int type){
+                      Point mapCoordinates, int[]characteristics, String name, int type){
         this.images = images;
         this.inventory = inventory;
         this.mapCoordinates = mapCoordinates;
         this.characteristics = characteristics;
         this.name = name;
         this.type = type;
-        //body = new Rect();
         body = (type != Constants.ITEM) ? new Rect(): null;
         activeZone = new Rect();
         screenCoordinates = new Point(mapCoordinates.x, mapCoordinates.y);

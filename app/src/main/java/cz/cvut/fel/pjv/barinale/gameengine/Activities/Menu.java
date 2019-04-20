@@ -9,6 +9,7 @@ import android.widget.Button;
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class Menu extends Activity implements View.OnClickListener {
@@ -16,6 +17,7 @@ public class Menu extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //if(ImageArchive.images == null) ImageArchive.read_images();
         setContentView(R.layout.menu);
         Button button_resume = findViewById(R.id.button_resume);
         Button button_start = findViewById(R.id.button_start);
@@ -44,6 +46,8 @@ public class Menu extends Activity implements View.OnClickListener {
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
+                GameObjectManager.gameObjects = null;
+                GameObjectManager.background = null;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
@@ -51,9 +55,21 @@ public class Menu extends Activity implements View.OnClickListener {
                 Utils.saveGameState(this);
                 break;
             case R.id.load:
-                Utils.loadGameState(this);
+                //Utils.loadGameState(this);
+                if (MainActivity.gameActivity != null) {
+                    MainActivity.gameActivity.finish();
+                }
+                GameObjectManager.gameObjects = null;
+                GameObjectManager.background = null;
+                GameObjectManager.loadFromFile = true;
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
-
+            case R.id.buttonQuit:
+                MainActivity.gameActivity.finish();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
         }
     }
 }

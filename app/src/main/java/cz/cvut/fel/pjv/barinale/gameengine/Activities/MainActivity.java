@@ -10,7 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +35,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static Button closeInventory;
     private static Button inventoryButton;
     private static ArrayList<Button> items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -113,6 +113,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             button.setBackgroundResource(ImageArchive.imagesId[item.getType()]);
+            button.getLayoutParams().width = item.getImageWidth() * 2;
+            button.getLayoutParams().height = item.getImageHeight() * 2;
             button.setOnClickListener(this);
             button.setId(id++);
             items.add(button);

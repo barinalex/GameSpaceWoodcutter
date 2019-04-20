@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
@@ -14,20 +15,41 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
 
 public class GameObjectManager {
     public static Player player;
+    public static Background background;
     public static ArrayList<GameObject> gameObjects;
     private static Random random = new Random();
 
+    public static boolean loadFromFile = false;
+
     public static void initializeObjectsArray(){
         gameObjects = new ArrayList<>();
-        addPlayer();
+        //addPlayer();
     }
 
     public static void addObjectFromFile(String input){
+        /*
         String[] data = input.split(" ");
         int type = Integer.parseInt(data[0]);
         int objectsNumber = Integer.parseInt(data[1]);
         addObject(objectsNumber, type);
+        */
+        String[] data = input.split(" ");
+        int type = Integer.parseInt(data[0]);
+        Point mapCoord = new Point(Integer.parseInt(data[1]),Integer.parseInt(data[2]));
+        int[] characteristics = {Constants.TYPE_HEALTH[type], Constants.TYPE_SPEED[type], Constants.TYPE_STRENGHT[type]};
+        if (type != Constants.ENEMY) {
+            GameObject gameObject = new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
+                    characteristics, "" + type, type);
+            gameObjects.add(gameObject);
+        }
+        else {
+            Enemy gameObject = new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
+                    characteristics, "" + type, type);
+            gameObjects.add(gameObject);
+
+        }
     }
+
 
     public static void addObjects(int houseNumber, int treesNumber, int axesNumber, int enemiesNumber){
         gameObjects = new ArrayList<>();

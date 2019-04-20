@@ -23,6 +23,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+    private Context context;
     private MainThread thread;
     private Background background;
     private Rect r = new Rect();
@@ -44,6 +45,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public GamePanel(Context context){
         super(context);
+        this.context = context;
         Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
         getHolder().addCallback(this);
@@ -56,8 +58,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void reset(){
         userPoint = new Point(Constants.SCREEN_WIDTH / 2,Constants.SCREEN_HEIGHT / 2);
-        background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-        GameObjectManager.addObjects(2,15,6,3);
+        if (GameObjectManager.loadFromFile){
+            Utils.loadGameState(context);
+            GameObjectManager.loadFromFile = false;
+        }
+        if (GameObjectManager.background == null)
+            GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
+        background = GameObjectManager.background;
+        if (GameObjectManager.gameObjects == null)
+            GameObjectManager.addObjects(2,15,1,3);
         player = GameObjectManager.player;
         game_start_time = System.currentTimeMillis();
     }
