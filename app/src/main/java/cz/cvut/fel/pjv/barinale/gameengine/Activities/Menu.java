@@ -8,8 +8,6 @@ import android.widget.Button;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class Menu extends Activity implements View.OnClickListener {

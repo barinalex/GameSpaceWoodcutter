@@ -51,13 +51,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         Constants.resources = getResources();
-        ImageArchive.read_images();
+        if (ImageArchive.images == null)
+            ImageArchive.read_images();
         reset();
         setFocusable(true);
     }
 
     public void reset(){
-        userPoint = new Point(Constants.SCREEN_WIDTH / 2,Constants.SCREEN_HEIGHT / 2);
         if (GameObjectManager.loadFromFile){
             Utils.loadGameState(context);
             GameObjectManager.loadFromFile = false;
@@ -68,6 +68,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (GameObjectManager.gameObjects == null)
             GameObjectManager.addObjects(2,15,1,3);
         player = GameObjectManager.player;
+        userPoint = new Point(player.getScreenCoordinates().x, player.getScreenCoordinates().y);
         game_start_time = System.currentTimeMillis();
     }
 

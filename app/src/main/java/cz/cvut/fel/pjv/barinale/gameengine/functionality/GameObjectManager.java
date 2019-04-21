@@ -23,20 +23,29 @@ public class GameObjectManager {
 
     public static void initializeObjectsArray(){
         gameObjects = new ArrayList<>();
-        //addPlayer();
     }
 
     public static void addObjectFromFile(String input){
-        /*
-        String[] data = input.split(" ");
-        int type = Integer.parseInt(data[0]);
-        int objectsNumber = Integer.parseInt(data[1]);
-        addObject(objectsNumber, type);
-        */
         String[] data = input.split(" ");
         int type = Integer.parseInt(data[0]);
         Point mapCoord = new Point(Integer.parseInt(data[1]),Integer.parseInt(data[2]));
-        int[] characteristics = {Constants.TYPE_HEALTH[type], Constants.TYPE_SPEED[type], Constants.TYPE_STRENGHT[type]};
+        int[] characteristics = {Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5])};
+        switch (type){
+            case Constants.ENEMY:
+                gameObjects.add(new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
+                        characteristics, "" + type, type));
+                break;
+            case Constants.PLAYER:
+                player = new Player(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
+                        characteristics, "" + type, type);
+                gameObjects.add(player);
+                break;
+            default:
+                gameObjects.add(new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
+                        characteristics, "" + type, type));
+                break;
+        }
+        /*
         if (type != Constants.ENEMY) {
             GameObject gameObject = new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
                     characteristics, "" + type, type);
@@ -46,8 +55,8 @@ public class GameObjectManager {
             Enemy gameObject = new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
                     characteristics, "" + type, type);
             gameObjects.add(gameObject);
-
         }
+        */
     }
 
 
