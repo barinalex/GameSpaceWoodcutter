@@ -19,7 +19,6 @@ public class Menu extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //if(ImageArchive.images == null) ImageArchive.read_images();
         setContentView(R.layout.menu);
 
         Button button_resume = findViewById(R.id.button_resume);

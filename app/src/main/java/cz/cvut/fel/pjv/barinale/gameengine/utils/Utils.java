@@ -21,6 +21,9 @@ public class Utils {
         // direction = rate * v chceme vector ve stejnem smeru jako v ale delky rate
         int x = new_point.x - (old_point.x);
         int y = new_point.y - (old_point.y);
+        if (Math.abs(x) < Math.abs(rate) && Math.abs(y) < Math.abs(rate)){
+            return new Point(0, 0);
+        }
         double abs = Math.sqrt((Math.pow((double) x, 2) + Math.pow((double) y, 2)));
         if (abs != 0) rate /= abs;
         return new Point((int)(x * rate), (int)(y * rate));

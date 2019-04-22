@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
