@@ -19,17 +19,22 @@ public class GameObjectManager {
     public static ArrayList<GameObject> gameObjects;
     private static Random random = new Random();
 
-    public static boolean loadFromFile = false;
+    private static final int TYPE = 0;
+    private static final int X = 1;
+    private static final int Y = 2;
+    private static final int HEALTH = 3;
+    private static final int SPEED = 4;
+    private static final int STRENGHT = 5;
 
     public static void initializeObjectsArray(){
         gameObjects = new ArrayList<>();
     }
 
     public static void addObjectFromFile(String input){
-        String[] data = input.split(" ");
-        int type = Integer.parseInt(data[0]);
-        Point mapCoord = new Point(Integer.parseInt(data[1]),Integer.parseInt(data[2]));
-        int[] characteristics = {Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5])};
+        String[] objDescription = input.split(" ");
+        int type = Integer.parseInt(objDescription[TYPE]);
+        Point mapCoord = new Point(Integer.parseInt(objDescription[X]),Integer.parseInt(objDescription[Y]));
+        int[] characteristics = {Integer.parseInt(objDescription[HEALTH]), Integer.parseInt(objDescription[SPEED]), Integer.parseInt(objDescription[STRENGHT])};
         switch (type){
             case Constants.ENEMY:
                 gameObjects.add(new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
@@ -45,20 +50,7 @@ public class GameObjectManager {
                         characteristics, "" + type, type));
                 break;
         }
-        /*
-        if (type != Constants.ENEMY) {
-            GameObject gameObject = new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
-                    characteristics, "" + type, type);
-            gameObjects.add(gameObject);
-        }
-        else {
-            Enemy gameObject = new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
-                    characteristics, "" + type, type);
-            gameObjects.add(gameObject);
-        }
-        */
     }
-
 
     public static void addObjects(int houseNumber, int treesNumber, int axesNumber, int enemiesNumber){
         gameObjects = new ArrayList<>();

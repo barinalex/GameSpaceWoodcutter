@@ -58,15 +58,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reset(){
-        if (GameObjectManager.loadFromFile){
-            Utils.loadGameState(context);
-            GameObjectManager.loadFromFile = false;
+        if (Constants.loadFromFile){
+            Utils.loadGame(context, Constants.savedGameFileName, true);
+            Constants.loadFromFile = false;
         }
-        if (GameObjectManager.background == null)
+        else if (Constants.randomMap){
             GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-        background = GameObjectManager.background;
-        if (GameObjectManager.gameObjects == null)
             GameObjectManager.addObjects(2,15,1,3);
+        }
+        else {
+            Utils.loadGame(context, Constants.mapFileName, false);
+        }
+        /*if (GameObjectManager.background == null)
+            GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
+        if (GameObjectManager.gameObjects == null)
+            GameObjectManager.addObjects(2,15,1,3);*/
+        background = GameObjectManager.background;
         player = GameObjectManager.player;
         userPoint = new Point(player.getScreenCoordinates().x, player.getScreenCoordinates().y);
         game_start_time = System.currentTimeMillis();

@@ -2,7 +2,6 @@ package cz.cvut.fel.pjv.barinale.gameengine.utils;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,12 +9,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
-import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Utils {
     public static Point get_direction(Point new_point, Point old_point, double rate){
@@ -47,40 +46,38 @@ public class Utils {
     public static void saveGameState(Context context){
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
-                    (context.getFilesDir() + File.separator + Constants.fileName)));
+                    (context.getFilesDir(), Constants.savedGameFileName)));
             String line;
             bufferedWriter.write(GameObjectManager.background.getCoordinate().x + " " + GameObjectManager.background.getCoordinate().y + "\n");
-            //bufferedWriter.write(GameObjectManager.player.getMapCoordinates().x + " " + GameObjectManager.player.getMapCoordinates().y + "\n");
             for (GameObject gameObject: GameObjectManager.gameObjects){
-                //if (gameObject != GameObjectManager.player) {
-                    line = gameObject.getType() + " " + gameObject.getMapCoordinates().x +
-                            " " + gameObject.getMapCoordinates().y +
-                            " " + gameObject.getCharacteristics()[Constants.HEALTH] +
-                            " " + gameObject.getCharacteristics()[Constants.SPEED] +
-                            " " + gameObject.getCharacteristics()[Constants.STRENGHT] + "\n";
-                    bufferedWriter.write(line);
-                //}
+                line = gameObject.getType() + " " + gameObject.getMapCoordinates().x +
+                        " " + gameObject.getMapCoordinates().y +
+                        " " + gameObject.getCharacteristics()[Constants.HEALTH] +
+                        " " + gameObject.getCharacteristics()[Constants.SPEED] +
+                        " " + gameObject.getCharacteristics()[Constants.STRENGHT] + "\n";
+                bufferedWriter.write(line);
             }
             bufferedWriter.close();
         }
         catch (IOException e){}
     }
 
-    public static void loadGameState(Context context){
+    public static void loadGame(Context context, String fileName, boolean loadSavedState){
         String line;
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File
-                    (context.getFilesDir() + File.separator + Constants.fileName)));
+            BufferedReader bufferedReader;
+            if (loadSavedState) {
+                bufferedReader = new BufferedReader(new FileReader(new File(context.getFilesDir(), fileName)));
+            }
+            else {
+                bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName)));
+            }
 
             GameObjectManager.initializeObjectsArray();
 
             String[] data = bufferedReader.readLine().split(" ");
             GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
             GameObjectManager.background.setCoordinate(new Point(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
-
-            /*data = bufferedReader.readLine().split(" ");
-            GameObjectManager.addPlayer();
-            GameObjectManager.player.setMapCoordinates(new Point(Integer.parseInt(data[0]), Integer.parseInt(data[1])));*/
 
             while ((line = bufferedReader.readLine()) != null) {
                 GameObjectManager.addObjectFromFile(line);

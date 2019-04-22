@@ -47,7 +47,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         inventoryView = getLayoutInflater().inflate(R.layout.inventory, null);
         inventoryContainer = inventoryView.findViewById(R.id.inventory_linaer_layout);
 
-
         game = new FrameLayout(this);
         game.addView(gamePanel);
         game.addView(gameButtons);
