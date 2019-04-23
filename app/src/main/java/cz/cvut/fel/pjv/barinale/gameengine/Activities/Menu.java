@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
@@ -59,6 +58,7 @@ public class Menu extends Activity implements View.OnClickListener {
                 GameObjectManager.gameObjects = null;
                 GameObjectManager.background = null;
                 intent = new Intent(this, MainActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.save:

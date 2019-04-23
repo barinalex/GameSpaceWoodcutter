@@ -69,6 +69,11 @@ public class GameObjectManager {
         }
     }
 
+    public static void createRandomMap(){
+        background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
+        addObjects(random.nextInt(5),random.nextInt(20),random.nextInt(10),random.nextInt(10));
+    }
+
     public static void addObjects(int houseNumber, int treesNumber, int axesNumber, int enemiesNumber){
         gameObjects = new ArrayList<>();
         int green_t = random.nextInt(treesNumber) + 1;

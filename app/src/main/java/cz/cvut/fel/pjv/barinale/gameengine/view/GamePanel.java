@@ -63,8 +63,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             Constants.loadFromFile = false;
         }
         else if (Constants.randomMap){
-            GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-            GameObjectManager.addObjects(2,15,1,3);
+            GameObjectManager.createRandomMap();
         }
         else {
             Utils.loadGame(context, Constants.mapFileName, false);
