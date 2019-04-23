@@ -2,6 +2,8 @@ package cz.cvut.fel.pjv.barinale.gameengine.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
@@ -14,14 +16,35 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 public class GameObject implements ObjectInterface {
     private Rect body;
     private Rect activeZone;
+
+    private Rect fullHealth;
+    private Rect healthIndicator;
+
     private ArrayList<GameObject> inventory;
     private ArrayList<Bitmap> images;
     private Point mapCoordinates;
     private Point screenCoordinates;
+    private int[] initialCharacteristics;
     private int[]characteristics;
     private int type;
     private int imageWidth, imageHeight;
     private String name;
+
+    public Rect getFullHealth() {
+        return fullHealth;
+    }
+
+    public void setFullHealth(Rect fullHealth) {
+        this.fullHealth = fullHealth;
+    }
+
+    public Rect getHealthIndicator() {
+        return healthIndicator;
+    }
+
+    public void setHealthIndicator(Rect healthIndicator) {
+        this.healthIndicator = healthIndicator;
+    }
 
     public Rect getBody() {
         return body;
@@ -91,12 +114,18 @@ public class GameObject implements ObjectInterface {
         this.name = name;
     }
 
+    public int[] getInitialCharacteristics() {
+        return initialCharacteristics;
+    }
+
     public GameObject(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
-                      Point mapCoordinates, int[]characteristics, String name, int type){
+                      Point mapCoordinates, int[]characteristics,
+                      int[]initialCharacteristics, String name, int type){
         this.images = images;
         this.inventory = inventory;
         this.mapCoordinates = mapCoordinates;
         this.characteristics = characteristics;
+        this.initialCharacteristics = initialCharacteristics;
         this.name = name;
         this.type = type;
         body = (type != Constants.ITEM) ? new Rect(): null;
@@ -105,6 +134,23 @@ public class GameObject implements ObjectInterface {
         imageWidth = images.get(Constants.MAINIMAGE).getWidth();
         imageHeight = images.get(Constants.MAINIMAGE).getHeight();
         setZones();
+        initializeHealthIndicator();
+        setHealthIndicator();
+    }
+
+    public void initializeHealthIndicator(){
+        fullHealth = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
+        healthIndicator = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
+    }
+
+    public void setHealthIndicator(){
+        healthIndicator.set(healthIndicator.left, healthIndicator.top, Constants.SCREEN_WIDTH - 20 - getHealthIndicatorDecrement(), healthIndicator.bottom);
+    }
+
+    public int getHealthIndicatorDecrement(){
+        if (initialCharacteristics[Constants.HEALTH] != 0)
+            return (initialCharacteristics[Constants.HEALTH] - characteristics[Constants.HEALTH]) * 100 / initialCharacteristics[Constants.HEALTH];
+        return 0;
     }
 
     public void setZones(){
@@ -126,8 +172,17 @@ public class GameObject implements ObjectInterface {
                 screenCoordinates.y - imageHeight/2, null);
     }
 
+    public void drawHealth(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(fullHealth, paint);
+        paint.setColor(Color.RED);
+        canvas.drawRect(healthIndicator, paint);
+    }
+
     @Override
     public void update(Point point, Point mapPosition) {
+        setHealthIndicator();
         if (characteristics[Constants.SPEED] != 0) {
             Point direction = Utils.get_direction(point, mapCoordinates,
                     characteristics[Constants.SPEED]);

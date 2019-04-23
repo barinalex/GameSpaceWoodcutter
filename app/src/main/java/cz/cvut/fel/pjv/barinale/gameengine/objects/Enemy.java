@@ -29,9 +29,8 @@ public class Enemy extends GameObject{
         this.timeSinceLastAttack = timeSinceLastAttack;
     }
 
-    public Enemy(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
-                 Point mapCoordinates, int[] characteristics, String name, int type) {
-        super(images, inventory, mapCoordinates, characteristics, name, type);
+    public Enemy(ArrayList<Bitmap> images, ArrayList<GameObject> inventory, Point mapCoordinates, int[] characteristics, int[] initialCharacteristics, String name, int type) {
+        super(images, inventory, mapCoordinates, characteristics, initialCharacteristics, name, type);
         attackDelay = 750;
         timeSinceLastAttack = 0;
     }
@@ -58,6 +57,7 @@ public class Enemy extends GameObject{
 
     @Override
     public void update(Point point, Point mapPosition) {
+        setHealthIndicator();
         if (Rect.intersects(GameObjectManager.player.getBody(), searchingZone)) {
             Point direction = Utils.get_direction(point, getMapCoordinates(),
                     getCharacteristics()[Constants.SPEED]);

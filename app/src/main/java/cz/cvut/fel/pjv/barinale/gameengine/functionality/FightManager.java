@@ -11,7 +11,7 @@ public class FightManager {
     public static boolean attackIsSuccess(GameObject gameObject, Player player, Point userPoint){
         if (gameObject.getBody() != null && gameObject.getBody().contains(userPoint.x, userPoint.y)){
             gameObject.decreaseHealth(player.getAttack());
-            if (gameObject.getCharacteristics()[Constants.HEALTH] < 1){
+            if (gameObject.getCharacteristics()[Constants.HEALTH] <= 0){
                 GameObjectManager.gameObjects.remove(gameObject);
             }
             return true;

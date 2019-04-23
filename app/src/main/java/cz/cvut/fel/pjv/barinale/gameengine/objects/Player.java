@@ -10,9 +10,22 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
 public class Player extends GameObject{
 
-    public Player(ArrayList<Bitmap> images, ArrayList<GameObject> inventory,
-                  Point mapCoordinates, int[] characteristics, String name, int type) {
-        super(images, inventory, mapCoordinates, characteristics, name, type);
+    public Player(ArrayList<Bitmap> images, ArrayList<GameObject> inventory, Point mapCoordinates, int[] characteristics, int[] initialCharacteristics, String name, int type) {
+        super(images, inventory, mapCoordinates, characteristics, initialCharacteristics, name, type);
+        setFullHealth(new Rect(20, 20, 120, 40));
+        setHealthIndicator(new Rect(20, 20, 120, 40));
+        setHealthIndicator();
+    }
+
+    @Override
+    public void initializeHealthIndicator() {
+        setFullHealth(new Rect(20, 20, 120, 40));
+        setHealthIndicator(new Rect(20, 20, 120, 40));
+    }
+
+    @Override
+    public void setHealthIndicator() {
+        getHealthIndicator().set(20, getHealthIndicator().top, 120 - getHealthIndicatorDecrement(), getHealthIndicator().bottom);
     }
 
     public boolean pick_up_to_inventory(ArrayList<GameObject> map_objects, Point userPoint){

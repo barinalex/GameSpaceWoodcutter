@@ -138,9 +138,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (Constants.CONFIG_CHANGED){
             background.update(userPoint);
+            for (GameObject gameObject: GameObjectManager.gameObjects){
+                gameObject.initializeHealthIndicator();
+                gameObject.setHealthIndicator();
+            }
             Constants.CONFIG_CHANGED = false;
         }
-        if (!won && Utils.checkWinCondition(GameObjectManager.gameObjects)){
+        if (!won && Utils.checkWinCondition()){
             game_over_time = System.currentTimeMillis();
             won = true;
         }
@@ -148,24 +152,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             game_over_time = System.currentTimeMillis();
             game_over = true;
         }
-        if (!game_over && !won) {
-            if (!pause) {
-                background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
-                if (click) {
-                    click = !player.pick_up_to_inventory(GameObjectManager.gameObjects, background.getUserPointCoordinates(userPoint));
+        if (!game_over && !won && !pause) {
+            background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
+            if (click) {
+                click = !player.pick_up_to_inventory(GameObjectManager.gameObjects, background.getUserPointCoordinates(userPoint));
+            }
+            for (GameObject gameObject : GameObjectManager.gameObjects) {
+                if (gameObject.getType() == Constants.ENEMY){
+                    gameObject.update(player.getMapCoordinates(), background_point);
+                    FightManager.attackPlayer((Enemy) gameObject);
                 }
-                for (GameObject gameObject : GameObjectManager.gameObjects) {
-                    if (gameObject.getType() == Constants.ENEMY){
-                        gameObject.update(player.getMapCoordinates(), background_point);
-                        FightManager.attackPlayer((Enemy) gameObject);
-                    }
-                    else {
-                        gameObject.update(background.getUserPointCoordinates(userPoint), background_point);
-                    }
-                    if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject) &&
-                            FightManager.attackIsSuccess(gameObject, player, background.getUserPointCoordinates(userPoint))){
-                            click = false;
-                    }
+                else {
+                    gameObject.update(background.getUserPointCoordinates(userPoint), background_point);
+                }
+                if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject) &&
+                        FightManager.attackIsSuccess(gameObject, player, background.getUserPointCoordinates(userPoint))){
+                        click = false;
                 }
             }
         }
@@ -175,12 +177,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         background.draw(canvas);
-        Paint paint = new Paint();
-        paint.setTextSize(100);
-        paint.setColor(Color.RED);
-        draw_text(canvas, paint, "health: " + player.getCharacteristics()[Constants.HEALTH]);
+        Paint paint;
+        player.drawHealth(canvas);
         for (GameObject gameObject: GameObjectManager.gameObjects){
             gameObject.draw(canvas);
+            if (gameObject != player &&
+                CollisionDetecter.playerInActiveZone(player, gameObject)){
+                gameObject.drawHealth(canvas);
+            }
         }
         if (game_over){
             paint = new Paint();
@@ -193,15 +197,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
             draw_text(canvas,paint,"You won! Your time: " + (game_over_time - game_start_time) / 1000 + " s");
-        }
-        for (GameObject gameObject : GameObjectManager.gameObjects) {
-            if (gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject)) {
-                gameObject.draw(canvas);
-                paint = new Paint();
-                paint.setTextSize(50);
-                paint.setColor(Color.BLACK);
-                draw_text(canvas, paint, "health: " + gameObject.getCharacteristics()[Constants.HEALTH]);
-            }
         }
     }
 

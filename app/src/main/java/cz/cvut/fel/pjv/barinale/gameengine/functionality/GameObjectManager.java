@@ -25,6 +25,9 @@ public class GameObjectManager {
     private static final int HEALTH = 3;
     private static final int SPEED = 4;
     private static final int STRENGHT = 5;
+    private static final int HEALTH_CUR = 6;
+    private static final int SPEED_CUR = 7;
+    private static final int STRENGHT_CUR = 8;
 
     public static void initializeObjectsArray(){
         gameObjects = new ArrayList<>();
@@ -34,20 +37,34 @@ public class GameObjectManager {
         String[] objDescription = input.split(" ");
         int type = Integer.parseInt(objDescription[TYPE]);
         Point mapCoord = new Point(Integer.parseInt(objDescription[X]),Integer.parseInt(objDescription[Y]));
-        int[] characteristics = {Integer.parseInt(objDescription[HEALTH]), Integer.parseInt(objDescription[SPEED]), Integer.parseInt(objDescription[STRENGHT])};
+        int[] initialCharacteristics = {Integer.parseInt(objDescription[HEALTH]), Integer.parseInt(objDescription[SPEED]), Integer.parseInt(objDescription[STRENGHT])};
+        int[] characteristics = {Integer.parseInt(objDescription[HEALTH_CUR]), Integer.parseInt(objDescription[SPEED_CUR]), Integer.parseInt(objDescription[STRENGHT_CUR])};
+        ArrayList<GameObject> inventory = new ArrayList<>();
+
+        int itemType;
+        int[] itemCharacteristics = new int[3];
+        for (int i = 9; i < objDescription.length; i++) {
+            itemType = Integer.parseInt(objDescription[i]);
+            itemCharacteristics[0] = Constants.TYPE_HEALTH[itemType];
+            itemCharacteristics[1] = Constants.TYPE_SPEED[itemType];
+            itemCharacteristics[2] = Constants.TYPE_STRENGHT[itemType];
+            inventory.add(new GameObject(ImageArchive.images.get(itemType), new ArrayList<GameObject>(), mapCoord,
+                    itemCharacteristics, itemCharacteristics, "" + itemType, itemType));
+        }
+
         switch (type){
             case Constants.ENEMY:
-                gameObjects.add(new Enemy(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
-                        characteristics, "" + type, type));
+                gameObjects.add(new Enemy(ImageArchive.images.get(type), inventory, mapCoord,
+                        characteristics, initialCharacteristics, "" + type, type));
                 break;
             case Constants.PLAYER:
-                player = new Player(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
-                        characteristics, "" + type, type);
+                player = new Player(ImageArchive.images.get(type), inventory, mapCoord,
+                        characteristics, initialCharacteristics, "" + type, type);
                 gameObjects.add(player);
                 break;
             default:
-                gameObjects.add(new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(), mapCoord,
-                        characteristics, "" + type, type));
+                gameObjects.add(new GameObject(ImageArchive.images.get(type), inventory, mapCoord,
+                        characteristics, initialCharacteristics, "" + type, type));
                 break;
         }
     }
@@ -70,7 +87,7 @@ public class GameObjectManager {
                                 Constants.TYPE_STRENGHT[Constants.PLAYER]};
         player = new Player(ImageArchive.images.get(Constants.PLAYER), new ArrayList<GameObject>(),
                 new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2),
-                characteristics, "" + Constants.PLAYER, Constants.PLAYER);
+                characteristics, characteristics.clone(), "" + Constants.PLAYER, Constants.PLAYER);
         gameObjects.add(player);
     }
 
@@ -81,7 +98,7 @@ public class GameObjectManager {
             enemy = new Enemy(ImageArchive.images.get(Constants.ENEMY), new ArrayList<GameObject>(),
                     new Point(random.nextInt(ImageArchive.map_size.x - ImageArchive.images.get(Constants.ENEMY).get(Constants.MAINIMAGE).getWidth()),
                             random.nextInt(ImageArchive.map_size.y - ImageArchive.images.get(Constants.ENEMY).get(Constants.MAINIMAGE).getHeight())),
-                    characteristics, "" + Constants.ENEMY, Constants.ENEMY);
+                    characteristics, characteristics.clone(), "" + Constants.ENEMY, Constants.ENEMY);
             if (isIntersected(enemy)){
                 i--;
                 continue;
@@ -97,7 +114,7 @@ public class GameObjectManager {
             gameObject = new GameObject(ImageArchive.images.get(type), new ArrayList<GameObject>(),
                     new Point(random.nextInt(ImageArchive.map_size.x - ImageArchive.images.get(type).get(Constants.MAINIMAGE).getWidth()),
                             random.nextInt(ImageArchive.map_size.y - ImageArchive.images.get(type).get(Constants.MAINIMAGE).getHeight())),
-                    characteristics, "" + type, type);
+                    characteristics, characteristics.clone(), "" + type, type);
             if (isIntersected(gameObject)){
                 i--;
                 continue;

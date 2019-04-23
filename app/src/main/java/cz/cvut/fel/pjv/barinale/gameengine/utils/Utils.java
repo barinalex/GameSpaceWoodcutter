@@ -29,7 +29,7 @@ public class Utils {
         return new Point((int)(x * rate), (int)(y * rate));
     }
 
-    public static boolean checkWinCondition(ArrayList<GameObject> gameObjects){
+    public static boolean checkWinCondition(){
         for (GameObject gameObject: GameObjectManager.gameObjects){
             if (gameObject.getType() != Constants.ITEM && gameObject.getType() != Constants.PLAYER){
                 return false;
@@ -39,11 +39,7 @@ public class Utils {
     }
 
     public static boolean checkGameOver(){
-        return (GameObjectManager.player.getCharacteristics()[Constants.HEALTH] < 1);
-    }
-
-    public static boolean pointsAreEqual(Point pointOne, Point pointTwo){
-        return pointOne.x == pointTwo.x && pointOne.y == pointTwo.y;
+        return (GameObjectManager.player.getCharacteristics()[Constants.HEALTH] <= 0);
     }
 
     public static void saveGameState(Context context){
@@ -55,10 +51,18 @@ public class Utils {
             for (GameObject gameObject: GameObjectManager.gameObjects){
                 line = gameObject.getType() + " " + gameObject.getMapCoordinates().x +
                         " " + gameObject.getMapCoordinates().y +
+                        " " + gameObject.getInitialCharacteristics()[Constants.HEALTH] +
+                        " " + gameObject.getInitialCharacteristics()[Constants.SPEED] +
+                        " " + gameObject.getInitialCharacteristics()[Constants.STRENGHT]+
                         " " + gameObject.getCharacteristics()[Constants.HEALTH] +
                         " " + gameObject.getCharacteristics()[Constants.SPEED] +
-                        " " + gameObject.getCharacteristics()[Constants.STRENGHT] + "\n";
+                        " " + gameObject.getCharacteristics()[Constants.STRENGHT];
+                for (GameObject item: gameObject.getInventory()){
+                    line += " " + item.getType();
+                }
+                line += "\n";
                 bufferedWriter.write(line);
+
             }
             bufferedWriter.close();
         }

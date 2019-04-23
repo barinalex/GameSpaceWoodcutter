@@ -31,7 +31,7 @@ public class Constants {
     public static final int SECONDARYIMAGE = 1;
 
     public static String savedGameFileName = "save.txt";
-    public static String mapFileName = "map.txt";
+    public static String mapFileName = "level_1.txt";
 
     public static boolean loadFromFile = false;
     public static boolean randomMap = false;
