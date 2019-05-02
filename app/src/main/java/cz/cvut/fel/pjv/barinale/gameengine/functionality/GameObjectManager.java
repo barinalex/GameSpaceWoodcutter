@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
@@ -17,6 +18,7 @@ public class GameObjectManager {
     public static Player player;
     public static Background background;
     public static ArrayList<GameObject> gameObjects;
+    public static ArrayList<Entity> entities;
     private static Random random = new Random();
 
     private static final int TYPE = 0;

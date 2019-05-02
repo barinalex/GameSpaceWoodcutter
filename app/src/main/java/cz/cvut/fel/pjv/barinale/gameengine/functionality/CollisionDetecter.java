@@ -3,8 +3,11 @@ package cz.cvut.fel.pjv.barinale.gameengine.functionality;
 import android.graphics.Rect;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creature;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Item;
 
 public class CollisionDetecter {
 
@@ -17,6 +20,21 @@ public class CollisionDetecter {
             }
         }
         return false;
+    }
+
+    public static boolean isCollide(Entity entity){
+        if (entity.getBody() != null) {
+            for (Entity e : EntityManager.entities) {
+                if (e != entity && !(e instanceof Item) && Rect.intersects(e.getBody(), entity.getBody())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCollide(Creature creature, Entity entity){
+        return !(entity instanceof Item) && Rect.intersects(creature.getBody(), entity.getActiveZone());
     }
 
     public static boolean playerInActiveZone(Player player, GameObject gameObject){

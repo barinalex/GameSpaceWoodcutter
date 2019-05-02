@@ -20,7 +20,7 @@ public class ImageArchive {
         }
         images.get(Constants.BACKGROUND).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.seamless));
         map_size = new Point(images.get(Constants.BACKGROUND).get(0).getWidth(), images.get(Constants.BACKGROUND).get(0).getHeight());
-        images.get(Constants.CABIN).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.log_cabin));
+        images.get(Constants.CABIN).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.teleport));
         imagesId[1] = R.drawable.log_cabin;
         images.get(Constants.BLUETREE).add(BitmapFactory.decodeResource(Constants.resources, R.drawable.blue_tree_l));
         imagesId[2] = R.drawable.blue_tree_l;

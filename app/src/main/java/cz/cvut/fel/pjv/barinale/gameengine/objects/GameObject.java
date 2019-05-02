@@ -184,7 +184,7 @@ public class GameObject implements ObjectInterface {
     public void update(Point point, Point mapPosition) {
         setHealthIndicator();
         if (characteristics[Constants.SPEED] != 0) {
-            Point direction = Utils.get_direction(point, mapCoordinates,
+            Point direction = Utils.getDirection(point, mapCoordinates,
                     characteristics[Constants.SPEED]);
             Point old_coordinates = new Point(mapCoordinates.x, mapCoordinates.y);
             mapCoordinates.x += direction.x;

@@ -59,7 +59,7 @@ public class Enemy extends GameObject{
     public void update(Point point, Point mapPosition) {
         setHealthIndicator();
         if (Rect.intersects(GameObjectManager.player.getBody(), searchingZone)) {
-            Point direction = Utils.get_direction(point, getMapCoordinates(),
+            Point direction = Utils.getDirection(point, getMapCoordinates(),
                     getCharacteristics()[Constants.SPEED]);
             Point old_coordinates = new Point(getMapCoordinates().x, getMapCoordinates().y);
             getMapCoordinates().x += direction.x;

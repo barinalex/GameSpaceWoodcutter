@@ -16,8 +16,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
@@ -91,11 +94,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (item.getId() == v.getId()) {
                 inventoryContainer.removeView(item);
                 items.remove(item);
-                GameObject gameObject = GameObjectManager.player.getInventory().get(i);
-                Point playerPoint = GameObjectManager.player.getMapCoordinates();
-                gameObject.setMapCoordinates(new Point(playerPoint.x + 30, playerPoint.y + 30));
-                GameObjectManager.gameObjects.add(gameObject);
-                GameObjectManager.player.getInventory().remove(i--);
+                EntityManager.player.discard(i--);
             }
         }
     }
@@ -105,14 +104,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         menuButton.setVisibility(View.INVISIBLE);
         inventoryButton.setVisibility(View.INVISIBLE);
         items = new ArrayList<>();
-        ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
+        //ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
+        ArrayList<Item> inventory = EntityManager.player.getInventory();
         int id = 100;
-        for (GameObject item: inventory) {
+        for (Item item: inventory) {
             Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            button.setBackgroundResource(ImageArchive.imagesId[item.getType()]);
-            button.getLayoutParams().width = item.getImageWidth() * 2;
-            button.getLayoutParams().height = item.getImageHeight() * 2;
+            button.setBackgroundResource(item.getMainImageId());
+            button.getLayoutParams().width = item.getMainImage().getWidth();
+            button.getLayoutParams().height = item.getMainImage().getHeight();
             button.setOnClickListener(this);
             button.setId(id++);
             items.add(button);

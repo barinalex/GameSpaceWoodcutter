@@ -20,7 +20,7 @@ public class Background{
 
     public Background(Bitmap res){
         image = res;
-        coordinate = new Point();
+        coordinate = new Point(0, 0);
     }
 
     public Point update(Point user_point){
