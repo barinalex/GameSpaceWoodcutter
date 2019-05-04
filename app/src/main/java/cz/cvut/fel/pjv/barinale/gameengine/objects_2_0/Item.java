@@ -17,9 +17,7 @@ public abstract class Item extends Entity{
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(getMainImage(),
-                getScreenCoordinates().x - getMainImage().getWidth()/2,
-                getScreenCoordinates().y - getMainImage().getHeight()/2, null);
+        super.draw(canvas);
     }
 
     @Override

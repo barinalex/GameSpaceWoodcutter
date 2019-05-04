@@ -34,10 +34,9 @@ public abstract class Creature extends Entity{
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(getMainImage(),
-                getScreenCoordinates().x - getMainImage().getWidth()/2,
-                getScreenCoordinates().y - getMainImage().getHeight()/2, null);
+        super.draw(canvas);
     }
+
 /*
     @Override
     public void update(Point userPoint, Point mapPosition){
@@ -60,12 +59,13 @@ public abstract class Creature extends Entity{
 
     @Override
     public void update(Point userPoint, Point mapPosition){
+        super.update(userPoint, mapPosition);
         int angle = 0;
         Point initialDirection = Utils.getDirection(userPoint, getMapCoordinates(),
                 getSpeed().getCurrent());
         Point direction = initialDirection;
-        if (!Utils.stopNear(userPoint, this)) {
-            do {
+        //if (!Utils.stopNear(userPoint, this)) {
+            //do {
                 Point initialCoordinates = new Point(getMapCoordinates().x, getMapCoordinates().y);
                 getMapCoordinates().x += direction.x;
                 getMapCoordinates().y += direction.y;
@@ -76,11 +76,12 @@ public abstract class Creature extends Entity{
                     setBody();
                     setActiveZone();
                     direction = Utils.rotateVector(initialDirection, angle += 45);
-                } else {
+                }
+                /*else {
                     break;
                 }
-            } while (angle < 360);
-        }
+            } while (angle < 360);*/
+        //}
         getScreenCoordinates().set(getMapCoordinates().x + mapPosition.x,
                 getMapCoordinates().y + mapPosition.y);
     }

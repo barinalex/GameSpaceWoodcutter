@@ -30,9 +30,6 @@ public class Enemy2_0 extends Creature {
         if (nearThePlayer()){
             attack(EntityManager.player);
         }
-        if (getHealth().getCurrent() == 0){
-            EntityManager.entities.remove(this);
-        }
     }
 
     private boolean nearThePlayer(){

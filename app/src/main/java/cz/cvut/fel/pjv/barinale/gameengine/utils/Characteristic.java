@@ -8,6 +8,11 @@ public class Characteristic {
         this.current = current;
     }
 
+    public Characteristic(int initial){
+        this.initial = initial;
+        this.current = initial;
+    }
+
     public int getInitial() {
         return initial;
     }
@@ -17,8 +22,8 @@ public class Characteristic {
     }
 
     public void changeCurrent(int changer){
-        current += changer;
-        current = (current > initial)? initial: current;
-        current = (current < 0)? 0: current;
+        this.current += changer;
+        //current = (current > initial)? initial: current;
+        //current = (current < 0)? 0: current;
     }
 }

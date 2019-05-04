@@ -118,12 +118,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                     userPoint.set((int) event.getX(), (int) event.getY());
                     startClickTime = System.currentTimeMillis();
                     screen_moving = (click && System.currentTimeMillis() - double_click_time < Constants.REACTIONTIME);
-                }
+                }/*
                 if ((game_over || won) && System.currentTimeMillis() - game_over_time >= 1000){
                     reset();
                     game_over = false;
                     won = false;
-                }
+                }*/
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!pause && !game_over && !won){
@@ -154,6 +154,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 else {
                     entity.update(userMapPoint, background_point);
                 }
+            }
+            if (EntityManager.player.isDead()){
+                game_over = true;
             }
         }
 
@@ -206,10 +209,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         for (Entity entity: EntityManager.entities){
             entity.draw(canvas);
         }
-        Paint paint = new Paint();
-        paint.setTextSize(100);
-        paint.setColor(Color.MAGENTA);
-        draw_text(canvas,paint,"Health: " + EntityManager.player.getHealth().getCurrent());
+        if (game_over){
+            Paint paint = new Paint();
+            paint.setTextSize(100);
+            paint.setColor(Color.MAGENTA);
+            draw_text(canvas,paint,"game over!");
+        }
         /*
         background.draw(canvas);
         Paint paint;

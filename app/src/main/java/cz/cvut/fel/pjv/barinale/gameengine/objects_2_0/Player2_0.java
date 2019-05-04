@@ -17,10 +17,10 @@ public class Player2_0 extends Creature{
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
         setBody();
         setActiveZone();
-        setHealth(new Characteristic(10,10));
+        setHealth(new Characteristic(15,15));
         setSpeed(new Characteristic(15,15));
         setProtection(new Characteristic(2, 2));
-        setStrength(new Characteristic(3, 3));
+        setStrength(new Characteristic(2, 2));
         setAttackDelay(500);
     }
 
@@ -39,10 +39,12 @@ public class Player2_0 extends Creature{
     private void pickUp(Item item){
         getInventory().add(item);
         EntityManager.entities.remove(item);
+        addItemEffects(item);
     }
 
     public void discard(int index){
         Item item = getInventory().get(index);
+        removeItemEffects(item);
         item.setMapCoordinates(new Point(getMapCoordinates().x + item.getMainImage().getWidth(),
                 getMapCoordinates().y + item.getMainImage().getHeight()));
         EntityManager.entities.add(0, item);
@@ -52,6 +54,22 @@ public class Player2_0 extends Creature{
     private boolean checkTarget(Point userPoint, Entity entity){
         return entity != this &&
                 entity.getBody().contains(userPoint.x, userPoint.y) &&
-                Rect.intersects(getActiveZone(), entity.getActiveZone());
+                Rect.intersects(getBody(), entity.getActiveZone());
+    }
+
+    @Override
+    public void initializeHealthIndicator() {
+        setFullHealth(new Rect(20, 20, 120, 40));
+        setCurrentHealth(new Rect(20, 20, 120, 40));
+    }
+
+    @Override
+    public void setCurrentHealth() {
+        getCurrentHealth().set(getCurrentHealth().left, getCurrentHealth().top, 120 - getCurrentHealthDecrement(), getCurrentHealth().bottom);
+    }
+
+    @Override
+    public boolean timeToDrawHealth() {
+        return true;
     }
 }
