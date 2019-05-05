@@ -21,9 +21,22 @@ public class Characteristic {
         return current;
     }
 
+    public void setCurrent(int current) {
+        this.current = current;
+    }
+
+    public void changeInitial(int changer){
+        initial += changer;
+        current = (current > initial)? initial: current;
+    }
+
     public void changeCurrent(int changer){
-        this.current += changer;
-        //current = (current > initial)? initial: current;
-        //current = (current < 0)? 0: current;
+        current += changer;
+        current = (current < 0) ? 0: current;
+    }
+
+    public void restore(int value){
+        current += value;
+        current = (current > initial)? initial: current;
     }
 }

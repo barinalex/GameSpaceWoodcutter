@@ -2,30 +2,17 @@ package cz.cvut.fel.pjv.barinale.gameengine.functionality;
 
 import android.graphics.Rect;
 
-import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creature;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.Player;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Item;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Teleport;
 
 public class CollisionDetecter {
-
-    public static boolean chechCollision(GameObject gameObject){
-        if (gameObject.getBody() != null) {
-            for (GameObject gameOb : GameObjectManager.gameObjects) {
-                if (gameOb != gameObject && gameOb.getBody() != null && Rect.intersects(gameObject.getBody(), gameOb.getBody())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public static boolean isCollide(Entity entity){
         if (entity.getBody() != null) {
             for (Entity e : EntityManager.entities) {
-                if (e != entity && !(e instanceof Item) && Rect.intersects(e.getBody(), entity.getBody())) {
+                if (e != entity && !(e instanceof Item) && !(e instanceof Teleport) && Rect.intersects(e.getBody(), entity.getBody())) {
                     return true;
                 }
             }
@@ -34,14 +21,7 @@ public class CollisionDetecter {
     }
 
     public static boolean isCollide(Creature creature, Entity entity){
-        return !(entity instanceof Item) && Rect.intersects(creature.getBody(), entity.getActiveZone());
-    }
-
-    public static boolean playerInActiveZone(Player player, GameObject gameObject){
-        return Rect.intersects(player.getBody(), gameObject.getActiveZone());
-    }
-    public static boolean readyToAttackPlayer(Player player, Enemy enemy){
-        return Rect.intersects(player.getActiveZone(), enemy.getBody());
+        return !(entity instanceof Item) && !(entity instanceof Teleport) && Rect.intersects(creature.getBody(), entity.getActiveZone());
     }
 /*
     private boolean chech_collision_bitmap(Point new_point, ArrayList<StaticObject> map_objects){

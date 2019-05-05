@@ -9,7 +9,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
+import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
@@ -55,8 +56,8 @@ public class Menu extends Activity implements View.OnClickListener {
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
-                GameObjectManager.gameObjects = null;
-                GameObjectManager.background = null;
+                EntityManager.entities = null;
+                EntityManager.background = null;
                 intent = new Intent(this, MainActivity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -69,8 +70,8 @@ public class Menu extends Activity implements View.OnClickListener {
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
-                GameObjectManager.gameObjects = null;
-                GameObjectManager.background = null;
+                //GameObjectManager.gameObjects = null;
+                //GameObjectManager.background = null;
                 Constants.loadFromFile = true;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

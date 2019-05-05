@@ -3,7 +3,7 @@ package cz.cvut.fel.pjv.barinale.gameengine.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -17,12 +17,8 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Item;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -37,6 +33,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static Button closeInventory;
     private static Button inventoryButton;
     private static ArrayList<Button> items;
+
+    private MediaPlayer music;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -69,6 +67,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         textView.setVisibility(View.INVISIBLE);
 
         items = new ArrayList<>();
+        music = MediaPlayer.create(getApplicationContext(), R.raw.dark_fallout);
+        music.setLooping(true);
+        music.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        music.start();
     }
 
     @Override
@@ -78,6 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.menu:
                 intent = new Intent(this, Menu.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                music.pause();
                 startActivity(intent);
                 break;
             case R.id.inventoryButton:
@@ -94,7 +102,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (item.getId() == v.getId()) {
                 inventoryContainer.removeView(item);
                 items.remove(item);
-                EntityManager.player.discard(i--);
+                EntityManager.player.discardItem(i--);
             }
         }
     }
@@ -104,7 +112,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         menuButton.setVisibility(View.INVISIBLE);
         inventoryButton.setVisibility(View.INVISIBLE);
         items = new ArrayList<>();
-        //ArrayList<GameObject> inventory = GameObjectManager.player.getInventory();
         ArrayList<Item> inventory = EntityManager.player.getInventory();
         int id = 100;
         for (Item item: inventory) {

@@ -11,17 +11,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Axe;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Enemy2_0;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Player2_0;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.Enemy;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.FightManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
@@ -31,7 +24,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread thread;
     private Background background;
     private Rect r = new Rect();
-    private cz.cvut.fel.pjv.barinale.gameengine.objects.Player player;
 
     private Point userPoint, background_point;
     private boolean screen_moving = false;
@@ -63,22 +55,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void reset(){
-        /*
+
         if (Constants.loadFromFile){
             Utils.loadGame(context, Constants.savedGameFileName, true);
             Constants.loadFromFile = false;
         }
         else if (Constants.randomMap){
-            GameObjectManager.createRandomMap();
+            EntityManager.createRandomMap(false);
         }
         else {
             Utils.loadGame(context, Constants.mapFileName, false);
         }
-        background = GameObjectManager.background;
-        player = GameObjectManager.player;
-        */
-        EntityManager.createRandomMap();
-        background = EntityManager.background;
+
+        //EntityManager.createRandomMap(false);
         userPoint = new Point(EntityManager.player.getScreenCoordinates().x, EntityManager.player.getScreenCoordinates().y);
         game_start_time = System.currentTimeMillis();
     }
@@ -118,12 +107,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                     userPoint.set((int) event.getX(), (int) event.getY());
                     startClickTime = System.currentTimeMillis();
                     screen_moving = (click && System.currentTimeMillis() - double_click_time < Constants.REACTIONTIME);
-                }/*
-                if ((game_over || won) && System.currentTimeMillis() - game_over_time >= 1000){
-                    reset();
-                    game_over = false;
-                    won = false;
-                }*/
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!pause && !game_over && !won){
@@ -141,14 +125,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update(){
-        if (!game_over){
-            background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
-            Point userMapPoint = background.getUserPointCoordinates(userPoint);
+        if (!pause && !game_over && !won){
+            background_point = (!screen_moving) ? EntityManager.background.getCoordinates() : EntityManager.background.update(userPoint);
+            Point userMapPoint = EntityManager.background.getUserPointCoordinates(userPoint);
             if (click){
-                EntityManager.player.action(userMapPoint);
+                click = !EntityManager.player.action(userMapPoint);
             }
             for (Entity entity: EntityManager.entities){
-                if (entity instanceof Enemy2_0){
+                if (entity instanceof Enemy){
                     entity.update(EntityManager.player.getMapCoordinates(), background_point);
                 }
                 else {
@@ -158,54 +142,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             if (EntityManager.player.isDead()){
                 game_over = true;
             }
+            EntityManager.removeDeadBodyies();
+            won = Utils.checkWinCondition();
         }
-
-        /*
-        if(System.currentTimeMillis() - startClickTime > Constants.REACTIONTIME * 2){
-            click = false;
-        }
-        if (Constants.CONFIG_CHANGED){
-            background.update(userPoint);
-            for (GameObject gameObject: GameObjectManager.gameObjects){
-                gameObject.initializeHealthIndicator();
-                gameObject.setHealthIndicator();
-            }
-            Constants.CONFIG_CHANGED = false;
-        }
-        if (!won && Utils.checkWinCondition()){
-            game_over_time = System.currentTimeMillis();
-            won = true;
-        }
-        if (!game_over && Utils.checkGameOver()){
-            game_over_time = System.currentTimeMillis();
-            game_over = true;
-        }
-        if (!game_over && !won && !pause) {
-            background_point = (!screen_moving) ? background.getCoordinate() : background.update(userPoint);
-            if (click) {
-                click = !player.pick_up_to_inventory(GameObjectManager.gameObjects, background.getUserPointCoordinates(userPoint));
-            }
-            for (GameObject gameObject : GameObjectManager.gameObjects) {
-                if (gameObject.getType() == Constants.ENEMY){
-                    gameObject.update(player.getMapCoordinates(), background_point);
-                    FightManager.attackPlayer((Enemy) gameObject);
-                }
-                else {
-                    gameObject.update(background.getUserPointCoordinates(userPoint), background_point);
-                }
-                if (click && gameObject != player && CollisionDetecter.playerInActiveZone(player, gameObject) &&
-                        FightManager.attackIsSuccess(gameObject, player, background.getUserPointCoordinates(userPoint))){
-                        click = false;
-                }
-            }
-        }
-        */
     }
 
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
-        background.draw(canvas);
+        EntityManager.background.draw(canvas);
         for (Entity entity: EntityManager.entities){
             entity.draw(canvas);
         }
@@ -213,42 +158,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
-            draw_text(canvas,paint,"game over!");
-        }
-        /*
-        background.draw(canvas);
-        Paint paint;
-        for (GameObject gameObject: GameObjectManager.gameObjects){
-            if (gameObject != player && gameObject.getType() != Constants.ENEMY){
-                gameObject.draw(canvas);
-            }
-        }
-        for (GameObject gameObject: GameObjectManager.gameObjects){
-            if (gameObject.getType() == Constants.ENEMY){
-                gameObject.draw(canvas);
-            }
-        }
-        player.draw(canvas);
-        for (GameObject gameObject: GameObjectManager.gameObjects){
-            if (gameObject != player &&
-                CollisionDetecter.playerInActiveZone(player, gameObject)){
-                gameObject.drawHealth(canvas);
-            }
-        }
-        player.drawHealth(canvas);
-        if (game_over){
-            paint = new Paint();
-            paint.setTextSize(100);
-            paint.setColor(Color.MAGENTA);
-            draw_text(canvas,paint,"game over!");
+            draw_text(canvas,paint,"GAME OVER!");
         }
         if (won){
-            paint = new Paint();
+            Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.MAGENTA);
-            draw_text(canvas,paint,"You won! Your time: " + (game_over_time - game_start_time) / 1000 + " s");
+            draw_text(canvas,paint,"YOU WON!");
         }
-        */
     }
 
     private void draw_text(Canvas canvas, Paint paint, String text){

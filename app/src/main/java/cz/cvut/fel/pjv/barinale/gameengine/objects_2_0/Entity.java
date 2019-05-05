@@ -9,7 +9,7 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
@@ -26,18 +26,22 @@ public abstract class Entity{
     private Characteristic strength;
     private Characteristic protection;
 
-    private Rect fullHealth;
-    private Rect currentHealth;
+    private Rect fullHealthIndicator;
+    private Rect currentHealthIndicator;
     private long startShowHealthTime;
 
     public Entity(Point mapCoordinates){
         this.mapCoordinates = mapCoordinates;
-        screenCoordinates = new Point();
+        screenCoordinates = new Point(mapCoordinates.x, mapCoordinates.y);
         setInventory(new ArrayList<Item>());
         body = new Rect();
         activeZone = new Rect();
+        setHealth(new Characteristic(0));
+        setSpeed(new Characteristic(0));
+        setProtection(new Characteristic(0));
+        setStrength(new Characteristic(0));
         initializeHealthIndicator();
-        startShowHealthTime = -5000;
+        startShowHealthTime = -1000;
     }
 
     public void draw(Canvas canvas) {
@@ -56,59 +60,50 @@ public abstract class Entity{
     public void drawHealth(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
-        canvas.drawRect(fullHealth, paint);
+        canvas.drawRect(fullHealthIndicator, paint);
         paint.setColor(Color.RED);
-        canvas.drawRect(currentHealth, paint);
+        canvas.drawRect(currentHealthIndicator, paint);
     }
 
     public void update(Point userPoint, Point mapPosition){
-        if (isDead()){
-            for (Item item: inventory){
-                discard(item);
-            }
-            EntityManager.entities.remove(this);
-            return;
-        }
-    }
-
-    public void discard(Item item){
-        item.setMapCoordinates(new Point(getMapCoordinates().x + item.getMainImage().getWidth(),
-                getMapCoordinates().y + item.getMainImage().getHeight()));
-        EntityManager.entities.add(0, item);
-        inventory.remove(item);
+        getScreenCoordinates().set(getMapCoordinates().x + mapPosition.x,
+                getMapCoordinates().y + mapPosition.y);
     }
 
     public boolean isDead(){
         return health.getCurrent() <= 0;
     }
 
-    public void addItemsEffects(){
-        for (Item item: inventory){
-            addItemEffects(item);
-        }
-    }
-
     public void addItemEffects(Item item){
+        health.changeInitial(item.getHealth().getInitial());
         health.changeCurrent(item.getHealth().getCurrent());
+        setCurrentHealthIndicator();
+        speed.changeInitial(item.getSpeed().getInitial());
         speed.changeCurrent(item.getSpeed().getCurrent());
+        protection.changeInitial(item.getProtection().getInitial());
         protection.changeCurrent(item.getProtection().getCurrent());
+        strength.changeInitial(item.getStrength().getInitial());
         strength.changeCurrent(item.getStrength().getCurrent());
     }
 
     public void removeItemEffects(Item item){
         health.changeCurrent(-item.getHealth().getCurrent());
+        health.changeInitial(-item.getHealth().getInitial());
         speed.changeCurrent(-item.getSpeed().getCurrent());
+        speed.changeInitial(-item.getSpeed().getInitial());
         protection.changeCurrent(-item.getProtection().getCurrent());
+        protection.changeInitial(-item.getProtection().getInitial());
         strength.changeCurrent(-item.getStrength().getCurrent());
+        strength.changeInitial(-item.getStrength().getInitial());
     }
 
     public void initializeHealthIndicator(){
-        fullHealth = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
-        currentHealth = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
+        fullHealthIndicator = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
+        currentHealthIndicator = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
     }
 
-    public void setCurrentHealth(){
-        currentHealth.set(currentHealth.left, currentHealth.top, Constants.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealth.bottom);
+    public void setCurrentHealthIndicator(){
+        currentHealthIndicator.set(currentHealthIndicator.left, currentHealthIndicator.top, Constants.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
     }
 
     public int getCurrentHealthDecrement(){
@@ -120,7 +115,7 @@ public abstract class Entity{
     public void getDamage(int damage){
         damage = (getProtection().getCurrent() > damage) ? 0: getProtection().getCurrent() - damage;
         getHealth().changeCurrent(damage);
-        setCurrentHealth();
+        setCurrentHealthIndicator();
         startShowHealthTime = System.currentTimeMillis();
     }
 
@@ -226,20 +221,20 @@ public abstract class Entity{
         this.inventory = inventory;
     }
 
-    public Rect getFullHealth() {
-        return fullHealth;
+    public Rect getFullHealthIndicator() {
+        return fullHealthIndicator;
     }
 
-    public void setFullHealth(Rect fullHealth) {
-        this.fullHealth = fullHealth;
+    public void setFullHealthIndicator(Rect fullHealthIndicator) {
+        this.fullHealthIndicator = fullHealthIndicator;
     }
 
-    public Rect getCurrentHealth() {
-        return currentHealth;
+    public Rect getCurrentHealthIndicator() {
+        return currentHealthIndicator;
     }
 
-    public void setCurrentHealth(Rect currentHealth) {
-        this.currentHealth = currentHealth;
+    public void setCurrentHealthIndicator(Rect currentHealthIndicator) {
+        this.currentHealthIndicator = currentHealthIndicator;
     }
 
     public long getStartShowHealthTime() {

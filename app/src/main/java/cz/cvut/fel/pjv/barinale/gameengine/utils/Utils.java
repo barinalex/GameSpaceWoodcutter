@@ -14,13 +14,10 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.GameObjectManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.Background;
-import cz.cvut.fel.pjv.barinale.gameengine.objects.GameObject;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creature;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Item;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Player2_0;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.CherryWood;
 
 public class Utils {
     public static Point getDirection(Point newPoint, Point oldPoint, double rate){
@@ -49,17 +46,11 @@ public class Utils {
                          (int)(Math.sin(angle) * vector.x + Math.cos(angle) * vector.y));
     }
 
-    public static boolean isSmallerThan(Point Vector1, Point Vector2){
-        return true;
-    }
-
     public static boolean checkWinCondition(){
-        for (GameObject gameObject: GameObjectManager.gameObjects){
-            if (gameObject.getType() != Constants.ITEM && gameObject.getType() != Constants.PLAYER){
-                return false;
-            }
+        for (Item item: EntityManager.player.getInventory()){
+            if (item instanceof CherryWood) return true;
         }
-        return true;
+        return false;
     }
 
     public static boolean stopNear(Point point, Creature creature){
@@ -84,36 +75,24 @@ public class Utils {
         return false;
     }
 
-
-    public static boolean checkGameOver(){
-        return (GameObjectManager.player.getCharacteristics()[Constants.HEALTH] <= 0);
-    }
-
-    public static void saveGameState(Context context){
+    public static void saveGameState(Context context) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
                     (context.getFilesDir(), Constants.savedGameFileName)));
-            String line;
-            bufferedWriter.write(GameObjectManager.background.getCoordinate().x + " " + GameObjectManager.background.getCoordinate().y + "\n");
-            for (GameObject gameObject: GameObjectManager.gameObjects){
-                line = gameObject.getType() + " " + gameObject.getMapCoordinates().x +
-                        " " + gameObject.getMapCoordinates().y +
-                        " " + gameObject.getInitialCharacteristics()[Constants.HEALTH] +
-                        " " + gameObject.getInitialCharacteristics()[Constants.SPEED] +
-                        " " + gameObject.getInitialCharacteristics()[Constants.STRENGHT]+
-                        " " + gameObject.getCharacteristics()[Constants.HEALTH] +
-                        " " + gameObject.getCharacteristics()[Constants.SPEED] +
-                        " " + gameObject.getCharacteristics()[Constants.STRENGHT];
-                for (GameObject item: gameObject.getInventory()){
-                    line += " " + item.getType();
+            bufferedWriter.write(EntityManager.background.getCoordinates().x + " " + EntityManager.background.getCoordinates().y + "\n");
+            for (Entity entity : EntityManager.entities) {
+                String line = entity.getClass().getSimpleName() + " " +
+                        entity.getMapCoordinates().x + " " +
+                        entity.getMapCoordinates().y + " " + entity.getHealth().getCurrent();
+                for (Item item : entity.getInventory()) {
+                    line += " " + item.getClass().getSimpleName();
                 }
                 line += "\n";
                 bufferedWriter.write(line);
-
             }
             bufferedWriter.close();
+        } catch (IOException e) {
         }
-        catch (IOException e){}
     }
 
     public static void loadGame(Context context, String fileName, boolean loadSavedState){
@@ -126,16 +105,11 @@ public class Utils {
             else {
                 bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName)));
             }
-
-            GameObjectManager.initializeObjectsArray();
-
-            String[] data = bufferedReader.readLine().split(" ");
-            GameObjectManager.background = new Background(ImageArchive.images.get(Constants.BACKGROUND).get(0));
-            GameObjectManager.background.setCoordinate(new Point(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
-
+            ArrayList<String> mapDescription = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
-                GameObjectManager.addObjectFromFile(line);
+                mapDescription.add(line);
             }
+            EntityManager.createMap(mapDescription);
         }
         catch (IOException e){
         }
