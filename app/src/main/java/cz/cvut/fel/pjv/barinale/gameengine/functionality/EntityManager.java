@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.FatSlug;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.OneEye;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.Tree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.SimpleAxe;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemy;
@@ -40,7 +42,7 @@ public class EntityManager {
     public static void createMap(ArrayList<String> mapDescription){
         entities = new ArrayList<>();
         String data[] = mapDescription.get(0).split(" ");
-        background = new Background(false);
+        background = new Background("black_land");
         background.setCoordinates(new Point(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
         mapDescription.remove(0);
         for (String line: mapDescription){
@@ -58,10 +60,10 @@ public class EntityManager {
         }
     }
 
-    public static void createRandomMap(boolean teleportated){
+    public static void createRandomMap(String location, boolean teleported){
         entities = new ArrayList<>();
-        background = new Background(teleportated);
-        if (!teleportated)
+        background = new Background(location);
+        if (!teleported)
             player = new Player(new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2));
         entities.add(new Teleport(new Point(player.getMapCoordinates().x, player.getMapCoordinates().y + player.getMainImage().getHeight() / 2)));
         entities.add(player);
@@ -71,26 +73,31 @@ public class EntityManager {
         addEntityRandomPos(1, GoldenAxe.class.getSimpleName());
         addEntityRandomPos(4, BlueTree.class.getSimpleName());
         addEntityRandomPos(4, BrownTree.class.getSimpleName());
-        if (teleportated) {
+        if (location.equals("cherry_land")) {
             addEntityRandomPos(4, CherryTree.class.getSimpleName());
         }
         addEntityRandomPos(8, GreenTree.class.getSimpleName());
         addEntityRandomPos(3, OrangeTree.class.getSimpleName());
-        addEntityRandomPos(2, YellowTree.class.getSimpleName());
-        addEntityRandomPos(5, Enemy.class.getSimpleName());
+        if (location.equals("yellow_land")) {
+            addEntityRandomPos(4, YellowTree.class.getSimpleName());
+        }
+        addEntityRandomPos(5, OneEye.class.getSimpleName());
+        addEntityRandomPos(2, FatSlug.class.getSimpleName());
     }
 
     private static void addEntityRandomPos(int amount, String type){
         Entity entity;
+        int cyckleCounter;
         for (int i = 0; i < amount; i++) {
-            while (isIntersected(entity = createEntity(type, null)));
+            cyckleCounter = 0;
+            while (isIntersected(entity = createEntity(type, null)) && cyckleCounter++ < 5);
             entities.add(entity);
         }
     }
 
     private static Entity createEntity(String type, Point coordinates){
         if (coordinates == null){
-            coordinates = new Point(random.nextInt(ImageArchive.map_size.x), random.nextInt(ImageArchive.map_size.y));
+            coordinates = new Point(random.nextInt(ImageArchive.map_size.x - 100) + 50, random.nextInt(ImageArchive.map_size.y - 100) + 50);
         }
         switch (type){
             case "Player":
@@ -127,8 +134,10 @@ public class EntityManager {
                 return new YellowWood(coordinates);
             case "Teleport":
                 return new Teleport(coordinates);
-            case "Enemy":
-                return new Enemy(coordinates);
+            case "OneEye":
+                return new OneEye(coordinates);
+            case "FatSlug":
+                return new FatSlug(coordinates);
         }
         return null;
     }

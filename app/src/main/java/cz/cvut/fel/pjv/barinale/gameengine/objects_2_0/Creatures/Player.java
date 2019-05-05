@@ -23,9 +23,14 @@ public class Player extends Creature{
         super(mapCoordinates);
         setMainImageId(R.drawable.redhead);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        getMoveImages().add(getMainImage());
+        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_1));
+        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_fiesty));
+        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_left_hand));
+        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_right_hand));
         setBody();
         setActiveZone();
-        setHealth(new Characteristic(20,20));
+        setHealth(new Characteristic(25));
         setSpeed(new Characteristic(15,15));
         setProtection(new Characteristic(2, 2));
         setStrength(new Characteristic(2, 2));
@@ -39,15 +44,18 @@ public class Player extends Creature{
                 if (entity instanceof Item) {
                     pickUp((Item) entity);
                     acted = true;
+                    break;
                 }
                 else if(entity instanceof Teleport){
                     ((Teleport) entity).teleportate();
                     ((Teleport) entity).pushWood(getAllWood());
                     acted = true;
+                    break;
                 }
                 else {
                     attack(entity);
                     acted = entity.isDead();
+                    break;
                 }
             }
         }
@@ -70,11 +78,12 @@ public class Player extends Creature{
 
     private void pickUp(Item newItem){
         int size = getInventory().size();
-        for (int i = 0; i < size; i++) {
-            Item item = getInventory().get(i);
-            if ((item instanceof Amunition) &&
-                (item.getClass().getSuperclass().getSimpleName().equals(newItem.getClass().getSuperclass().getSimpleName()))){
-                discardItem(i);
+        if ((newItem instanceof Amunition)) {
+            for (int i = 0; i < size; i++) {
+                Item item = getInventory().get(i);
+                if ((item.getClass().getSuperclass().getSimpleName().equals(newItem.getClass().getSuperclass().getSimpleName()))) {
+                    discardItem(i);
+                }
             }
         }
         getInventory().add(newItem);

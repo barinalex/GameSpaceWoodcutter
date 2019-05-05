@@ -61,7 +61,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             Constants.loadFromFile = false;
         }
         else if (Constants.randomMap){
-            EntityManager.createRandomMap(false);
+            EntityManager.createRandomMap("black_land", false);
         }
         else {
             Utils.loadGame(context, Constants.mapFileName, false);
@@ -153,6 +153,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         EntityManager.background.draw(canvas);
         for (Entity entity: EntityManager.entities){
             entity.draw(canvas);
+        }
+        for (Entity entity: EntityManager.entities){
+            entity.drawHealth(canvas);
         }
         if (game_over){
             Paint paint = new Paint();

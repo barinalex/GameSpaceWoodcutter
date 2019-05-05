@@ -19,6 +19,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
 public class Teleport extends Entity{
     private boolean activated = false;
+    private String location;
     public Teleport(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.teleport_inactive);
@@ -31,7 +32,7 @@ public class Teleport extends Entity{
     public void update(Point userPoint, Point mapPosition) {
         getScreenCoordinates().set(getMapCoordinates().x + mapPosition.x,
                 getMapCoordinates().y + mapPosition.y);
-        if (!activated && checkTeleportationConditions()){
+        if (!activated && (location = checkTeleportationConditions()) != null){
             setMainImageId(R.drawable.teleport);
             setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
             activated = true;
@@ -53,20 +54,26 @@ public class Teleport extends Entity{
     }
 
     public void teleportate(){
-        if (checkTeleportationConditions()) {
-            EntityManager.createRandomMap(true);
+        if (activated) {
+            EntityManager.createRandomMap(location, true);
         }
     }
 
-    private boolean checkTeleportationConditions(){
-        boolean green = false, brown = false, yellow = false, orange = false, blue = false;
+    private String checkTeleportationConditions(){
+        int green = 0, brown = 0, yellow = 0, orange = 0, blue = 0;
         for (Item item: getInventory()){
-            if (item instanceof GreenWood) green = true;
-            if (item instanceof BrownWood) brown = true;
-            if (item instanceof YellowWood) yellow = true;
-            if (item instanceof OrangeWood) orange = true;
-            if (item instanceof BlueWood) blue = true;
+            if (item instanceof GreenWood) green++;
+            if (item instanceof BrownWood) brown++;
+            if (item instanceof YellowWood) yellow++;
+            if (item instanceof OrangeWood) orange++;
+            if (item instanceof BlueWood) blue++;
         }
-        return green && brown && yellow && orange && blue;
+        if (green > 0 && brown > 0 && yellow > 0 && orange > 0 && blue > 0){
+            return "cherry_land";
+        }
+        if (green > 1 && blue > 1){
+            return "yellow_land";
+        }
+        return null;
     }
 }

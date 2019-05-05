@@ -22,11 +22,18 @@ public class Background{
         this.coordinates = coordinates;
     }
 
-    public Background(boolean teleportated){
-        if (teleportated)
-            imageId = R.drawable.desert_mntn2_n;
-        else
-            imageId = R.drawable.desert_mntn2_s;
+    public Background(String location){
+        switch (location) {
+            case "black_land":
+                imageId = R.drawable.black_land;
+                break;
+            case "cherry_land":
+                imageId = R.drawable.cherry_land;
+                break;
+            case "yellow_land":
+                imageId = R.drawable.yellow_land;
+                break;
+        }
         image = BitmapFactory.decodeResource(Constants.resources, imageId);
         coordinates = new Point(0, 0);
     }

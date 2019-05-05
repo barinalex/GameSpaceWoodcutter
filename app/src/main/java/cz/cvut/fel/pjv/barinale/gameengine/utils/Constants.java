@@ -21,7 +21,7 @@ public class Constants {
     public static final int PLAYER = 6;
 
     public static String savedGameFileName = "save.txt";
-    public static String mapFileName = "level_1.txt";
+    public static String mapFileName = "black_land.txt";
 
     public static boolean loadFromFile = false;
     public static boolean randomMap = false;

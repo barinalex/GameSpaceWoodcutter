@@ -48,9 +48,6 @@ public abstract class Entity{
         canvas.drawBitmap(getMainImage(),
                 getScreenCoordinates().x - getMainImage().getWidth()/2,
                 getScreenCoordinates().y - getMainImage().getHeight()/2, null);
-        if (timeToDrawHealth()){
-            drawHealth(canvas);
-        }
     }
 
     public boolean timeToDrawHealth(){
@@ -58,11 +55,13 @@ public abstract class Entity{
     }
 
     public void drawHealth(Canvas canvas){
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        canvas.drawRect(fullHealthIndicator, paint);
-        paint.setColor(Color.RED);
-        canvas.drawRect(currentHealthIndicator, paint);
+        if (timeToDrawHealth()) {
+            Paint paint = new Paint();
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(fullHealthIndicator, paint);
+            paint.setColor(Color.RED);
+            canvas.drawRect(currentHealthIndicator, paint);
+        }
     }
 
     public void update(Point userPoint, Point mapPosition){

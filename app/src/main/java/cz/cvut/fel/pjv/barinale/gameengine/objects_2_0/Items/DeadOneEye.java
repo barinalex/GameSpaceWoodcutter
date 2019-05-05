@@ -7,8 +7,8 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
-public class DeadBody extends Potion {
-    public DeadBody(Point mapCoordinates) {
+public class DeadOneEye extends Potion {
+    public DeadOneEye(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.one_eye_dead);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));

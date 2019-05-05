@@ -1,7 +1,10 @@
 package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+
+import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
@@ -32,6 +35,8 @@ public abstract class Tree extends Creature {
             getMapCoordinates().set(getMapCoordinates().x, getMapCoordinates().y + getMainImage().getHeight() * 5 / 16);
             setMainImageId(R.drawable.dead_tree);
             setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+            setMoveImages(new ArrayList<Bitmap>());
+            getMoveImages().add(getMainImage());
             dead = true;
         }
     }
@@ -39,6 +44,7 @@ public abstract class Tree extends Creature {
     public void initializeTree(int ImageId, int initialHealth, int initialProtection){
         setMainImageId(ImageId);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        getMoveImages().add(getMainImage());
         setBody();
         setActiveZone();
         setHealth(new Characteristic(initialHealth));
