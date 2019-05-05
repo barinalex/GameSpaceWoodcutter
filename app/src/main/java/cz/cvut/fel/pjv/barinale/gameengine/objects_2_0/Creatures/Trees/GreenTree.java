@@ -11,7 +11,6 @@ public class GreenTree extends Tree{
     public GreenTree(Point mapCoordinates) {
         super(mapCoordinates);
         initializeTree(R.drawable.green, 10, 1);
-        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.green_step1));
         getInventory().add(new GreenWood(new Point()));
     }
 }

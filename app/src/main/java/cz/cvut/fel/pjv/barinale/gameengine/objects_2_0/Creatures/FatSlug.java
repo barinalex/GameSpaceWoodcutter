@@ -1,8 +1,10 @@
 package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
@@ -18,7 +20,9 @@ public class FatSlug extends Enemy{
         super(mapCoordinates);
         setMainImageId(R.drawable.fat_slug);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
+        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.fat_slug_step));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(7));

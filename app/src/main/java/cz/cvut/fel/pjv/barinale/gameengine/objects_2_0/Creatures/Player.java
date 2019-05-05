@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -23,11 +24,9 @@ public class Player extends Creature{
         super(mapCoordinates);
         setMainImageId(R.drawable.redhead);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
         getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_1));
-        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_fiesty));
-        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_left_hand));
-        getAttackImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_right_hand));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(25));

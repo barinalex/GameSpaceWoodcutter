@@ -16,14 +16,13 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 public abstract class Creature extends Entity {
 
     private int attackDelay;
-    private boolean attack;
     private long timeSinceLastAttack;
-    private long timeSinceLastMove;
     private long timeSinceLastAttackMotion;
-    private ArrayList<Bitmap> attackImages;
+    private long timeSinceLastMove;
     private ArrayList<Bitmap> moveImages;
-    private int attackImageIndex;
+    private ArrayList<Bitmap> attackImages;
     private int moveImageIndex;
+    private int attackImageIndex;
 
     public int getAttackDelay() {
         return attackDelay;
@@ -41,16 +40,20 @@ public abstract class Creature extends Entity {
         this.timeSinceLastAttack = timeSinceLastAttack;
     }
 
+    public long getTimeSinceLastAttackMotion() {
+        return timeSinceLastAttackMotion;
+    }
+
+    public void setTimeSinceLastAttackMotion(long timeSinceLastAttackMotion) {
+        this.timeSinceLastAttackMotion = timeSinceLastAttackMotion;
+    }
+
+    public long getTimeSinceLastMove() {
+        return timeSinceLastMove;
+    }
+
     public void setTimeSinceLastMove(long timeSinceLastMove) {
         this.timeSinceLastMove = timeSinceLastMove;
-    }
-
-    public ArrayList<Bitmap> getAttackImages() {
-        return attackImages;
-    }
-
-    public void setAttackImages(ArrayList<Bitmap> attackImages) {
-        this.attackImages = attackImages;
     }
 
     public ArrayList<Bitmap> getMoveImages() {
@@ -61,38 +64,63 @@ public abstract class Creature extends Entity {
         this.moveImages = moveImages;
     }
 
+    public ArrayList<Bitmap> getAttackImages() {
+        return attackImages;
+    }
+
+    public void setAttackImages(ArrayList<Bitmap> attackImages) {
+        this.attackImages = attackImages;
+    }
+
+    public int getMoveImageIndex() {
+        return moveImageIndex;
+    }
+
+    public void setMoveImageIndex(int moveImageIndex) {
+        this.moveImageIndex = moveImageIndex;
+    }
+
+    public int getAttackImageIndex() {
+        return attackImageIndex;
+    }
+
+    public void setAttackImageIndex(int attackImageIndex) {
+        this.attackImageIndex = attackImageIndex;
+    }
+
     public Creature(Point mapCoordinates) {
         super(mapCoordinates);
         setTimeSinceLastAttack(System.currentTimeMillis());
-        setTimeSinceLastMove(System.currentTimeMillis());
-        setAttackImages(new ArrayList<Bitmap>());
-        setMoveImages(new ArrayList<Bitmap>());
-        attackImageIndex = 0;
-        moveImageIndex = 0;
-        attack = false;
+        moveImages = null;
+        attackImages = null;
+        timeSinceLastMove = 0;
+        timeSinceLastAttackMotion = 0;
     }
-/*
+
     @Override
     public void draw(Canvas canvas) {
-        Bitmap image;
-        image = moveImages.get(moveImageIndex);
-        canvas.drawBitmap(image,
-                getScreenCoordinates().x - image.getWidth()/2,
-                getScreenCoordinates().y - image.getHeight()/2, null);
-        if (System.currentTimeMillis() - timeSinceLastMove > 200){
-            moveImageIndex++;
-            moveImageIndex %= moveImages.size();
-            timeSinceLastMove = System.currentTimeMillis();
-        }
+        drawMove(canvas);
+    }
 
-        if (attack && !getAttackImages().isEmpty() && System.currentTimeMillis() - timeSinceLastAttackMotion > getAttackDelay()/getAttackImages().size()){
-            attackImageIndex++;
-            attackImageIndex %= attackImages.size();
-            timeSinceLastAttackMotion = System.currentTimeMillis();
-            if (attackImageIndex == 0) attack = false;
+    public void drawMove(Canvas canvas){
+        if (moveImages == null){
+            super.draw(canvas);
+        }else {
+            Bitmap image = moveImages.get(moveImageIndex);
+            canvas.drawBitmap(image,
+                    getScreenCoordinates().x - image.getWidth()/2,
+                    getScreenCoordinates().y - image.getHeight()/2, null);
+            if (System.currentTimeMillis() - timeSinceLastMove > 250){
+                moveImageIndex++;
+                moveImageIndex %= moveImages.size();
+                timeSinceLastMove = System.currentTimeMillis();
+            }
         }
-    }*/
+    }
 
+    public void drawAttack(Canvas canvas){
+
+    }
     @Override
     public void update(Point userPoint, Point mapPosition){
         super.update(userPoint, mapPosition);
@@ -135,7 +163,6 @@ public abstract class Creature extends Entity {
         if (System.currentTimeMillis() - getTimeSinceLastAttack() > getAttackDelay()) {
             entity.getDamage(getStrength().getCurrent());
             setTimeSinceLastAttack(System.currentTimeMillis());
-            attack = true;
         }
     }
 

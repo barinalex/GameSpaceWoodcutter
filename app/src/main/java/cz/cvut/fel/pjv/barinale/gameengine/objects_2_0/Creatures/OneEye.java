@@ -1,7 +1,10 @@
 package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+
+import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.DeadOneEye;
@@ -13,7 +16,10 @@ public class OneEye extends Enemy{
         super(mapCoordinates);
         setMainImageId(R.drawable.one_eye1);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
+        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.one_eye_step1));
+        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.one_eye_step2));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(7));
