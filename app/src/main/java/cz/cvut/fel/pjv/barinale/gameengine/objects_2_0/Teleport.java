@@ -15,7 +15,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.GreenWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.OrangeWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.Wood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.YellowWood;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Teleport extends Entity{
     private boolean activated = false;
@@ -23,7 +23,7 @@ public class Teleport extends Entity{
     public Teleport(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.teleport_inactive);
-        setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
         setBody();
         setActiveZone();
     }
@@ -34,7 +34,7 @@ public class Teleport extends Entity{
                 getMapCoordinates().y + mapPosition.y);
         if (!activated && (location = checkTeleportationConditions()) != null){
             setMainImageId(R.drawable.teleport);
-            setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+            setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
             activated = true;
         }
     }

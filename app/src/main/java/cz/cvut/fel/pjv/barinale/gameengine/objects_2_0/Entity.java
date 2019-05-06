@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Entity{
     private Rect body;
@@ -97,12 +97,12 @@ public abstract class Entity{
     }
 
     public void initializeHealthIndicator(){
-        fullHealthIndicator = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
-        currentHealthIndicator = new Rect(Constants.SCREEN_WIDTH - 120, 20, Constants.SCREEN_WIDTH - 20, 40);
+        fullHealthIndicator = new Rect(GamePanel.SCREEN_WIDTH - 120, 20, GamePanel.SCREEN_WIDTH - 20, 40);
+        currentHealthIndicator = new Rect(GamePanel.SCREEN_WIDTH - 120, 20, GamePanel.SCREEN_WIDTH - 20, 40);
     }
 
     public void setCurrentHealthIndicator(){
-        currentHealthIndicator.set(Constants.SCREEN_WIDTH - 120, currentHealthIndicator.top, Constants.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
+        currentHealthIndicator.set(GamePanel.SCREEN_WIDTH - 120, currentHealthIndicator.top, GamePanel.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
     }
 
     public int getCurrentHealthDecrement(){

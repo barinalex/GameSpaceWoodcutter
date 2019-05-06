@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Background{
     private int imageId;
@@ -52,17 +52,17 @@ public class Background{
                 imageId = R.drawable.earth_land;
                 break;
         }
-        image = BitmapFactory.decodeResource(Constants.resources, imageId);
+        image = BitmapFactory.decodeResource(GamePanel.resources, imageId);
         coordinates = new Point(0, 0);
     }
 
     public Point update(Point user_point){
         int border_x, border_y;
         int x, y;
-        x = ((user_point.x - Constants.SCREEN_WIDTH/2) < 0) ? coordinates.x + BACKGROUND_SPEED: coordinates.x - BACKGROUND_SPEED;
-        y = ((user_point.y - Constants.SCREEN_HEIGHT/2) < 0) ? coordinates.y + BACKGROUND_SPEED: coordinates.y - BACKGROUND_SPEED;
-        border_x = (Constants.SCREEN_WIDTH -(image.getWidth()));
-        border_y = (Constants.SCREEN_HEIGHT - (image.getHeight()));
+        x = ((user_point.x - GamePanel.SCREEN_WIDTH/2) < 0) ? coordinates.x + BACKGROUND_SPEED: coordinates.x - BACKGROUND_SPEED;
+        y = ((user_point.y - GamePanel.SCREEN_HEIGHT/2) < 0) ? coordinates.y + BACKGROUND_SPEED: coordinates.y - BACKGROUND_SPEED;
+        border_x = (GamePanel.SCREEN_WIDTH -(image.getWidth()));
+        border_y = (GamePanel.SCREEN_HEIGHT - (image.getHeight()));
         x = (x > 0) ? 0 : x;
         x = (x < border_x) ? border_x : x;
         y = (y > 0) ? 0 : y;

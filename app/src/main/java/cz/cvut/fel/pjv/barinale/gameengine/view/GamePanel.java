@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.barinale.gameengine.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,11 +15,14 @@ import cz.cvut.fel.pjv.barinale.gameengine.Activities.Menu;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
+    public static Resources resources;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+
     private Context context;
     private MainThread thread;
     private Rect r = new Rect();
@@ -43,11 +47,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public GamePanel(Context context){
         super(context);
         this.context = context;
-        Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
-        Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
+        SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
+        SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
-        Constants.resources = getResources();
+        GamePanel.resources = getResources();
+        resources = getResources();
         reset();
         setFocusable(true);
     }

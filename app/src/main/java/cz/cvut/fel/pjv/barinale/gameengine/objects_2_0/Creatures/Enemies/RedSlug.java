@@ -10,16 +10,16 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.RedSlugCorpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes.RedRune;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class RedSlug extends Enemy{
     public RedSlug(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.red_slug);
-        setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
         setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
-        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.red_slug_step));
+        getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.red_slug_step));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(20));

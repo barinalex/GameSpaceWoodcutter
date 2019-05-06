@@ -12,17 +12,17 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.GoldenAxe
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.SimpleAxe;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.FatSlugCorpus;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class FatSlug extends Enemy{
     private static Random random = new Random();
     public FatSlug(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.fat_slug);
-        setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
         setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
-        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.fat_slug_step));
+        getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.fat_slug_step));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(10));

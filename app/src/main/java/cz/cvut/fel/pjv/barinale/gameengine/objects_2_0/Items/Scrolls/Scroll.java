@@ -7,7 +7,7 @@ import android.graphics.Point;
 
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Scroll extends Item {
     private String text;
@@ -20,7 +20,7 @@ public abstract class Scroll extends Item {
 
     public void openScroll() {
         openScroll = true;
-        getScreenCoordinates().set(Constants.SCREEN_WIDTH / 2  - scrollImage.getWidth()/2, 50);
+        getScreenCoordinates().set(GamePanel.SCREEN_WIDTH / 2  - scrollImage.getWidth()/2, 50);
         EntityManager.entities.add(this);
     }
 
@@ -40,8 +40,8 @@ public abstract class Scroll extends Item {
 
     public void initializeScroll(int imageId, int scrollImageId){
         setMainImageId(imageId);
-        setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
-        scrollImage = (BitmapFactory.decodeResource(Constants.resources, scrollImageId));
+        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+        scrollImage = (BitmapFactory.decodeResource(GamePanel.resources, scrollImageId));
         setBody();
         setActiveZone();
     }

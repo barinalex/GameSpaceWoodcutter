@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
@@ -51,28 +49,6 @@ public class Utils {
     public static boolean checkWinCondition(){
         for (Item item: EntityManager.player.getInventory()){
             if (item instanceof RedRune) return true;
-        }
-        return false;
-    }
-
-    public static boolean stopNear(Point point, Creature creature){
-        for (Entity entity: EntityManager.entities){
-            if (!(entity instanceof Item)){
-                if (entity.getBody().contains(point.x, point.y) && CollisionDetecter.isCollide(creature, entity)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static boolean anObstacleOnTheWay(Point point){
-        for (Entity entity: EntityManager.entities){
-            if (!(entity instanceof Item)){
-                if (entity.getBody().contains(point.x, point.y)){
-                    return true;
-                }
-            }
         }
         return false;
     }

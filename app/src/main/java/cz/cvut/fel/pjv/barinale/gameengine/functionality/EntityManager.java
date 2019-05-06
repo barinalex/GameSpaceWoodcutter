@@ -37,7 +37,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.CherryTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.GreenTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.OrangeTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.YellowTree;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class EntityManager {
     public static Player player;
@@ -70,7 +70,7 @@ public class EntityManager {
         entities = new ArrayList<>();
         background = new Background(location);
         if (!teleported) {
-            player = new Player(new Point(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2));
+            player = new Player(new Point(GamePanel.SCREEN_WIDTH / 2, GamePanel.SCREEN_HEIGHT / 2));
             player.getInventory().add(new YellowScroll(new Point()));
             player.getInventory().add(new CherryScroll(new Point()));
             player.getInventory().add(new EarthScroll(new Point()));

@@ -16,17 +16,17 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.Wood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Teleport;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Player extends Creature{
 
     public Player(Point mapCoordinates) {
         super(mapCoordinates);
         setMainImageId(R.drawable.redhead);
-        setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
         setMoveImages(new ArrayList<Bitmap>());
         getMoveImages().add(getMainImage());
-        getMoveImages().add(BitmapFactory.decodeResource(Constants.resources, R.drawable.redhead_1));
+        getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.redhead_1));
         setBody();
         setActiveZone();
         setHealth(new Characteristic(25));

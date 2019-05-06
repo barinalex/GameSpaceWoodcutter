@@ -20,7 +20,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.Scroll;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -156,7 +156,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
-        Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
+        GamePanel.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
+        GamePanel.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
     }
 }
