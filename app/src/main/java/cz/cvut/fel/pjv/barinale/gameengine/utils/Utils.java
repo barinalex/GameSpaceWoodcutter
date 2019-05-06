@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.CherryWood;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes.RedRune;
 
 public class Utils {
     public static Point getDirection(Point newPoint, Point oldPoint, double rate){
@@ -48,7 +51,7 @@ public class Utils {
 
     public static boolean checkWinCondition(){
         for (Item item: EntityManager.player.getInventory()){
-            if (item instanceof CherryWood) return true;
+            if (item instanceof RedRune) return true;
         }
         return false;
     }
@@ -79,13 +82,18 @@ public class Utils {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
                     (context.getFilesDir(), Constants.savedGameFileName)));
-            bufferedWriter.write(EntityManager.background.getCoordinates().x + " " + EntityManager.background.getCoordinates().y + "\n");
-            for (Entity entity : EntityManager.entities) {
+            bufferedWriter.write(EntityManager.background.getLocation() + " " +
+                    EntityManager.background.getCoordinates().x + " " +
+                    EntityManager.background.getCoordinates().y + "\n");
+            for (Entity entity : EntityManager.entities){
                 String line = entity.getClass().getSimpleName() + " " +
                         entity.getMapCoordinates().x + " " +
-                        entity.getMapCoordinates().y + " " + entity.getHealth().getCurrent();
-                for (Item item : entity.getInventory()) {
-                    line += " " + item.getClass().getSimpleName();
+                        entity.getMapCoordinates().y + " " +
+                        entity.getHealth().getCurrent();
+                if (entity instanceof Player) {
+                    for (Item item : entity.getInventory()) {
+                        line += " " + item.getClass().getSimpleName();
+                    }
                 }
                 line += "\n";
                 bufferedWriter.write(line);

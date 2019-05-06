@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures;
+package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +7,7 @@ import android.graphics.Point;
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.DeadOneEye;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.OneEyeCorpus;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
@@ -27,6 +27,6 @@ public class OneEye extends Enemy{
         setProtection(new Characteristic(0));
         setStrength(new Characteristic(3, 3));
         setAttackDelay(750);
-        getInventory().add(new DeadOneEye(new Point()));
+        getInventory().add(new OneEyeCorpus(new Point()));
     }
 }

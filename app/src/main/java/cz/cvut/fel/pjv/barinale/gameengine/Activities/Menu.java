@@ -9,36 +9,35 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class Menu extends Activity implements View.OnClickListener {
-
+    private Button button_resume;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
-        Button button_resume = findViewById(R.id.button_resume);
+        button_resume = findViewById(R.id.button_resume);
         Button button_start = findViewById(R.id.button_start);
         Button buttonSave = findViewById(R.id.save);
         Button buttonLoad = findViewById(R.id.load);
         Button buttonQuit = findViewById(R.id.buttonQuit);
-        Switch switchRandomMap = findViewById(R.id.switchRandomMap);
+        //Switch switchRandomMap = findViewById(R.id.switchRandomMap);
 
         button_resume.setOnClickListener(this);
         button_start.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
         buttonLoad.setOnClickListener(this);
         buttonQuit.setOnClickListener(this);
-        switchRandomMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*switchRandomMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Constants.randomMap = !Constants.randomMap;
             }
         });
+        */
     }
 
     @Override
@@ -56,22 +55,19 @@ public class Menu extends Activity implements View.OnClickListener {
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
-                EntityManager.entities = null;
-                EntityManager.background = null;
                 intent = new Intent(this, MainActivity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.save:
-                Utils.saveGameState(this);
+                if (MainActivity.gameActivity != null) {
+                    Utils.saveGameState(this);
+                }
                 break;
             case R.id.load:
-                //Utils.loadGame(this);
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
-                //GameObjectManager.gameObjects = null;
-                //GameObjectManager.background = null;
                 Constants.loadFromFile = true;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

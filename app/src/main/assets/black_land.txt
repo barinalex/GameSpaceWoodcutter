@@ -1,13 +1,12 @@
 0 0
 Teleport 400 400 0
-Player 400 400 25
-HealthPotion 900 1000 10
+Player 400 400 25 MissionScroll
 BlueTree 800 500 15
 BlueTree 800 1200 15
 BrownTree 1000 600 20
 GreenTree 100 100 10
 GreenTree 900 1000 10
 OrangeTree 200 900 10
-OneEye 700 1300 10
-OneEye 1200 1200 10
-FatSlug 100 1200 10
+OneEye 700 1300 10 YellowScroll
+OneEye 1200 1200 10 CherryScroll
+FatSlug 100 1200 10 EarthScroll

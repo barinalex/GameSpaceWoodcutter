@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Potion;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public abstract class Creature extends Entity {
@@ -119,8 +119,14 @@ public abstract class Creature extends Entity {
     }
 
     public void drawAttack(Canvas canvas){
-
+        if (attackImages == null){
+            super.draw(canvas);
+        }
+        else {
+            super.draw(canvas);
+        }
     }
+
     @Override
     public void update(Point userPoint, Point mapPosition){
         super.update(userPoint, mapPosition);
@@ -150,13 +156,13 @@ public abstract class Creature extends Entity {
                 getMapCoordinates().y + mapPosition.y);
     }
 
-    public void usePotion(Potion potion){
-        getHealth().restore(potion.getHealth().getCurrent());
-        getSpeed().restore(potion.getSpeed().getCurrent());
-        getProtection().restore(potion.getProtection().getCurrent());
-        getStrength().restore(potion.getStrength().getCurrent());
+    public void eat(Corpus corpus){
+        getHealth().restore(corpus.getHealth().getCurrent());
+        getSpeed().restore(corpus.getSpeed().getCurrent());
+        getProtection().restore(corpus.getProtection().getCurrent());
+        getStrength().restore(corpus.getStrength().getCurrent());
         setCurrentHealthIndicator();
-        getInventory().remove(potion);
+        getInventory().remove(corpus);
     }
 
     public void attack(Entity entity) {

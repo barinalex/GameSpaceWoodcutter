@@ -17,22 +17,25 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.Scroll;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     public static Activity gameActivity;
 
-    private static FrameLayout game;
-    private static GamePanel gamePanel;
-    private static View inventoryView;
-    private static LinearLayout inventoryContainer;
+    private FrameLayout game;
+    private GamePanel gamePanel;
+    private View inventoryView;
+    private TextView textView;
+    private LinearLayout inventoryContainer;
 
-    private static Button menuButton;
-    private static Button closeInventory;
-    private static Button inventoryButton;
-    private static ArrayList<Button> items;
+    private Button menuButton;
+    private Button closeInventory;
+    private Button inventoryButton;
+    private ArrayList<Button> items;
 
     private MediaPlayer music;
 
@@ -43,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gamePanel = new GamePanel(this);
-        View gameButtons = getLayoutInflater().inflate(R.layout.game_buttons, null);
+        View gameButtons = getLayoutInflater().inflate(R.layout.game_view, null);
         inventoryView = getLayoutInflater().inflate(R.layout.inventory, null);
         inventoryContainer = inventoryView.findViewById(R.id.inventory_linaer_layout);
 
@@ -62,10 +65,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         game.removeView(inventoryView);
 
-        TextView textView = findViewById(R.id.textView);
-        //textView.setText("sadbfjshbcvbdf");
-        textView.setVisibility(View.INVISIBLE);
-
         items = new ArrayList<>();
         music = MediaPlayer.create(getApplicationContext(), R.raw.dark_fallout);
         music.setLooping(true);
@@ -76,6 +75,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         music.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        music.stop();
+        super.onDestroy();
     }
 
     @Override
@@ -100,9 +105,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         for (int i = 0; i < items.size(); i++) {
             Button item = items.get(i);
             if (item.getId() == v.getId()) {
-                inventoryContainer.removeView(item);
-                items.remove(item);
-                EntityManager.player.discardItem(i--);
+                if (EntityManager.player.getInventory().get(i) instanceof Corpus){
+                    EntityManager.player.eat((Corpus) EntityManager.player.getInventory().get(i--));
+                    inventoryContainer.removeView(item);
+                    items.remove(item);
+                }
+                else if(EntityManager.player.getInventory().get(i) instanceof Scroll){
+                    if (((Scroll) EntityManager.player.getInventory().get(i)).isOpenScroll()){
+                        ((Scroll) EntityManager.player.getInventory().get(i)).closeScroll();
+                    }else {
+                        ((Scroll) EntityManager.player.getInventory().get(i)).openScroll();
+                    }
+                }
+                else {
+                    EntityManager.player.discardItem(i--);
+                    inventoryContainer.removeView(item);
+                    items.remove(item);
+                }
             }
         }
     }

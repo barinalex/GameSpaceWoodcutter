@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemy;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
@@ -22,7 +22,6 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private Context context;
     private MainThread thread;
-    private Background background;
     private Rect r = new Rect();
 
     private Point userPoint, background_point;
@@ -55,16 +54,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void reset(){
-
         if (Constants.loadFromFile){
             Utils.loadGame(context, Constants.savedGameFileName, true);
             Constants.loadFromFile = false;
         }
-        else if (Constants.randomMap){
-            EntityManager.createRandomMap("black_land", false);
-        }
         else {
-            Utils.loadGame(context, Constants.mapFileName, false);
+            EntityManager.createRandomMap("black_land", false);
+            //Utils.loadGame(context, Constants.mapFileName, false);
         }
 
         //EntityManager.createRandomMap(false);

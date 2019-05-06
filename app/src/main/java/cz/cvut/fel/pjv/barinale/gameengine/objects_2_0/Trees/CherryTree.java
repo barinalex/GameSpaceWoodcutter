@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees;
+package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees;
 
 import android.graphics.Point;
 

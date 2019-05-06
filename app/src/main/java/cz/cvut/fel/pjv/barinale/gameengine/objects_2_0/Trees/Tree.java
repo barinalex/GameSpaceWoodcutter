@@ -1,32 +1,23 @@
-package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees;
+package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-
-import java.util.ArrayList;
+import android.graphics.Rect;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
-public abstract class Tree extends Creature {
+public abstract class Tree extends Entity {
     private boolean dead = false;
     public Tree(Point mapCoordinates) {
         super(mapCoordinates);
-        setSpeed(new Characteristic(2));
-        setStrength(new Characteristic(4));
-        setAttackDelay(3000);
     }
 
     @Override
     public void update(Point userPoint, Point mapPosition) {
         super.update(userPoint, mapPosition);
-        if (!isDead() && nearThePlayer()){
-            attack(EntityManager.player);
-        }
     }
 
     public void die(){
@@ -35,6 +26,7 @@ public abstract class Tree extends Creature {
             getMapCoordinates().set(getMapCoordinates().x, getMapCoordinates().y + getMainImage().getHeight() * 5 / 16);
             setMainImageId(R.drawable.dead_tree);
             setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
+            setActiveZone(new Rect());
             dead = true;
         }
     }
@@ -54,5 +46,13 @@ public abstract class Tree extends Creature {
                 getMapCoordinates().y + getMainImage().getHeight() / 4,
                 getMapCoordinates().x + getMainImage().getWidth() / 8,
                 getMapCoordinates().y + getMainImage().getHeight() * 3 / 8);
+    }
+
+    @Override
+    public void setActiveZone() {
+        getActiveZone().set(getMapCoordinates().x - getMainImage().getWidth() / 2,
+                getMapCoordinates().y - getMainImage().getHeight() / 2,
+                getMapCoordinates().x + getMainImage().getWidth() / 2,
+                getMapCoordinates().y + getMainImage().getHeight() / 2);
     }
 }

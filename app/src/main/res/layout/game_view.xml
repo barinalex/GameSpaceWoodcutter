@@ -9,23 +9,17 @@
         android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="Menu"/>
+        android:layout_alignParentBottom="true"
+        android:text="Menu" />
 
     <Button
         android:id="@+id/inventoryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inventory"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/menu"/>
+        android:layout_toLeftOf="@id/menu"
+        android:text="Inventory" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Health: "
-        android:textSize="14sp" />
 
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0;
 
-
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
@@ -11,6 +10,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BlueWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BrownWood;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.CherryWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.GreenWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.OrangeWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.Wood;
@@ -60,13 +60,17 @@ public class Teleport extends Entity{
     }
 
     private String checkTeleportationConditions(){
-        int green = 0, brown = 0, yellow = 0, orange = 0, blue = 0;
+        int green = 0, brown = 0, yellow = 0, orange = 0, blue = 0, cherry = 0;
         for (Item item: getInventory()){
             if (item instanceof GreenWood) green++;
             if (item instanceof BrownWood) brown++;
             if (item instanceof YellowWood) yellow++;
             if (item instanceof OrangeWood) orange++;
             if (item instanceof BlueWood) blue++;
+            if (item instanceof CherryWood) cherry++;
+        }
+        if (cherry > 2){
+            return "earth_land";
         }
         if (green > 0 && brown > 0 && yellow > 0 && orange > 0 && blue > 0){
             return "cherry_land";

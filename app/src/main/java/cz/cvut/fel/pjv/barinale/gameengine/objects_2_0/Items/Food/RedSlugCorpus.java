@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items;
+package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -7,13 +7,13 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 
-public class DeadOneEye extends Potion {
-    public DeadOneEye(Point mapCoordinates) {
+public class RedSlugCorpus extends Corpus {
+    public RedSlugCorpus(Point mapCoordinates) {
         super(mapCoordinates);
-        setMainImageId(R.drawable.one_eye_dead);
+        setMainImageId(R.drawable.red_slug_dead);
         setMainImage(BitmapFactory.decodeResource(Constants.resources, getMainImageId()));
         setBody();
         setActiveZone();
-        setHealth(new Characteristic(3));
+        setHealth(new Characteristic(10));
     }
 }

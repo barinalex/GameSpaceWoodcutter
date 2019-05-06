@@ -14,6 +14,14 @@ public class Background{
     private Bitmap image;
     private Point coordinates;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Point getCoordinates() {
         return coordinates;
     }
@@ -23,6 +31,7 @@ public class Background{
     }
 
     public Background(String location){
+        this.location = location;
         switch (location) {
             case "black_land":
                 imageId = R.drawable.black_land;
@@ -32,6 +41,9 @@ public class Background{
                 break;
             case "yellow_land":
                 imageId = R.drawable.yellow_land;
+                break;
+            case "earth_land":
+                imageId = R.drawable.earth_land;
                 break;
         }
         image = BitmapFactory.decodeResource(Constants.resources, imageId);

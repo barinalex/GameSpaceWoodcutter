@@ -7,15 +7,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.FatSlug;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.OneEye;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.Tree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.FatSlug;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.OneEye;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.RedSlug;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.FatSlugCorpus;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.OneEyeCorpus;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.RedSlugCorpus;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes.RedRune;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.CherryScroll;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.EarthScroll;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.MissionScroll;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.YellowScroll;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.Tree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.SimpleAxe;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.GoldenAxe;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.HealthPotion;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BlueWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BrownWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.CherryWood;
@@ -24,12 +31,12 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.OrangeWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.YellowWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Teleport;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.BlueTree;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.BrownTree;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.CherryTree;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.GreenTree;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.OrangeTree;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Trees.YellowTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.BlueTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.BrownTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.CherryTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.GreenTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.OrangeTree;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.YellowTree;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 
@@ -42,8 +49,8 @@ public class EntityManager {
     public static void createMap(ArrayList<String> mapDescription){
         entities = new ArrayList<>();
         String data[] = mapDescription.get(0).split(" ");
-        background = new Background("black_land");
-        background.setCoordinates(new Point(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
+        background = new Background(data[0]);
+        background.setCoordinates(new Point(Integer.parseInt(data[1]), Integer.parseInt(data[2])));
         mapDescription.remove(0);
         for (String line: mapDescription){
             data = line.split(" ");
@@ -63,34 +70,42 @@ public class EntityManager {
     public static void createRandomMap(String location, boolean teleported){
         entities = new ArrayList<>();
         background = new Background(location);
-        if (!teleported)
-            player = new Player(new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2));
+        if (!teleported) {
+            player = new Player(new Point(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2));
+            player.getInventory().add(new YellowScroll(new Point()));
+            player.getInventory().add(new CherryScroll(new Point()));
+            player.getInventory().add(new EarthScroll(new Point()));
+            player.getInventory().add(new MissionScroll(new Point()));
+        }
         entities.add(new Teleport(new Point(player.getMapCoordinates().x, player.getMapCoordinates().y + player.getMainImage().getHeight() / 2)));
         entities.add(player);
 
-        addEntityRandomPos(1, SimpleAxe.class.getSimpleName());
-        addEntityRandomPos(2, HealthPotion.class.getSimpleName());
-        addEntityRandomPos(1, GoldenAxe.class.getSimpleName());
-        addEntityRandomPos(4, BlueTree.class.getSimpleName());
-        addEntityRandomPos(4, BrownTree.class.getSimpleName());
-        if (location.equals("cherry_land")) {
-            addEntityRandomPos(4, CherryTree.class.getSimpleName());
+        if (!location.equals("earth_land")) {
+            addEntityRandomPos(8, GreenTree.class.getSimpleName());
+            addEntityRandomPos(5, BrownTree.class.getSimpleName());
+            addEntityRandomPos(5, BlueTree.class.getSimpleName());
+            addEntityRandomPos(4, OrangeTree.class.getSimpleName());
+        }else {
+            addEntityRandomPos(16, GreenTree.class.getSimpleName());
+            addEntityRandomPos(12, BrownTree.class.getSimpleName());
         }
-        addEntityRandomPos(8, GreenTree.class.getSimpleName());
-        addEntityRandomPos(3, OrangeTree.class.getSimpleName());
+        if (location.equals("cherry_land")) {
+            addEntityRandomPos(7, CherryTree.class.getSimpleName());
+        }
         if (location.equals("yellow_land")) {
-            addEntityRandomPos(4, YellowTree.class.getSimpleName());
+            addEntityRandomPos(10, YellowTree.class.getSimpleName());
         }
         addEntityRandomPos(5, OneEye.class.getSimpleName());
         addEntityRandomPos(2, FatSlug.class.getSimpleName());
+        if (location.equals("earth_land")){
+            addEntityRandomPos(1, RedSlug.class.getSimpleName());
+        }
     }
 
     private static void addEntityRandomPos(int amount, String type){
         Entity entity;
-        int cyckleCounter;
         for (int i = 0; i < amount; i++) {
-            cyckleCounter = 0;
-            while (isIntersected(entity = createEntity(type, null)) && cyckleCounter++ < 5);
+            while (isIntersected(entity = createEntity(type, null)));
             entities.add(entity);
         }
     }
@@ -106,8 +121,6 @@ public class EntityManager {
                 return new SimpleAxe(coordinates);
             case "GoldenAxe":
                 return new GoldenAxe(coordinates);
-            case "HealthPotion":
-                return new HealthPotion(coordinates);
             case "BlueTree":
                 return new BlueTree(coordinates);
             case "BrownTree":
@@ -138,6 +151,24 @@ public class EntityManager {
                 return new OneEye(coordinates);
             case "FatSlug":
                 return new FatSlug(coordinates);
+            case "RedSlug":
+                return new RedSlug(coordinates);
+            case "FatSlugCorpus":
+                return new FatSlugCorpus(coordinates);
+            case "RedSlugCorpus":
+                return new RedSlugCorpus(coordinates);
+            case "OneEyeCorpus":
+                return new OneEyeCorpus(coordinates);
+            case "YellowScroll":
+                return new YellowScroll(coordinates);
+            case "CherryScroll":
+                return new CherryScroll(coordinates);
+            case "EarthScroll":
+                return new EarthScroll(coordinates);
+            case "MissionScroll":
+                return new MissionScroll(coordinates);
+            case "RedRune":
+                return new RedRune(coordinates);
         }
         return null;
     }

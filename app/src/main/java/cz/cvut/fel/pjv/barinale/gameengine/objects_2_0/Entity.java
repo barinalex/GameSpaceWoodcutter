@@ -102,7 +102,7 @@ public abstract class Entity{
     }
 
     public void setCurrentHealthIndicator(){
-        currentHealthIndicator.set(currentHealthIndicator.left, currentHealthIndicator.top, Constants.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
+        currentHealthIndicator.set(Constants.SCREEN_WIDTH - 120, currentHealthIndicator.top, Constants.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
     }
 
     public int getCurrentHealthDecrement(){

@@ -12,7 +12,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.Amunition;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Potion;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.Wood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Teleport;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
@@ -30,9 +30,9 @@ public class Player extends Creature{
         setBody();
         setActiveZone();
         setHealth(new Characteristic(25));
-        setSpeed(new Characteristic(15,15));
-        setProtection(new Characteristic(2, 2));
-        setStrength(new Characteristic(2, 2));
+        setSpeed(new Characteristic(15));
+        setProtection(new Characteristic(2));
+        setStrength(new Characteristic(2));
         setAttackDelay(500);
     }
 
@@ -87,25 +87,20 @@ public class Player extends Creature{
         }
         getInventory().add(newItem);
         EntityManager.entities.remove(newItem);
-        if (!(newItem instanceof Potion)) {
+        if (!(newItem instanceof Corpus)) {
             addItemEffects(newItem);
         }
     }
 
     public void discardItem(int index){
         Item item = getInventory().get(index);
-        if (item instanceof Potion){
-            usePotion((Potion) item);
-        }
-        else {
-            removeItemEffects(item);
-            item.setMapCoordinates(new Point(getMapCoordinates().x + item.getMainImage().getWidth(),
-                    getMapCoordinates().y + item.getMainImage().getHeight()));
-            item.setBody();
-            item.setActiveZone();
-            EntityManager.entities.add(1, item);
-            getInventory().remove(item);
-        }
+        removeItemEffects(item);
+        item.setMapCoordinates(new Point(getMapCoordinates().x + item.getMainImage().getWidth(),
+                getMapCoordinates().y + item.getMainImage().getHeight()));
+        item.setBody();
+        item.setActiveZone();
+        EntityManager.entities.add(1, item);
+        getInventory().remove(item);
     }
 
     private boolean checkTarget(Point userPoint, Entity entity){

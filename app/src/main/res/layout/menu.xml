@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/black_land">
 
     <Button
         android:id="@+id/button_resume"
@@ -30,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:gravity="center"
         android:background="@android:drawable/btn_default"
+        android:gravity="center"
         android:text="Save" />
 
     <Button
@@ -52,19 +50,13 @@
         android:background="@android:drawable/btn_default"
         android:text="Quit" />
 
-    <Switch
-        android:id="@+id/switchRandomMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/button_start"
-        android:layout_below="@+id/button_resume"
-        android:text="RandomMap" />
-
     <TextView
         android:id="@+id/gameName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="SPACE WOODCUTTER" />
+        android:text="SPACE WOODCUTTER"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
 </RelativeLayout>
