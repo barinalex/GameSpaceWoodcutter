@@ -38,7 +38,6 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.GreenTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.OrangeTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.YellowTree;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 
 public class EntityManager {
     public static Player player;
@@ -112,7 +111,8 @@ public class EntityManager {
 
     private static Entity createEntity(String type, Point coordinates){
         if (coordinates == null){
-            coordinates = new Point(random.nextInt(ImageArchive.map_size.x - 100) + 50, random.nextInt(ImageArchive.map_size.y - 100) + 50);
+            coordinates = new Point(random.nextInt(background.getImage().getWidth() - 200) + 100,
+                    random.nextInt(background.getImage().getHeight() - 200) + 100);
         }
         switch (type){
             case "Player":

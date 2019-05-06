@@ -15,14 +15,13 @@ import java.util.ArrayList;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Creature;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes.RedRune;
 
 public class Utils {
+    public static String savedGameFileName = "save.txt";
     public static Point getDirection(Point newPoint, Point oldPoint, double rate){
         /*
          *  direction = rate * v chceme vector ve stejnem smeru jako v ale delky rate
@@ -81,7 +80,7 @@ public class Utils {
     public static void saveGameState(Context context) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
-                    (context.getFilesDir(), Constants.savedGameFileName)));
+                    (context.getFilesDir(), savedGameFileName)));
             bufferedWriter.write(EntityManager.background.getLocation() + " " +
                     EntityManager.background.getCoordinates().x + " " +
                     EntityManager.background.getCoordinates().y + "\n");
@@ -103,12 +102,12 @@ public class Utils {
         }
     }
 
-    public static void loadGame(Context context, String fileName, boolean loadSavedState){
+    public static void loadGame(Context context, String fileName){
         String line;
         try {
             BufferedReader bufferedReader;
-            if (loadSavedState) {
-                bufferedReader = new BufferedReader(new FileReader(new File(context.getFilesDir(), fileName)));
+            if (fileName == null) {
+                bufferedReader = new BufferedReader(new FileReader(new File(context.getFilesDir(), savedGameFileName)));
             }
             else {
                 bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName)));

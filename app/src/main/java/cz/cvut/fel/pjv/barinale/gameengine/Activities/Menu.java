@@ -5,39 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class Menu extends Activity implements View.OnClickListener {
-    private Button button_resume;
+    public static boolean loadFromFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
-        button_resume = findViewById(R.id.button_resume);
+        Button button_resume = findViewById(R.id.button_resume);
         Button button_start = findViewById(R.id.button_start);
         Button buttonSave = findViewById(R.id.save);
         Button buttonLoad = findViewById(R.id.load);
         Button buttonQuit = findViewById(R.id.buttonQuit);
-        //Switch switchRandomMap = findViewById(R.id.switchRandomMap);
 
         button_resume.setOnClickListener(this);
         button_start.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
         buttonLoad.setOnClickListener(this);
         buttonQuit.setOnClickListener(this);
-        /*switchRandomMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Constants.randomMap = !Constants.randomMap;
-            }
-        });
-        */
     }
 
     @Override
@@ -68,7 +57,7 @@ public class Menu extends Activity implements View.OnClickListener {
                 if (MainActivity.gameActivity != null) {
                     MainActivity.gameActivity.finish();
                 }
-                Constants.loadFromFile = true;
+                loadFromFile = true;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;

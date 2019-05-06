@@ -14,6 +14,12 @@ public class Background{
     private Bitmap image;
     private Point coordinates;
 
+    private static final int BACKGROUND_SPEED = 25;
+
+    public Bitmap getImage() {
+        return image;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -53,8 +59,8 @@ public class Background{
     public Point update(Point user_point){
         int border_x, border_y;
         int x, y;
-        x = ((user_point.x - Constants.SCREEN_WIDTH/2) < 0) ? coordinates.x + Constants.BACKGROUND_SPEED: coordinates.x - Constants.BACKGROUND_SPEED;
-        y = ((user_point.y - Constants.SCREEN_HEIGHT/2) < 0) ? coordinates.y + Constants.BACKGROUND_SPEED: coordinates.y - Constants.BACKGROUND_SPEED;
+        x = ((user_point.x - Constants.SCREEN_WIDTH/2) < 0) ? coordinates.x + BACKGROUND_SPEED: coordinates.x - BACKGROUND_SPEED;
+        y = ((user_point.y - Constants.SCREEN_HEIGHT/2) < 0) ? coordinates.y + BACKGROUND_SPEED: coordinates.y - BACKGROUND_SPEED;
         border_x = (Constants.SCREEN_WIDTH -(image.getWidth()));
         border_y = (Constants.SCREEN_HEIGHT - (image.getHeight()));
         x = (x > 0) ? 0 : x;

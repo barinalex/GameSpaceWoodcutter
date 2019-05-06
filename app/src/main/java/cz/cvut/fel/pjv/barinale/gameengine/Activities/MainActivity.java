@@ -158,6 +158,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onConfigurationChanged(newConfig);
         Constants.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         Constants.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
-        Constants.CONFIG_CHANGED = true;
     }
 }

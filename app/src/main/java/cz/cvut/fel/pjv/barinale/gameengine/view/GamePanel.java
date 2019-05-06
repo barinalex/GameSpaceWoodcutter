@@ -10,12 +10,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import cz.cvut.fel.pjv.barinale.gameengine.Activities.Menu;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Constants;
-import cz.cvut.fel.pjv.barinale.gameengine.utils.ImageArchive;
 import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
@@ -35,6 +34,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private long double_click_time = 0;
     private boolean click = false;
 
+    private static final int REACTIONTIME = 180;
+
     public void setPause(boolean pause) {
         this.pause = pause;
     }
@@ -47,23 +48,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         Constants.resources = getResources();
-        if (ImageArchive.images == null)
-            ImageArchive.read_images();
         reset();
         setFocusable(true);
     }
 
     public void reset(){
-        if (Constants.loadFromFile){
-            Utils.loadGame(context, Constants.savedGameFileName, true);
-            Constants.loadFromFile = false;
+        if (Menu.loadFromFile){
+            Utils.loadGame(context, null);
+            Menu.loadFromFile = false;
         }
         else {
             EntityManager.createRandomMap("black_land", false);
-            //Utils.loadGame(context, Constants.mapFileName, false);
+            //Utils.loadGame(context, "black_land.txt");
         }
-
-        //EntityManager.createRandomMap(false);
         userPoint = new Point(EntityManager.player.getScreenCoordinates().x, EntityManager.player.getScreenCoordinates().y);
         game_start_time = System.currentTimeMillis();
     }
@@ -102,7 +99,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 if(!pause && !game_over && !won) {
                     userPoint.set((int) event.getX(), (int) event.getY());
                     startClickTime = System.currentTimeMillis();
-                    screen_moving = (click && System.currentTimeMillis() - double_click_time < Constants.REACTIONTIME);
+                    screen_moving = (click && System.currentTimeMillis() - double_click_time < REACTIONTIME);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -111,7 +108,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                click = (System.currentTimeMillis() - startClickTime < Constants.REACTIONTIME);
+                click = (System.currentTimeMillis() - startClickTime < REACTIONTIME);
                 if (click) double_click_time = System.currentTimeMillis();
                 screen_moving = false;
                 break;
