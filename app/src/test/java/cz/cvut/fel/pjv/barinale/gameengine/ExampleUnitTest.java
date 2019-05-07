@@ -1,15 +1,12 @@
 package cz.cvut.fel.pjv.barinale.gameengine;
 
-import android.content.Context;
 import android.graphics.Point;
 
 import org.junit.Test;
 
-import cz.cvut.fel.pjv.barinale.gameengine.Activities.MainActivity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.FatSlug;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.FatSlugCorpus;
-import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 import static org.junit.Assert.*;
 

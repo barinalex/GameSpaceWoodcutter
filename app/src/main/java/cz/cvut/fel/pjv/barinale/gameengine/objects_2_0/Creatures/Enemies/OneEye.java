@@ -9,17 +9,21 @@ import java.util.ArrayList;
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.OneEyeCorpus;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class OneEye extends Enemy{
     public OneEye(Point mapCoordinates) {
         super(mapCoordinates);
-        setMainImageId(R.drawable.one_eye1);
-        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
-        setMoveImages(new ArrayList<Bitmap>());
-        getMoveImages().add(getMainImage());
-        getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.one_eye_step1));
-        getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.one_eye_step2));
+        setSize(new Size(32, 32));
+        if (GamePanel.resources != null) {
+            setMainImageId(R.drawable.one_eye1);
+            setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+            setMoveImages(new ArrayList<Bitmap>());
+            getMoveImages().add(getMainImage());
+            getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.one_eye_step1));
+            getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.one_eye_step2));
+        }
         setBody();
         setActiveZone();
         setHealth(new Characteristic(7));

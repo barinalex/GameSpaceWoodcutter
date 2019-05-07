@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Tree extends Entity {
@@ -32,8 +33,11 @@ public abstract class Tree extends Entity {
     }
 
     public void initializeTree(int ImageId, int initialHealth, int initialProtection){
-        setMainImageId(ImageId);
-        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+        setSize(new Size(96, 128));
+        if (GamePanel.resources != null) {
+            setMainImageId(ImageId);
+            setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+        }
         setBody();
         setActiveZone();
         setHealth(new Characteristic(initialHealth));

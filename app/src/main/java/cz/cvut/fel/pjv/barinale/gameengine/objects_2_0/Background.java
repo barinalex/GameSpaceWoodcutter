@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Background{
@@ -52,7 +53,9 @@ public class Background{
                 imageId = R.drawable.earth_land;
                 break;
         }
-        image = BitmapFactory.decodeResource(GamePanel.resources, imageId);
+        if (GamePanel.resources != null) {
+            image = BitmapFactory.decodeResource(GamePanel.resources, imageId);
+        }
         coordinates = new Point(0, 0);
     }
 

@@ -18,10 +18,12 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
+
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     public static Resources resources = null;
-    public static int SCREEN_WIDTH;
-    public static int SCREEN_HEIGHT;
+    public static int SCREEN_WIDTH = 1080;
+    public static int SCREEN_HEIGHT = 1920;
 
     private Context context;
     private MainThread thread;

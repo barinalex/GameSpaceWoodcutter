@@ -5,6 +5,7 @@ import android.graphics.Point;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Wood extends Item {
@@ -14,8 +15,12 @@ public abstract class Wood extends Item {
     }
 
     public void initializeWood(int imageId){
-        setMainImageId(imageId);
-        setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+
+        setSize(new Size(28, 30));
+        if (GamePanel.resources != null) {
+            setMainImageId(imageId);
+            setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+        }
         setBody();
         setActiveZone();
     }
