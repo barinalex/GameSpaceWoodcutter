@@ -11,13 +11,15 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
+import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Entity{
     private Rect body;
     private Rect activeZone;
-    Bitmap mainImage;
-    int mainImageId;
+    private Bitmap mainImage = null;
+    private int mainImageId;
+    private Size size;
     private ArrayList<Item> inventory;
     private Point mapCoordinates;
     private Point screenCoordinates;
@@ -135,10 +137,19 @@ public abstract class Entity{
     }
 
     public void setBody(){
-        getBody().set(getMapCoordinates().x - getMainImage().getWidth() / 2,
-                getMapCoordinates().y - getMainImage().getHeight() / 4,
-                getMapCoordinates().x + getMainImage().getWidth() / 2,
-                getMapCoordinates().y + getMainImage().getHeight() / 2);
+        int width, heigth;
+        if (getMainImage() == null){
+            width = getSize().getWidth();
+            heigth = getSize().getHeight();
+        }
+        else {
+            width = getMainImage().getWidth();
+            heigth = getMainImage().getHeight();
+        }
+        getBody().set(getMapCoordinates().x - width / 2,
+                getMapCoordinates().y - heigth / 4,
+                getMapCoordinates().x + width / 2,
+                getMapCoordinates().y + heigth / 2);
     }
 
     public Rect getActiveZone() {
@@ -150,10 +161,19 @@ public abstract class Entity{
     }
 
     public void setActiveZone(){
-        getActiveZone().set(getMapCoordinates().x - getMainImage().getWidth()*5/8,
-                getMapCoordinates().y - getMainImage().getHeight()*5/8,
-                getMapCoordinates().x + getMainImage().getWidth()*5/8,
-                getMapCoordinates().y + getMainImage().getHeight()*5/8);
+        int width, heigth;
+        if (getMainImage() == null){
+            width = getSize().getWidth();
+            heigth = getSize().getHeight();
+        }
+        else {
+            width = getMainImage().getWidth();
+            heigth = getMainImage().getHeight();
+        }
+        getActiveZone().set(getMapCoordinates().x - width*5/8,
+                getMapCoordinates().y - heigth*5/8,
+                getMapCoordinates().x + width*5/8,
+                getMapCoordinates().y + heigth*5/8);
     }
 
     public Bitmap getMainImage() {
@@ -242,5 +262,13 @@ public abstract class Entity{
 
     public void setStartShowHealthTime(long startShowHealthTime) {
         this.startShowHealthTime = startShowHealthTime;
+    }
+
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
     }
 }

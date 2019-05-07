@@ -1,6 +1,15 @@
 package cz.cvut.fel.pjv.barinale.gameengine;
 
+import android.content.Context;
+import android.graphics.Point;
+
 import org.junit.Test;
+
+import cz.cvut.fel.pjv.barinale.gameengine.Activities.MainActivity;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.FatSlug;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
+import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.FatSlugCorpus;
+import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 import static org.junit.Assert.*;
 
@@ -13,5 +22,30 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+    @Test
+    public void playerAttackTest(){
+        FatSlug fatSlug = new FatSlug(new Point(0 , 0));
+        Player player = new Player(new Point(0,0));
+        player.setAttackDelay(-1);
+        player.attack(fatSlug);
+        assertEquals(fatSlug.getHealth().getInitial() +
+                fatSlug.getProtection().getCurrent() -
+                player.getStrength().getCurrent(),
+                fatSlug.getHealth().getCurrent());
+    }
+    @Test
+    public void entityGetDamage(){
+        FatSlug fatSlug = new FatSlug(new Point(0 , 0));
+        fatSlug.getDamage(5);
+        assertEquals(fatSlug.getHealth().getInitial() - 5, fatSlug.getHealth().getCurrent());
+    }
+    @Test
+    public void playerHeal(){
+        Player player = new Player(new Point(0,0));
+        player.getDamage(5);
+        FatSlugCorpus fatSlugCorpus = new FatSlugCorpus(new Point(0,0));
+        player.eat(fatSlugCorpus);
+        assertEquals(player.getHealth().getInitial(), player.getHealth().getCurrent());
     }
 }

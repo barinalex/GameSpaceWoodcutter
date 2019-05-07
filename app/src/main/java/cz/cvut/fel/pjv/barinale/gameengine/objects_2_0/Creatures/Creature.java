@@ -7,7 +7,6 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.CollisionDetecter;
 import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
@@ -141,7 +140,7 @@ public abstract class Creature extends Entity {
                 getMapCoordinates().y += direction.y;
                 setBody();
                 setActiveZone();
-                if (CollisionDetecter.isCollide(this)) {
+                if (EntityManager.isCollide(this)) {
                     getMapCoordinates().set(initialCoordinates.x, initialCoordinates.y);
                     setBody();
                     setActiveZone();

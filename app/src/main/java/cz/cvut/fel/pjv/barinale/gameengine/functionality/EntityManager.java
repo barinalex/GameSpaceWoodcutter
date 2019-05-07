@@ -39,6 +39,9 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.OrangeTree;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees.YellowTree;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
+/**
+ *
+ */
 public class EntityManager {
     public static Player player;
     public static Background background;
@@ -173,7 +176,7 @@ public class EntityManager {
         return null;
     }
 
-    public static void removeDeadBodyies(){
+    public static void removeDeadEntities(){
         for (Entity entity: entities){
             if (!(entity instanceof Item) && !(entity instanceof Teleport) && entity.isDead()) {
                 for (Item item : entity.getInventory()) {
@@ -198,6 +201,17 @@ public class EntityManager {
         for (Entity e: entities) {
             if (e != entity && Rect.intersects(e.getActiveZone(), entity.getActiveZone())) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCollide(Entity entity){
+        if (entity.getBody() != null) {
+            for (Entity e : EntityManager.entities) {
+                if (e != entity && !(e instanceof Item) && !(e instanceof Teleport) && Rect.intersects(e.getBody(), entity.getBody())) {
+                    return true;
+                }
             }
         }
         return false;

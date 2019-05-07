@@ -19,7 +19,7 @@ import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
-    public static Resources resources;
+    public static Resources resources = null;
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
@@ -140,7 +140,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             if (EntityManager.player.isDead()){
                 game_over = true;
             }
-            EntityManager.removeDeadBodyies();
+            EntityManager.removeDeadEntities();
             won = Utils.checkWinCondition();
         }
     }

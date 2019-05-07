@@ -29,7 +29,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private FrameLayout game;
     private GamePanel gamePanel;
     private View inventoryView;
-    private TextView textView;
     private LinearLayout inventoryContainer;
 
     private Button menuButton;
