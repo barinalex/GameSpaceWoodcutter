@@ -4,10 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Utils;
@@ -63,30 +66,10 @@ public abstract class Creature extends Entity {
         this.moveImages = moveImages;
     }
 
-    public ArrayList<Bitmap> getAttackImages() {
-        return attackImages;
-    }
-
-    public void setAttackImages(ArrayList<Bitmap> attackImages) {
-        this.attackImages = attackImages;
-    }
-
-    public int getMoveImageIndex() {
-        return moveImageIndex;
-    }
-
-    public void setMoveImageIndex(int moveImageIndex) {
-        this.moveImageIndex = moveImageIndex;
-    }
-
-    public int getAttackImageIndex() {
-        return attackImageIndex;
-    }
-
-    public void setAttackImageIndex(int attackImageIndex) {
-        this.attackImageIndex = attackImageIndex;
-    }
-
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Creature(Point mapCoordinates) {
         super(mapCoordinates);
         setTimeSinceLastAttack(System.currentTimeMillis());
@@ -101,6 +84,10 @@ public abstract class Creature extends Entity {
         drawMove(canvas);
     }
 
+    /**
+     *
+     * @param canvas
+     */
     public void drawMove(Canvas canvas){
         if (moveImages == null){
             super.draw(canvas);
@@ -117,6 +104,10 @@ public abstract class Creature extends Entity {
         }
     }
 
+    /**
+     *
+     * @param canvas
+     */
     public void drawAttack(Canvas canvas){
         if (attackImages == null){
             super.draw(canvas);
@@ -140,7 +131,7 @@ public abstract class Creature extends Entity {
                 getMapCoordinates().y += direction.y;
                 setBody();
                 setActiveZone();
-                if (EntityManager.isCollide(this)) {
+                if (WorldCreator.isCollide(this)) {
                     getMapCoordinates().set(initialCoordinates.x, initialCoordinates.y);
                     setBody();
                     setActiveZone();
@@ -153,8 +144,13 @@ public abstract class Creature extends Entity {
         //}
         getScreenCoordinates().set(getMapCoordinates().x + mapPosition.x,
                 getMapCoordinates().y + mapPosition.y);
+
     }
 
+    /**
+     *
+     * @param corpus
+     */
     public void eat(Corpus corpus){
         getHealth().restore(corpus.getHealth().getCurrent());
         getSpeed().restore(corpus.getSpeed().getCurrent());
@@ -164,6 +160,10 @@ public abstract class Creature extends Entity {
         getInventory().remove(corpus);
     }
 
+    /**
+     *
+     * @param entity
+     */
     public void attack(Entity entity) {
         if (System.currentTimeMillis() - getTimeSinceLastAttack() > getAttackDelay()) {
             entity.getDamage(getStrength().getCurrent());
@@ -171,7 +171,11 @@ public abstract class Creature extends Entity {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean nearThePlayer(){
-        return Rect.intersects(getBody(), EntityManager.player.getActiveZone());
+        return Rect.intersects(getBody(), WorldCreator.player.getActiveZone());
     }
 }

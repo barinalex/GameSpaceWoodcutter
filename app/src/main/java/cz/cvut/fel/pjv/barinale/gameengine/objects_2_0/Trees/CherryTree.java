@@ -6,6 +6,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.CherryWood;
 
 public class CherryTree extends Tree{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public CherryTree(Point mapCoordinates) {
         super(mapCoordinates);
         initializeTree(R.drawable.cherry, 20, 3);

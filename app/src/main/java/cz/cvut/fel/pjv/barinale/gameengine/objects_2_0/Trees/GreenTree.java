@@ -6,6 +6,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.GreenWood;
 
 public class GreenTree extends Tree{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public GreenTree(Point mapCoordinates) {
         super(mapCoordinates);
         initializeTree(R.drawable.green, 10, 1);

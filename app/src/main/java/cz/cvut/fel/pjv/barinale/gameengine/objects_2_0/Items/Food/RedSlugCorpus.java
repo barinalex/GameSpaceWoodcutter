@@ -9,6 +9,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class RedSlugCorpus extends Corpus {
+    /**
+     *
+     * @param mapCoordinates
+     */
     public RedSlugCorpus(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 32));

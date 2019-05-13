@@ -14,6 +14,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class RedSlug extends Enemy{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public RedSlug(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 32));

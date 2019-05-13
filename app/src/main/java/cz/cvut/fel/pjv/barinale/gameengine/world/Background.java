@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine.objects_2_0;
+package cz.cvut.fel.pjv.barinale.gameengine.world;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,29 +14,70 @@ public class Background{
     private String location;
     private Bitmap image;
     private Point coordinates;
+    private Size mapSize;
 
     private static final int BACKGROUND_SPEED = 25;
 
+    /**
+     *
+     * @return
+     */
+    public Size getMapSize() {
+        return mapSize;
+    }
+
+    /**
+     *
+     * @param mapSize
+     */
+    public void setMapSize(Size mapSize) {
+        this.mapSize = mapSize;
+    }
+
+    /**
+     *
+     * @return
+     */
     public Bitmap getImage() {
         return image;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @param location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     *
+     * @return
+     */
     public Point getCoordinates() {
         return coordinates;
     }
 
+    /**
+     *
+     * @param coordinates
+     */
     public void setCoordinates(Point coordinates) {
         this.coordinates = coordinates;
     }
 
+    /**
+     *
+     * @param location
+     */
     public Background(String location){
         this.location = location;
         switch (location) {
@@ -53,12 +94,24 @@ public class Background{
                 imageId = R.drawable.earth_land;
                 break;
         }
+        mapSize = new Size();
         if (GamePanel.resources != null) {
             image = BitmapFactory.decodeResource(GamePanel.resources, imageId);
+            mapSize.setWidth(image.getWidth());
+            mapSize.setHeight(image.getHeight());
+        }
+        else {
+            mapSize.setWidth(1080);
+            mapSize.setHeight(1920);
         }
         coordinates = new Point(0, 0);
     }
 
+    /**
+     *
+     * @param user_point
+     * @return
+     */
     public Point update(Point user_point){
         int border_x, border_y;
         int x, y;
@@ -74,10 +127,19 @@ public class Background{
         return new Point(coordinates.x, coordinates.y);
     }
 
+    /**
+     *
+     * @param canvas
+     */
     public void draw(Canvas canvas){
         canvas.drawBitmap(image, coordinates.x, coordinates.y, null);
     }
 
+    /**
+     *
+     * @param userPoint
+     * @return
+     */
     public Point getUserPointCoordinates(Point userPoint){
         return new Point(userPoint.x - coordinates.x, userPoint.y - coordinates.y);
     }

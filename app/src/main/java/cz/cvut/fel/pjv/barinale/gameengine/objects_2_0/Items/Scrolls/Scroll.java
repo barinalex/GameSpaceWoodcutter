@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
@@ -19,26 +19,45 @@ public abstract class Scroll extends Item {
         return openScroll;
     }
 
+    /**
+     *
+     */
     public void openScroll() {
         openScroll = true;
         getScreenCoordinates().set(GamePanel.SCREEN_WIDTH / 2  - scrollImage.getWidth()/2, 50);
-        EntityManager.entities.add(this);
+        WorldCreator.entities.add(this);
     }
 
+    /**
+     *
+     */
     public void closeScroll(){
         openScroll = false;
-        EntityManager.entities.remove(this);
+        WorldCreator.entities.remove(this);
     }
 
+    /**
+     *
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
         openScroll = false;
     }
 
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Scroll(Point mapCoordinates) {
         super(mapCoordinates);
     }
 
+    /**
+     *
+     * @param imageId
+     * @param scrollImageId
+     */
     public void initializeScroll(int imageId, int scrollImageId){
         setSize(new Size(32, 32));
         if (GamePanel.resources != null) {

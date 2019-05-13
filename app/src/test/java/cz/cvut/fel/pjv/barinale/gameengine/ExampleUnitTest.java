@@ -7,6 +7,7 @@ import org.junit.Test;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.FatSlug;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.FatSlugCorpus;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 
 import static org.junit.Assert.*;
 
@@ -44,5 +45,17 @@ public class ExampleUnitTest {
         FatSlugCorpus fatSlugCorpus = new FatSlugCorpus(new Point(0,0));
         player.eat(fatSlugCorpus);
         assertEquals(player.getHealth().getInitial(), player.getHealth().getCurrent());
+    }
+    @Test
+    public void playerGetDamege(){
+        Player player = new Player(new Point(0,0));
+        player.getDamage(5);
+        assertEquals(player.getHealth().getInitial() +
+                player.getProtection().getCurrent() - 5, player.getHealth().getCurrent());
+    }
+    @Test
+    public void worldCreation(){
+        WorldCreator.createRandomMap("earth_land", false);
+        assertTrue(WorldCreator.entities != null);
     }
 }

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Player;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
@@ -20,6 +20,14 @@ import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes.RedRune;
 
 public class Utils {
     public static String savedGameFileName = "save.txt";
+
+    /**
+     *
+     * @param newPoint
+     * @param oldPoint
+     * @param rate
+     * @return
+     */
     public static Point getDirection(Point newPoint, Point oldPoint, double rate){
         /*
          *  direction = rate * v chceme vector ve stejnem smeru jako v ale delky rate
@@ -34,10 +42,22 @@ public class Utils {
         return new Point((int)(x * rate), (int)(y * rate));
     }
 
+    /**
+     *
+     * @param vector
+     * @param coefficient
+     * @return
+     */
     public static Point increaseVector(Point vector, int coefficient){
         return new Point(vector.x * coefficient, vector.y * coefficient);
     }
 
+    /**
+     *
+     * @param vector
+     * @param angle
+     * @return
+     */
     public static Point rotateVector(Point vector, int angle){
         /*
          *  vynasobime vektor matice rotace
@@ -46,21 +66,29 @@ public class Utils {
                          (int)(Math.sin(angle) * vector.x + Math.cos(angle) * vector.y));
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean checkWinCondition(){
-        for (Item item: EntityManager.player.getInventory()){
+        for (Item item: WorldCreator.player.getInventory()){
             if (item instanceof RedRune) return true;
         }
         return false;
     }
 
+    /**
+     *
+     * @param context
+     */
     public static void saveGameState(Context context) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File
                     (context.getFilesDir(), savedGameFileName)));
-            bufferedWriter.write(EntityManager.background.getLocation() + " " +
-                    EntityManager.background.getCoordinates().x + " " +
-                    EntityManager.background.getCoordinates().y + "\n");
-            for (Entity entity : EntityManager.entities){
+            bufferedWriter.write(WorldCreator.background.getLocation() + " " +
+                    WorldCreator.background.getCoordinates().x + " " +
+                    WorldCreator.background.getCoordinates().y + "\n");
+            for (Entity entity : WorldCreator.entities){
                 String line = entity.getClass().getSimpleName() + " " +
                         entity.getMapCoordinates().x + " " +
                         entity.getMapCoordinates().y + " " +
@@ -78,6 +106,11 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @param fileName
+     */
     public static void loadGame(Context context, String fileName){
         String line;
         try {
@@ -92,7 +125,7 @@ public class Utils {
             while ((line = bufferedReader.readLine()) != null) {
                 mapDescription.add(line);
             }
-            EntityManager.createMap(mapDescription);
+            WorldCreator.createMap(mapDescription);
         }
         catch (IOException e){
         }

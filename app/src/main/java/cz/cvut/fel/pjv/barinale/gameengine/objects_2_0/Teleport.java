@@ -6,7 +6,7 @@ import android.graphics.Point;
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BlueWood;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BrownWood;
@@ -21,6 +21,11 @@ import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 public class Teleport extends Entity{
     private boolean activated = false;
     private String location;
+
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Teleport(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(90, 49));
@@ -45,10 +50,19 @@ public class Teleport extends Entity{
 
     @Override
     public void setActiveZone() {
-        getActiveZone().set(getMapCoordinates().x - getMainImage().getWidth() / 4,
-                getMapCoordinates().y - getMainImage().getHeight() / 4,
-                getMapCoordinates().x + getMainImage().getWidth() / 4,
-                getMapCoordinates().y + getMainImage().getHeight() / 4);
+        int width, heigth;
+        if (getMainImage() == null){
+            width = getSize().getWidth();
+            heigth = getSize().getHeight();
+        }
+        else {
+            width = getMainImage().getWidth();
+            heigth = getMainImage().getHeight();
+        }
+        getActiveZone().set(getMapCoordinates().x - width/4,
+                getMapCoordinates().y - heigth/4,
+                getMapCoordinates().x + width/4,
+                getMapCoordinates().y + heigth/4);
     }
 
     public void pushWood(ArrayList<Wood> woods){
@@ -57,9 +71,12 @@ public class Teleport extends Entity{
         }
     }
 
+    /**
+     *
+     */
     public void teleportate(){
         if (activated) {
-            EntityManager.createRandomMap(location, true);
+            WorldCreator.createRandomMap(location, true);
         }
     }
 

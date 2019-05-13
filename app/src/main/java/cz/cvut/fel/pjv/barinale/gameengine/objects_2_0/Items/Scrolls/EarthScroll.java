@@ -5,6 +5,10 @@ import android.graphics.Point;
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 
 public class EarthScroll extends Scroll{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public EarthScroll(Point mapCoordinates) {
         super(mapCoordinates);
         initializeScroll(R.drawable.scroll, R.drawable.earth_scroll);

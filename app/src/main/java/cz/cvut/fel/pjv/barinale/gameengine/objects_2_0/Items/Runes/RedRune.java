@@ -8,6 +8,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class RedRune extends Rune{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public RedRune(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 32));

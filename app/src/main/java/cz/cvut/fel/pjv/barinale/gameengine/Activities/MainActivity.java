@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,15 +16,15 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food.Corpus;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls.Scroll;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    public static Activity gameActivity;
 
+    public static Activity gameActivity;
     private FrameLayout game;
     private GamePanel gamePanel;
     private View inventoryView;
@@ -102,20 +103,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         for (int i = 0; i < items.size(); i++) {
             Button item = items.get(i);
             if (item.getId() == v.getId()) {
-                if (EntityManager.player.getInventory().get(i) instanceof Corpus){
-                    EntityManager.player.eat((Corpus) EntityManager.player.getInventory().get(i--));
+                if (WorldCreator.player.getInventory().get(i) instanceof Corpus){
+                    WorldCreator.player.eat((Corpus) WorldCreator.player.getInventory().get(i--));
                     inventoryContainer.removeView(item);
                     items.remove(item);
                 }
-                else if(EntityManager.player.getInventory().get(i) instanceof Scroll){
-                    if (((Scroll) EntityManager.player.getInventory().get(i)).isOpenScroll()){
-                        ((Scroll) EntityManager.player.getInventory().get(i)).closeScroll();
+                else if(WorldCreator.player.getInventory().get(i) instanceof Scroll){
+                    if (((Scroll) WorldCreator.player.getInventory().get(i)).isOpenScroll()){
+                        ((Scroll) WorldCreator.player.getInventory().get(i)).closeScroll();
                     }else {
-                        ((Scroll) EntityManager.player.getInventory().get(i)).openScroll();
+                        ((Scroll) WorldCreator.player.getInventory().get(i)).openScroll();
                     }
                 }
                 else {
-                    EntityManager.player.discardItem(i--);
+                    WorldCreator.player.discardItem(i--);
                     inventoryContainer.removeView(item);
                     items.remove(item);
                 }
@@ -128,7 +129,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         menuButton.setVisibility(View.INVISIBLE);
         inventoryButton.setVisibility(View.INVISIBLE);
         items = new ArrayList<>();
-        ArrayList<Item> inventory = EntityManager.player.getInventory();
+        ArrayList<Item> inventory = WorldCreator.player.getInventory();
         int id = 100;
         for (Item item: inventory) {
             Button button = new Button(this);

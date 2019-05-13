@@ -7,12 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import cz.cvut.fel.pjv.barinale.gameengine.Activities.Menu;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.Enemy;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.MainThread;
@@ -42,10 +43,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     private static final int REACTIONTIME = 180;
 
+    /**
+     *
+     * @param pause
+     */
     public void setPause(boolean pause) {
         this.pause = pause;
     }
 
+    /**
+     *
+     * @param context
+     */
     public GamePanel(Context context){
         super(context);
         this.context = context;
@@ -59,16 +68,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
     }
 
+    /**
+     *
+     */
     public void reset(){
         if (Menu.loadFromFile){
             Utils.loadGame(context, null);
             Menu.loadFromFile = false;
         }
         else {
-            EntityManager.createRandomMap("black_land", false);
+            WorldCreator.createRandomMap("black_land", false);
             //Utils.loadGame(context, "black_land.txt");
         }
-        userPoint = new Point(EntityManager.player.getScreenCoordinates().x, EntityManager.player.getScreenCoordinates().y);
+        userPoint = new Point(WorldCreator.player.getScreenCoordinates().x, WorldCreator.player.getScreenCoordinates().y);
         game_start_time = System.currentTimeMillis();
     }
 
@@ -124,25 +136,29 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         //return super.onTouchEvent(event);
     }
 
+    /**
+     *
+     */
     public void update(){
+        Log.d("PLAYER", "HUIIIIIIIIIIIIIIIII");
         if (!pause && !game_over && !won){
-            background_point = (!screen_moving) ? EntityManager.background.getCoordinates() : EntityManager.background.update(userPoint);
-            Point userMapPoint = EntityManager.background.getUserPointCoordinates(userPoint);
+            background_point = (!screen_moving) ? WorldCreator.background.getCoordinates() : WorldCreator.background.update(userPoint);
+            Point userMapPoint = WorldCreator.background.getUserPointCoordinates(userPoint);
             if (click){
-                click = !EntityManager.player.action(userMapPoint);
+                click = !WorldCreator.player.action(userMapPoint);
             }
-            for (Entity entity: EntityManager.entities){
+            for (Entity entity: WorldCreator.entities){
                 if (entity instanceof Enemy){
-                    entity.update(EntityManager.player.getMapCoordinates(), background_point);
+                    entity.update(WorldCreator.player.getMapCoordinates(), background_point);
                 }
                 else {
                     entity.update(userMapPoint, background_point);
                 }
             }
-            if (EntityManager.player.isDead()){
+            if (WorldCreator.player.isDead()){
                 game_over = true;
             }
-            EntityManager.removeDeadEntities();
+            WorldCreator.removeDeadEntities();
             won = Utils.checkWinCondition();
         }
     }
@@ -150,11 +166,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
-        EntityManager.background.draw(canvas);
-        for (Entity entity: EntityManager.entities){
+        WorldCreator.background.draw(canvas);
+        for (Entity entity: WorldCreator.entities){
             entity.draw(canvas);
         }
-        for (Entity entity: EntityManager.entities){
+        for (Entity entity: WorldCreator.entities){
             entity.drawHealth(canvas);
         }
         if (game_over){

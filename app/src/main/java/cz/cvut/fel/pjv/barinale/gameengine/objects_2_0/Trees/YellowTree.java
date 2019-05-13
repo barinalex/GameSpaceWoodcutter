@@ -6,6 +6,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.YellowWood;
 
 public class YellowTree extends Tree{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public YellowTree(Point mapCoordinates) {
         super(mapCoordinates);
         initializeTree(R.drawable.yellow, 20, 2);

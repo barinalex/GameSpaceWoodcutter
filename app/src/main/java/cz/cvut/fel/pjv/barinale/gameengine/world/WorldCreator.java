@@ -1,4 +1,4 @@
-package cz.cvut.fel.pjv.barinale.gameengine.functionality;
+package cz.cvut.fel.pjv.barinale.gameengine.world;
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 import java.util.Random;
 
-import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Background;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.FatSlug;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.OneEye;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies.RedSlug;
@@ -42,12 +41,16 @@ import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 /**
  *
  */
-public class EntityManager {
+public class WorldCreator {
     public static Player player;
     public static Background background;
     public static ArrayList<Entity> entities;
     private static Random random = new Random();
 
+    /**
+     *
+     * @param mapDescription
+     */
     public static void createMap(ArrayList<String> mapDescription){
         entities = new ArrayList<>();
         String data[] = mapDescription.get(0).split(" ");
@@ -69,6 +72,11 @@ public class EntityManager {
         }
     }
 
+    /**
+     *
+     * @param location
+     * @param teleported
+     */
     public static void createRandomMap(String location, boolean teleported){
         entities = new ArrayList<>();
         background = new Background(location);
@@ -79,7 +87,7 @@ public class EntityManager {
             player.getInventory().add(new EarthScroll(new Point()));
             player.getInventory().add(new MissionScroll(new Point()));
         }
-        entities.add(new Teleport(new Point(player.getMapCoordinates().x, player.getMapCoordinates().y + player.getMainImage().getHeight() / 2)));
+        entities.add(new Teleport(new Point(player.getMapCoordinates().x, player.getMapCoordinates().y + player.getSize().getHeight() / 2)));
         entities.add(player);
 
         if (!location.equals("earth_land")) {
@@ -114,8 +122,8 @@ public class EntityManager {
 
     private static Entity createEntity(String type, Point coordinates){
         if (coordinates == null){
-            coordinates = new Point(random.nextInt(background.getImage().getWidth() - 200) + 100,
-                    random.nextInt(background.getImage().getHeight() - 200) + 100);
+            coordinates = new Point(random.nextInt(background.getMapSize().getWidth() - 200) + 100,
+                    random.nextInt(background.getMapSize().getHeight() - 200) + 100);
         }
         switch (type){
             case "Player":
@@ -176,6 +184,9 @@ public class EntityManager {
         return null;
     }
 
+    /**
+     *
+     */
     public static void removeDeadEntities(){
         for (Entity entity: entities){
             if (!(entity instanceof Item) && !(entity instanceof Teleport) && entity.isDead()) {
@@ -206,9 +217,14 @@ public class EntityManager {
         return false;
     }
 
+    /**
+     *
+     * @param entity
+     * @return
+     */
     public static boolean isCollide(Entity entity){
         if (entity.getBody() != null) {
-            for (Entity e : EntityManager.entities) {
+            for (Entity e : WorldCreator.entities) {
                 if (e != entity && !(e instanceof Item) && !(e instanceof Teleport) && Rect.intersects(e.getBody(), entity.getBody())) {
                     return true;
                 }

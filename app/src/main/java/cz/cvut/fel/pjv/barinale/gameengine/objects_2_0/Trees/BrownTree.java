@@ -6,6 +6,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.R;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood.BrownWood;
 
 public class BrownTree extends Tree{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public BrownTree(Point mapCoordinates) {
         super(mapCoordinates);
         initializeTree(R.drawable.brown, 20, 1);

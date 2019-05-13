@@ -4,12 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.logging.*;
 
 import cz.cvut.fel.pjv.barinale.gameengine.R;
-import cz.cvut.fel.pjv.barinale.gameengine.functionality.EntityManager;
+import cz.cvut.fel.pjv.barinale.gameengine.world.WorldCreator;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Entity;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition.Amunition;
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
@@ -21,12 +21,20 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class Player extends Creature{
+
+    private static final Logger LOGGER = Logger.getLogger(Player.class.getName());
+
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Player(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 64));
         if (GamePanel.resources != null) {
             setMainImageId(R.drawable.redhead);
             setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+            setSize(new Size(getMainImage().getWidth(), getMainImage().getHeight()));
             setMoveImages(new ArrayList<Bitmap>());
             getMoveImages().add(getMainImage());
             getMoveImages().add(BitmapFactory.decodeResource(GamePanel.resources, R.drawable.redhead_1));
@@ -40,9 +48,20 @@ public class Player extends Creature{
         setAttackDelay(500);
     }
 
+    @Override
+    public void update(Point userPoint, Point mapPosition) {
+        super.update(userPoint, mapPosition);
+        LOGGER.log(Level.INFO, "Health: " + getHealth().getCurrent(), getHealth().getCurrent());
+    }
+
+    /**
+     *
+     * @param userPoint
+     * @return
+     */
     public boolean action(Point userPoint){
         boolean acted = false;
-        for (Entity entity: EntityManager.entities){
+        for (Entity entity: WorldCreator.entities){
             if (checkTarget(userPoint, entity)) {
                 if (entity instanceof Item) {
                     pickUp((Item) entity);
@@ -90,12 +109,16 @@ public class Player extends Creature{
             }
         }
         getInventory().add(newItem);
-        EntityManager.entities.remove(newItem);
+        WorldCreator.entities.remove(newItem);
         if (!(newItem instanceof Corpus)) {
             addItemEffects(newItem);
         }
     }
 
+    /**
+     *
+     * @param index
+     */
     public void discardItem(int index){
         Item item = getInventory().get(index);
         removeItemEffects(item);
@@ -103,7 +126,7 @@ public class Player extends Creature{
                 getMapCoordinates().y + item.getMainImage().getHeight()));
         item.setBody();
         item.setActiveZone();
-        EntityManager.entities.add(1, item);
+        WorldCreator.entities.add(1, item);
         getInventory().remove(item);
     }
 
@@ -121,7 +144,8 @@ public class Player extends Creature{
 
     @Override
     public void setCurrentHealthIndicator() {
-        getCurrentHealthIndicator().set(getCurrentHealthIndicator().left, getCurrentHealthIndicator().top, 120 - getCurrentHealthDecrement(), getCurrentHealthIndicator().bottom);
+        getCurrentHealthIndicator().set(getCurrentHealthIndicator().left, getCurrentHealthIndicator().top,
+                120 - getCurrentHealthDecrement(), getCurrentHealthIndicator().bottom);
     }
 
     @Override

@@ -17,6 +17,11 @@ import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class FatSlug extends Enemy{
     private static Random random = new Random();
+
+    /**
+     *
+     * @param mapCoordinates
+     */
     public FatSlug(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 32));

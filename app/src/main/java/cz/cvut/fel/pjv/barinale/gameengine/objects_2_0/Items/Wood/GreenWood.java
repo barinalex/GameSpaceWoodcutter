@@ -5,6 +5,10 @@ import android.graphics.Point;
 import cz.cvut.fel.pjv.barinale.gameengine.R;
 
 public class GreenWood extends Wood{
+    /**
+     *
+     * @param mapCoordinates
+     */
     public GreenWood(Point mapCoordinates) {
         super(mapCoordinates);
         initializeWood(R.drawable.greenwood);

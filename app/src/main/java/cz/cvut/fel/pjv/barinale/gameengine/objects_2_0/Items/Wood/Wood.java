@@ -9,11 +9,19 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Wood extends Item {
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Wood(Point mapCoordinates) {
         super(mapCoordinates);
         setSpeed(new Characteristic(-2));
     }
 
+    /**
+     *
+     * @param imageId
+     */
     public void initializeWood(int imageId){
 
         setSize(new Size(28, 30));

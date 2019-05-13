@@ -9,6 +9,10 @@ import cz.cvut.fel.pjv.barinale.gameengine.utils.Size;
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public class OneEyeCorpus extends Corpus {
+    /**
+     *
+     * @param mapCoordinates
+     */
     public OneEyeCorpus(Point mapCoordinates) {
         super(mapCoordinates);
         setSize(new Size(32, 32));

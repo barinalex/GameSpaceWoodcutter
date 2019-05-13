@@ -12,6 +12,11 @@ import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
 
 public abstract class Tree extends Entity {
     private boolean dead = false;
+
+    /**
+     *
+     * @param mapCoordinates
+     */
     public Tree(Point mapCoordinates) {
         super(mapCoordinates);
     }
@@ -21,6 +26,9 @@ public abstract class Tree extends Entity {
         super.update(userPoint, mapPosition);
     }
 
+    /**
+     *
+     */
     public void die(){
         if (!dead) {
             getSpeed().setCurrent(0);
@@ -32,11 +40,18 @@ public abstract class Tree extends Entity {
         }
     }
 
+    /**
+     *
+     * @param ImageId
+     * @param initialHealth
+     * @param initialProtection
+     */
     public void initializeTree(int ImageId, int initialHealth, int initialProtection){
         setSize(new Size(96, 128));
         if (GamePanel.resources != null) {
             setMainImageId(ImageId);
             setMainImage(BitmapFactory.decodeResource(GamePanel.resources, getMainImageId()));
+            setSize(new Size(getMainImage().getWidth(), getMainImage().getHeight()));
         }
         setBody();
         setActiveZone();
@@ -46,17 +61,17 @@ public abstract class Tree extends Entity {
 
     @Override
     public void setBody() {
-        getBody().set(getMapCoordinates().x - getMainImage().getWidth() / 8,
-                getMapCoordinates().y + getMainImage().getHeight() / 4,
-                getMapCoordinates().x + getMainImage().getWidth() / 8,
-                getMapCoordinates().y + getMainImage().getHeight() * 3 / 8);
+        getBody().set(getMapCoordinates().x - getSize().getWidth() / 8,
+                getMapCoordinates().y + getSize().getHeight() / 4,
+                getMapCoordinates().x + getSize().getWidth() / 8,
+                getMapCoordinates().y + getSize().getHeight() * 3 / 8);
     }
 
     @Override
     public void setActiveZone() {
-        getActiveZone().set(getMapCoordinates().x - getMainImage().getWidth() / 2,
-                getMapCoordinates().y - getMainImage().getHeight() / 2,
-                getMapCoordinates().x + getMainImage().getWidth() / 2,
-                getMapCoordinates().y + getMainImage().getHeight() / 2);
+        getActiveZone().set(getMapCoordinates().x - getSize().getWidth() / 2,
+                getMapCoordinates().y - getSize().getHeight() / 2,
+                getMapCoordinates().x + getSize().getWidth() / 2,
+                getMapCoordinates().y + getSize().getHeight() / 2);
     }
 }
