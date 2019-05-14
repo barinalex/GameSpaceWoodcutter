@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.barinale.gameengine;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import cz.cvut.fel.pjv.barinale.gameengine.view.GamePanel;
@@ -82,6 +83,7 @@ public class MainThread extends Thread{
                 averageFPS = 1000/(total_time / frame_count)/1000000;
                 frame_count = 0;
                 total_time = 0;
+                Log.i("FPS", "FPS: " + averageFPS);
                 System.out.println(averageFPS);
             }
         }

@@ -1,4 +1,4 @@
-0 0
+black_land 0 0
 Teleport 400 400 0
 Player 400 400 25 MissionScroll
 BlueTree 800 500 15

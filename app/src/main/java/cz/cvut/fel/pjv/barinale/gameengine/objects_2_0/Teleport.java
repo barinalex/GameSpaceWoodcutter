@@ -72,7 +72,7 @@ public class Teleport extends Entity{
     }
 
     /**
-     *
+     * call creation a new map with old player
      */
     public void teleportate(){
         if (activated) {

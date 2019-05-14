@@ -27,7 +27,7 @@ public abstract class Tree extends Entity {
     }
 
     /**
-     *
+     * change main image to dead tree, set new body and dead state
      */
     public void die(){
         if (!dead) {

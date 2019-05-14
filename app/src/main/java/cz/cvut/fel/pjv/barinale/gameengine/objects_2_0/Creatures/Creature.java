@@ -173,7 +173,7 @@ public abstract class Creature extends Entity {
 
     /**
      * 
-     * @return
+     * @return true if its near
      */
     public boolean nearThePlayer(){
         return Rect.intersects(getBody(), WorldCreator.player.getActiveZone());

@@ -110,7 +110,7 @@ public class Background{
     /**
      *
      * @param user_point
-     * @return
+     * @return new point of moved background
      */
     public Point update(Point user_point){
         int border_x, border_y;
@@ -138,7 +138,7 @@ public class Background{
     /**
      *
      * @param userPoint
-     * @return
+     * @return point of the user tap on the map
      */
     public Point getUserPointCoordinates(Point userPoint){
         return new Point(userPoint.x - coordinates.x, userPoint.y - coordinates.y);

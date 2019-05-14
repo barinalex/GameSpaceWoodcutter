@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.logging.*;
@@ -52,17 +53,18 @@ public class Player extends Creature{
     public void update(Point userPoint, Point mapPosition) {
         super.update(userPoint, mapPosition);
         LOGGER.log(Level.INFO, "Health: " + getHealth().getCurrent(), getHealth().getCurrent());
+        Log.i("Player", "Health: " + getHealth().getCurrent());
     }
 
     /**
      *
-     * @param userPoint
-     * @return
+     * @param userPoint user tap screen coordinates
+     * @return true if acted
      */
     public boolean action(Point userPoint){
         boolean acted = false;
         for (Entity entity: WorldCreator.entities){
-            if (checkTarget(userPoint, entity)) {
+                if (checkTarget(userPoint, entity)) {
                 if (entity instanceof Item) {
                     pickUp((Item) entity);
                     acted = true;
@@ -117,20 +119,20 @@ public class Player extends Creature{
 
     /**
      *
-     * @param index
+     * @param index of item
      */
     public void discardItem(int index){
         Item item = getInventory().get(index);
         removeItemEffects(item);
-        item.setMapCoordinates(new Point(getMapCoordinates().x + item.getMainImage().getWidth(),
-                getMapCoordinates().y + item.getMainImage().getHeight()));
+        item.setMapCoordinates(new Point(getMapCoordinates().x + item.getSize().getWidth(),
+                getMapCoordinates().y + item.getSize().getHeight()));
         item.setBody();
         item.setActiveZone();
         WorldCreator.entities.add(1, item);
         getInventory().remove(item);
     }
 
-    private boolean checkTarget(Point userPoint, Entity entity){
+    public boolean checkTarget(Point userPoint, Entity entity){
         return entity != this &&
                 entity.getActiveZone().contains(userPoint.x, userPoint.y) &&
                 Rect.intersects(getBody(), entity.getActiveZone());

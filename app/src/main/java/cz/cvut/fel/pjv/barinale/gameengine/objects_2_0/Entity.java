@@ -6,11 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Item;
 import cz.cvut.fel.pjv.barinale.gameengine.utils.Characteristic;
@@ -66,7 +63,7 @@ public abstract class Entity{
 
     /**
      *
-     * @return
+     * @return true if its time
      */
     public boolean timeToDrawHealth(){
         return System.currentTimeMillis() - startShowHealthTime < 1000;
@@ -98,7 +95,7 @@ public abstract class Entity{
 
     /**
      *
-     * @return
+     * @return return true if current health is 0
      */
     public boolean isDead(){
         return health.getCurrent() <= 0;
@@ -136,7 +133,7 @@ public abstract class Entity{
     }
 
     /**
-     *
+     * set full health rectangle to draw
      */
     public void initializeHealthIndicator(){
         fullHealthIndicator = new Rect(GamePanel.SCREEN_WIDTH - 120, 20, GamePanel.SCREEN_WIDTH - 20, 40);
@@ -144,15 +141,16 @@ public abstract class Entity{
     }
 
     /**
-     *
+     * set current health rectangle to draw
      */
     public void setCurrentHealthIndicator(){
-        currentHealthIndicator.set(GamePanel.SCREEN_WIDTH - 120, currentHealthIndicator.top, GamePanel.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
+        currentHealthIndicator.set(GamePanel.SCREEN_WIDTH - 120, currentHealthIndicator.top,
+                GamePanel.SCREEN_WIDTH - 20 - getCurrentHealthDecrement(), currentHealthIndicator.bottom);
     }
 
     /**
      *
-     * @return
+     * @return lack of health in percent
      */
     public int getCurrentHealthDecrement(){
         if (health.getInitial() != 0)
@@ -204,7 +202,7 @@ public abstract class Entity{
     }
 
     /**
-     *
+     * set body params of the entity in dependence of image if it exist or size
      */
     public void setBody(){
         int width, heigth;
@@ -239,7 +237,7 @@ public abstract class Entity{
     }
 
     /**
-     *
+     * set active zone params of the entity in dependence of image if it exist or size
      */
     public void setActiveZone(){
         int width, heigth;

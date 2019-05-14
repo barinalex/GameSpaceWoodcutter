@@ -26,7 +26,7 @@ public class Utils {
      * @param newPoint
      * @param oldPoint
      * @param rate
-     * @return
+     * @return new point which is new position after move
      */
     public static Point getDirection(Point newPoint, Point oldPoint, double rate){
         /*
@@ -44,31 +44,7 @@ public class Utils {
 
     /**
      *
-     * @param vector
-     * @param coefficient
-     * @return
-     */
-    public static Point increaseVector(Point vector, int coefficient){
-        return new Point(vector.x * coefficient, vector.y * coefficient);
-    }
-
-    /**
-     *
-     * @param vector
-     * @param angle
-     * @return
-     */
-    public static Point rotateVector(Point vector, int angle){
-        /*
-         *  vynasobime vektor matice rotace
-         */
-        return new Point((int)(Math.cos(angle) * vector.x - Math.sin(angle) * vector.y),
-                         (int)(Math.sin(angle) * vector.x + Math.cos(angle) * vector.y));
-    }
-
-    /**
-     *
-     * @return
+     * @return true if player won
      */
     public static boolean checkWinCondition(){
         for (Item item: WorldCreator.player.getInventory()){

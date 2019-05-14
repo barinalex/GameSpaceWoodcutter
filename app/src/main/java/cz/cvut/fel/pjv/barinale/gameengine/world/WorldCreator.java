@@ -81,35 +81,74 @@ public class WorldCreator {
         entities = new ArrayList<>();
         background = new Background(location);
         if (!teleported) {
-            player = new Player(new Point(GamePanel.SCREEN_WIDTH / 2, GamePanel.SCREEN_HEIGHT / 2));
-            player.getInventory().add(new YellowScroll(new Point()));
-            player.getInventory().add(new CherryScroll(new Point()));
-            player.getInventory().add(new EarthScroll(new Point()));
-            player.getInventory().add(new MissionScroll(new Point()));
+            createRandomPlayer();
         }
-        entities.add(new Teleport(new Point(player.getMapCoordinates().x, player.getMapCoordinates().y + player.getSize().getHeight() / 2)));
+        entities.add(createTeleport());
         entities.add(player);
+        switch (location){
+            case "black_land":
+                createRandomBlackLand();
+                break;
+            case "yellow_land":
+                createRandomYellowLand();
+                break;
+            case "cherry_land":
+                createRandomCherryLand();
+                break;
+            case "earth_land":
+                createRandomEarthLand();
+                break;
+        }
+    }
 
-        if (!location.equals("earth_land")) {
-            addEntityRandomPos(8, GreenTree.class.getSimpleName());
-            addEntityRandomPos(5, BrownTree.class.getSimpleName());
-            addEntityRandomPos(5, BlueTree.class.getSimpleName());
-            addEntityRandomPos(4, OrangeTree.class.getSimpleName());
-        }else {
-            addEntityRandomPos(16, GreenTree.class.getSimpleName());
-            addEntityRandomPos(12, BrownTree.class.getSimpleName());
-        }
-        if (location.equals("cherry_land")) {
-            addEntityRandomPos(7, CherryTree.class.getSimpleName());
-        }
-        if (location.equals("yellow_land")) {
-            addEntityRandomPos(10, YellowTree.class.getSimpleName());
-        }
+    private static Teleport createTeleport(){
+        return new Teleport(new Point(player.getMapCoordinates().x,
+                player.getMapCoordinates().y + player.getSize().getHeight() / 2));
+    }
+
+    private static void createRandomPlayer(){
+        player = new Player(new Point(GamePanel.SCREEN_WIDTH / 2, GamePanel.SCREEN_HEIGHT / 2));
+        player.getInventory().add(new YellowScroll(new Point()));
+        player.getInventory().add(new CherryScroll(new Point()));
+        player.getInventory().add(new EarthScroll(new Point()));
+        player.getInventory().add(new MissionScroll(new Point()));
+    }
+
+    private static void createRandomEarthLand(){
+        addEntityRandomPos(15, GreenTree.class.getSimpleName());
+        addEntityRandomPos(15, BrownTree.class.getSimpleName());
+        addEntityRandomPos(10, OneEye.class.getSimpleName());
+        addEntityRandomPos(10, FatSlug.class.getSimpleName());
+        addEntityRandomPos(1, RedSlug.class.getSimpleName());
+    }
+
+    private static void createRandomCherryLand(){
+        addEntityRandomPos(2, GreenTree.class.getSimpleName());
+        addEntityRandomPos(2, BrownTree.class.getSimpleName());
+        addEntityRandomPos(2, BlueTree.class.getSimpleName());
+        addEntityRandomPos(2, OrangeTree.class.getSimpleName());
+        addEntityRandomPos(20, CherryTree.class.getSimpleName());
+        addEntityRandomPos(10, OneEye.class.getSimpleName());
+        addEntityRandomPos(6, FatSlug.class.getSimpleName());
+    }
+
+    private static void createRandomYellowLand(){
+        addEntityRandomPos(3, GreenTree.class.getSimpleName());
+        addEntityRandomPos(5, BrownTree.class.getSimpleName());
+        addEntityRandomPos(3, BlueTree.class.getSimpleName());
+        addEntityRandomPos(10, OrangeTree.class.getSimpleName());
+        addEntityRandomPos(15, YellowTree.class.getSimpleName());
+        addEntityRandomPos(5, OneEye.class.getSimpleName());
+        addEntityRandomPos(4, FatSlug.class.getSimpleName());
+    }
+
+    private static void createRandomBlackLand(){
+        addEntityRandomPos(10, GreenTree.class.getSimpleName());
+        addEntityRandomPos(3, BrownTree.class.getSimpleName());
+        addEntityRandomPos(10, BlueTree.class.getSimpleName());
+        addEntityRandomPos(2, OrangeTree.class.getSimpleName());
         addEntityRandomPos(5, OneEye.class.getSimpleName());
         addEntityRandomPos(2, FatSlug.class.getSimpleName());
-        if (location.equals("earth_land")){
-            addEntityRandomPos(1, RedSlug.class.getSimpleName());
-        }
     }
 
     private static void addEntityRandomPos(int amount, String type){
@@ -185,7 +224,7 @@ public class WorldCreator {
     }
 
     /**
-     *
+     * remove dead objects and add their items and dead bodies to the map
      */
     public static void removeDeadEntities(){
         for (Entity entity: entities){

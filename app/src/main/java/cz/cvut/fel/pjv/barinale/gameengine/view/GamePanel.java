@@ -69,7 +69,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     /**
-     *
+     * start a new game or load a saved state
      */
     public void reset(){
         if (Menu.loadFromFile){
@@ -80,7 +80,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             WorldCreator.createRandomMap("black_land", false);
             //Utils.loadGame(context, "black_land.txt");
         }
-        userPoint = new Point(WorldCreator.player.getScreenCoordinates().x, WorldCreator.player.getScreenCoordinates().y);
+        userPoint = new Point(WorldCreator.player.getMapCoordinates().x + WorldCreator.background.getCoordinates().x,
+                WorldCreator.player.getMapCoordinates().y + WorldCreator.background.getCoordinates().y);
         game_start_time = System.currentTimeMillis();
     }
 
@@ -137,10 +138,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     /**
-     *
+     * call update of all game objects
      */
     public void update(){
-        Log.d("PLAYER", "HUIIIIIIIIIIIIIIIII");
         if (!pause && !game_over && !won){
             background_point = (!screen_moving) ? WorldCreator.background.getCoordinates() : WorldCreator.background.update(userPoint);
             Point userMapPoint = WorldCreator.background.getUserPointCoordinates(userPoint);
