@@ -49,7 +49,7 @@ public class WorldCreator {
 
     /**
      *
-     * @param mapDescription
+     * @param mapDescription array with strings. each of them describe one object
      */
     public static void createMap(ArrayList<String> mapDescription){
         entities = new ArrayList<>();
