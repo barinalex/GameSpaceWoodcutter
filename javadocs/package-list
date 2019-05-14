@@ -1,0 +1,15 @@
+cz.cvut.fel.pjv.barinale.gameengine
+cz.cvut.fel.pjv.barinale.gameengine.Activities
+cz.cvut.fel.pjv.barinale.gameengine.functionality
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Creatures.Enemies
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Amunition
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Food
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Runes
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Scrolls
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Items.Wood
+cz.cvut.fel.pjv.barinale.gameengine.objects_2_0.Trees
+cz.cvut.fel.pjv.barinale.gameengine.utils
+cz.cvut.fel.pjv.barinale.gameengine.view
